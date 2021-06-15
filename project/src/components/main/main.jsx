@@ -1,18 +1,22 @@
 import React from 'react'
-import CardFilm from '../card-film/card-film'
+import { HeaderClassNames } from '../../const/const'
+import FilmCard from '../film-card/film-card'
+import Header from '../header/header'
+import Footer from '../footer/footer'
+
+const genresNames = [
+	'Comedies',
+	'Crime',
+	'Documentary',
+	'Dramas',
+	'Horror',
+	'Kids & Family',
+	'Romance',
+	'Sci-Fi',
+	'Thrillers',
+]
 
 const Main = () => {
-	const genresNames = [
-		'Comedies',
-		'Crime',
-		'Documentary',
-		'Dramas',
-		'Horror',
-		'Kids & Family',
-		'Romance',
-		'Sci-Fi',
-		'Thrillers',
-	]
 	return (
 		<React.Fragment>
 			<section className='film-card'>
@@ -25,31 +29,7 @@ const Main = () => {
 
 				<h1 className='visually-hidden'>WTW</h1>
 
-				<header className='page-header film-card__head'>
-					<div className='logo'>
-						<a className='logo__link'>
-							<span className='logo__letter logo__letter--1'>W</span>
-							<span className='logo__letter logo__letter--2'>T</span>
-							<span className='logo__letter logo__letter--3'>W</span>
-						</a>
-					</div>
-
-					<ul className='user-block'>
-						<li className='user-block__item'>
-							<div className='user-block__avatar'>
-								<img
-									src='img/avatar.jpg'
-									alt='User avatar'
-									width='63'
-									height='63'
-								/>
-							</div>
-						</li>
-						<li className='user-block__item'>
-							<a className='user-block__link'>Sign out</a>
-						</li>
-					</ul>
-				</header>
+				<Header clHeader={HeaderClassNames.MAIN} />
 
 				<div className='film-card__wrap'>
 					<div className='film-card__info'>
@@ -116,7 +96,7 @@ const Main = () => {
 
 					<div className='catalog__films-list'>
 						{new Array(5).fill('').map(() => (
-							<CardFilm key={1} />
+							<FilmCard key={1} />
 						))}
 					</div>
 
@@ -127,19 +107,7 @@ const Main = () => {
 					</div>
 				</section>
 
-				<footer className='page-footer'>
-					<div className='logo'>
-						<a className='logo__link logo__link--light'>
-							<span className='logo__letter logo__letter--1'>W</span>
-							<span className='logo__letter logo__letter--2'>T</span>
-							<span className='logo__letter logo__letter--3'>W</span>
-						</a>
-					</div>
-
-					<div className='copyright'>
-						<p>© 2019 What to watch Ltd.</p>
-					</div>
-				</footer>
+				<Footer />
 			</div>
 		</React.Fragment>
 	)
