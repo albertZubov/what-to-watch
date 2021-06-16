@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CardFilm = () => {
+const FilmCard = () => {
 	return (
 		<article className='small-film-card catalog__films-card'>
 			<div className='small-film-card__image'>
@@ -20,4 +20,4 @@ const CardFilm = () => {
 	)
 }
 
-export default CardFilm
+export default FilmCard
