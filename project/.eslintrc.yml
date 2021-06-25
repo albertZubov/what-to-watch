@@ -17,8 +17,9 @@ plugins: ['react']
 rules:
   react/function-component-definition: 0
   arrow-body-style: 0
-  indent: ["error", "tab"]
+  indent: ["error", "tab", { "SwitchCase": 1 }]
   no-console: 0
+  no-useless-escape: 0
 
 settings:
   react:

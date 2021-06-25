@@ -1,10 +1,10 @@
 import React from 'react'
 import Main from '../main/main'
-import FilmCardDescription from '../film-card-description/film-card-description'
+import FilmCard from '../film-card/film-card'
 import { AppClient } from '../../const/const'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import AddReview from '../add-review/add-review'
-import FilmList from '../film-list/film-list'
+import MyList from '../my-list/my-list'
 import SignIn from '../sign-in/sign-in'
 import Player from '../player/player'
 
@@ -21,9 +21,9 @@ const App = () => {
 				<Route
 					exact
 					path={AppClient.FILM_ID}
-					render={() => <FilmCardDescription />}
+					render={({ match }) => <FilmCard activeId={+match.params.id} />}
 				/>
-				<Route exact path={AppClient.LIST_CARD} render={() => <FilmList />} />
+				<Route exact path={AppClient.MY_LIST} render={() => <MyList />} />
 				<Route exact path={AppClient.LOGIN} render={() => <SignIn />} />
 				<Route exact path={AppClient.PLAYER_ID} render={() => <Player />} />
 				<Route path='*'>404</Route>
