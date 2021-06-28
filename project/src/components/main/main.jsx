@@ -1,22 +1,13 @@
 import React from 'react'
 import { HeaderClassNames } from '../../const/const'
-import FilmCard from '../film-card/film-card'
 import Header from '../header/header'
 import Footer from '../footer/footer'
+import { connect } from 'react-redux'
+import { getGenres } from '../../store/selectors'
+import PropTypes from 'prop-types'
+import FilmList from '../film-list/film-list'
 
-const genresNames = [
-	'Comedies',
-	'Crime',
-	'Documentary',
-	'Dramas',
-	'Horror',
-	'Kids & Family',
-	'Romance',
-	'Sci-Fi',
-	'Thrillers',
-]
-
-const Main = () => {
+const Main = ({ genres }) => {
 	return (
 		<React.Fragment>
 			<section className='film-card'>
@@ -83,9 +74,9 @@ const Main = () => {
 								All genres
 							</a>
 						</li>
-						{genresNames.map((el) => {
+						{genres.map((el) => {
 							return (
-								<li className='catalog__genres-item' key={2}>
+								<li className='catalog__genres-item' key={el}>
 									<a href='#' className='catalog__genres-link'>
 										{el}
 									</a>
@@ -94,11 +85,7 @@ const Main = () => {
 						})}
 					</ul>
 
-					<div className='catalog__films-list'>
-						{new Array(5).fill('').map(() => (
-							<FilmCard key={1} />
-						))}
-					</div>
+					<FilmList />
 
 					<div className='catalog__more'>
 						<button className='catalog__button' type='button'>
@@ -113,4 +100,12 @@ const Main = () => {
 	)
 }
 
-export default Main
+Main.propTypes = {
+	genres: PropTypes.array.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+	genres: getGenres(state),
+})
+
+export default connect(mapStateToProps)(Main)
