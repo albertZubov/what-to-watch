@@ -20,6 +20,7 @@ rules:
   indent: ["error", "tab", { "SwitchCase": 1 }]
   no-console: 0
   no-useless-escape: 0
+  # no-unused-vars: 0
 
 settings:
   react:

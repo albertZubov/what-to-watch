@@ -1,13 +1,42 @@
-import React from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { HeaderClassNames } from '../../const/const'
 import Header from '../header/header'
 import HeaderBreadcrumbs from '../header/header-breadcrumbs'
 
+const InputName = {
+	rating: 'rating',
+	review: 'review-text',
+}
+
 const AddReview = () => {
 	const titleRating = [...Array(10).keys()].map((el) => ++el)
+	const [rating, setRating] = useState(0)
+	const [review, setReview] = useState('')
+	const formRef = useRef()
+	console.log(rating)
+	console.log(review)
 
-	// TODO Реализуйте сохранение введённых в форму данных в state компонента.
-	// Рейтинг и review
+	const handleSubmit = useCallback((evt) => {
+		evt.preventDefault()
+
+		formRef.current.reset()
+	})
+
+	const handleFieldChange = useCallback((evt) => {
+		evt.preventDefault()
+
+		const { value, name } = evt.target
+
+		switch (name) {
+			case InputName.rating:
+				setRating(value)
+				break
+
+			case InputName.review:
+				setReview(value)
+				break
+		}
+	})
 
 	return (
 		<section className='film-card film-card--full'>
@@ -36,7 +65,12 @@ const AddReview = () => {
 			</div>
 
 			<div className='add-review'>
-				<form action='#' className='add-review__form'>
+				<form
+					action='#'
+					className='add-review__form'
+					onSubmit={handleSubmit}
+					ref={formRef}
+				>
 					<div className='rating'>
 						<div className='rating__stars'>
 							{titleRating.map((number, index, arr) => (
@@ -47,6 +81,7 @@ const AddReview = () => {
 										type='radio'
 										name='rating'
 										value={arr.length - index}
+										onChange={handleFieldChange}
 									/>
 									<label
 										className='rating__label'
@@ -65,6 +100,7 @@ const AddReview = () => {
 							name='review-text'
 							id='review-text'
 							placeholder='Review text'
+							onChange={handleFieldChange}
 						></textarea>
 						<div className='add-review__submit'>
 							<button className='add-review__btn' type='submit'>
