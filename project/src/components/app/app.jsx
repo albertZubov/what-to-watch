@@ -25,7 +25,11 @@ const App = () => {
 				/>
 				<Route exact path={AppClient.MY_LIST} render={() => <MyList />} />
 				<Route exact path={AppClient.LOGIN} render={() => <SignIn />} />
-				<Route exact path={AppClient.PLAYER_ID} render={() => <Player />} />
+				<Route
+					exact
+					path={AppClient.PLAYER_ID}
+					render={({ match }) => <Player activeId={+match.params.id} />}
+				/>
 				<Route path='*'>404</Route>
 			</Switch>
 		</BrowserRouter>

@@ -11,3 +11,23 @@ export const serverAdapter = (obj) =>
 
 export const formattingDataServerToClinet = (arrData) =>
 	arrData.map((obj) => serverAdapter(obj))
+
+export const videoAdapter = {
+	time: (timeSeconds) => {
+		const oneHours = 3600
+		const oneMinutes = 60
+		const hours = `0${Math.floor(timeSeconds / oneHours)}`.slice(-2)
+		const minutes = `0${Math.floor(
+			(timeSeconds - hours * oneHours) / oneMinutes
+		)}`.slice(-2)
+
+		const seconds = `0${Math.floor(
+			timeSeconds - hours * oneHours - minutes * oneMinutes
+		)}`.slice(-2)
+
+		return `${hours}:${minutes}:${seconds}`
+	},
+
+	progress: (currentTime, duration) =>
+		Math.floor(currentTime) / (Math.floor(duration) / 100),
+}
