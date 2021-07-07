@@ -8,6 +8,7 @@ import { getFilm, getFilmsSimilar } from '../../store/selectors'
 import { propFilm } from '../../props/props'
 import { fetchFilmsListSimilar } from '../../store/api-actions'
 import { Link } from 'react-router-dom'
+import CardTabsList from '../card-tabs/card-tabs-list'
 
 const FilmCard = (props) => {
 	const { film, filmsSimilar, loadingFilmsSimilar } = props
@@ -93,25 +94,11 @@ const FilmCard = (props) => {
 						</div>
 
 						<div className='film-card__desc'>
-							<nav className='film-nav film-card__nav'>
-								<ul className='film-nav__list'>
-									<li className='film-nav__item film-nav__item--active'>
-										<a href='#' className='film-nav__link'>
-											Overview
-										</a>
-									</li>
-									<li className='film-nav__item'>
-										<a href='#' className='film-nav__link'>
-											Details
-										</a>
-									</li>
-									<li className='film-nav__item'>
-										<a href='#' className='film-nav__link'>
-											Reviews
-										</a>
-									</li>
-								</ul>
-							</nav>
+							<CardTabsList />
+
+							{/* TODO добавить сюда отрисовку - при клике на таб отображается релевантный набор информации 
+							https://up.htmlacademy.ru/react/7/tasks/7
+							*/}
 
 							<div className='film-rating'>
 								<div className='film-rating__score'>{rating}</div>

@@ -863,6 +863,10 @@ main {
     bottom: 0;
     background: #EEE5B5;
     display: none; }
+
+  .film-nav__link:hover {
+      cursor: pointer; }
+
   .film-nav__link:hover::after {
     display: block; }
 

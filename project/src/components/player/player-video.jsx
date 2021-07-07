@@ -9,8 +9,6 @@ const PlayerVideo = (props) => {
 	const { videoLink } = film
 	const { refLink, onTimeUpdate, onDurationChange } = props
 
-	// TODO Сделать пуш, повторно проверить и перейти к след. заданию
-
 	return (
 		<video
 			src={videoLink}
