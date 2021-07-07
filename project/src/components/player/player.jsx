@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { getFilm } from '../../store/selectors'
-import { propFilm } from '../../props/props'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { videoAdapter } from '../../utils/utils'
+import PlayerVideo from './player-video'
 
-const Player = (props) => {
-	const { film } = props
-	const { videoLink } = film
+const Player = ({ activeId }) => {
 	const videoRef = useRef()
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [videoDuration, setVideoDuration] = useState(1)
@@ -15,10 +11,7 @@ const Player = (props) => {
 	const [isFlag, setIsFlag] = useState(null)
 	const initialX = 24
 
-	// console.log(film)
-
 	useEffect(() => {
-		console.dir(videoRef)
 		if (videoRef.current) {
 			isPlaying ? videoRef.current.play() : videoRef.current.pause()
 		}
@@ -26,19 +19,16 @@ const Player = (props) => {
 
 	return (
 		<div className='player'>
-			<video
-				src={videoLink}
-				className='player__video'
-				poster='img/player-poster.jpg'
-				ref={videoRef}
+			<PlayerVideo
+				activeId={activeId}
+				refLink={videoRef}
 				onTimeUpdate={() =>
 					setCurrentTime(Math.floor(videoRef.current.currentTime))
 				}
 				onDurationChange={() => {
 					setVideoDuration(Math.floor(videoRef.current.duration))
 				}}
-				preload='metadata'
-			></video>
+			/>
 
 			<button type='button' className='player__exit'>
 				Exit
@@ -112,11 +102,7 @@ const Player = (props) => {
 }
 
 Player.propTypes = {
-	film: PropTypes.shape(propFilm),
+	activeId: PropTypes.number.isRequired,
 }
 
-const mapStateToProps = (state, { activeId }) => ({
-	film: getFilm(state, activeId),
-})
-
-export default connect(mapStateToProps)(Player)
+export default Player
