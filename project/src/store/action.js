@@ -1,7 +1,7 @@
 export const ActionType = {
 	LOAD_FILMS: 'LOAD_FILMS',
 	LOAD_FILMS_SIMILAR: 'LOAD_FILMS_SIMILAR',
-	CHANGE_TAB: 'CHANGE_TAB',
+	LOAD_COMMENTS: 'LOAD_COMMENTS',
 }
 
 export const ActionCreator = {
@@ -15,8 +15,8 @@ export const ActionCreator = {
 		payload: films,
 	}),
 
-	changeTab: (tab) => ({
-		type: ActionType.CHANGE_TAB,
-		payload: tab,
+	loadingComments: (comments) => ({
+		type: ActionType.LOAD_COMMENTS,
+		payload: comments,
 	}),
 }

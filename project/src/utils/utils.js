@@ -31,3 +31,37 @@ export const videoAdapter = {
 	progress: (currentTime, duration) =>
 		Math.floor(currentTime) / (Math.floor(duration) / 100),
 }
+
+export const getDate = (dateTime) => {
+	const arrDate = dateTime.split('T')
+	const date = arrDate[0].split('-')
+	const time = arrDate[1].split(':')
+
+	return {
+		fullDate: arrDate[0],
+		year: date[0],
+		monthNumber: date[1],
+		month: new Date(arrDate[0]).toLocaleString('eng', {
+			month: 'long',
+		}),
+		dayPresent: date[2],
+		hours: time[0],
+		minutes: time[1],
+		seconds: time[2].slice(0, -1),
+	}
+}
+
+export const getTime = (timeMinutes) => {
+	const oneHours = 3600
+	const oneMinutes = 60
+	const seconds = timeMinutes * oneMinutes
+	const hours = `${Math.floor(seconds / oneHours)}`
+	const minutes = `0${Math.floor(
+		(seconds - hours * oneHours) / oneMinutes
+	)}`.slice(-2)
+
+	return {
+		hours,
+		minutes,
+	}
+}

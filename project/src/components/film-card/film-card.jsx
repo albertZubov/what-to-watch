@@ -8,27 +8,11 @@ import { getFilm, getFilmsSimilar } from '../../store/selectors'
 import { propFilm } from '../../props/props'
 import { fetchFilmsListSimilar } from '../../store/api-actions'
 import { Link } from 'react-router-dom'
-import CardTabsList from '../card-tabs/card-tabs-list'
+import CardTabs from '../card-tabs/card-tabs'
 
 const FilmCard = (props) => {
 	const { film, filmsSimilar, loadingFilmsSimilar } = props
-	const {
-		name,
-		genre,
-		released,
-		posterImage,
-		rating,
-		scoresCount,
-		description,
-		director,
-		starring,
-		id,
-	} = film
-
-	console.log(film)
-	console.log(filmsSimilar)
-
-	const starringToString = starring.join(', ')
+	const { name, genre, released, posterImage, id } = film
 
 	useEffect(() => {
 		loadingFilmsSimilar(id)
@@ -94,33 +78,7 @@ const FilmCard = (props) => {
 						</div>
 
 						<div className='film-card__desc'>
-							<CardTabsList />
-
-							{/* TODO добавить сюда отрисовку - при клике на таб отображается релевантный набор информации 
-							https://up.htmlacademy.ru/react/7/tasks/7
-							*/}
-
-							<div className='film-rating'>
-								<div className='film-rating__score'>{rating}</div>
-								<p className='film-rating__meta'>
-									<span className='film-rating__level'>Very good</span>
-									<span className='film-rating__count'>
-										{scoresCount} ratings
-									</span>
-								</p>
-							</div>
-
-							<div className='film-card__text'>
-								<p>{description}</p>
-
-								<p className='film-card__director'>
-									<strong>Director: {director}</strong>
-								</p>
-
-								<p className='film-card__starring'>
-									<strong>Starring: {starringToString} and other</strong>
-								</p>
-							</div>
+							<CardTabs film={film} />
 						</div>
 					</div>
 				</div>

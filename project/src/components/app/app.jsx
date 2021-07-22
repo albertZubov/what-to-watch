@@ -16,7 +16,7 @@ const App = () => {
 				<Route
 					exact
 					path={AppClient.ADD_REVIEW_ID}
-					render={() => <AddReview />}
+					render={({ match }) => <AddReview activeId={+match.params.id} />}
 				/>
 				<Route
 					exact
