@@ -5,6 +5,7 @@ const loadData = () => {
 	const initialState = {
 		films: [],
 		filmsSimilar: [],
+		comments: [],
 	}
 
 	return (state = initialState, action) => {
@@ -16,6 +17,10 @@ const loadData = () => {
 			case ActionType.LOAD_FILMS_SIMILAR:
 				return extend(state, {
 					filmsSimilar: action.payload,
+				})
+			case ActionType.LOAD_COMMENTS:
+				return extend(state, {
+					comments: action.payload,
 				})
 		}
 

@@ -7,3 +7,5 @@ export const getFilm = (state, propId) =>
 export const getGenres = createSelector(getFilms, (films) => [
 	...new Set(films.map((film) => film.genre)),
 ])
+export const getComments = (state) => state.DATA.comments
+// export const getActiveTab = (state) => state.PROCESS.activeTab

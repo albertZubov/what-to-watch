@@ -14,3 +14,8 @@ export const fetchFilmsListSimilar = (id) => (dispatch, _getState, api) =>
 		const formatData = formattingDataServerToClinet(data)
 		return dispatch(ActionCreator.loadingFilmsSimilar(formatData))
 	})
+
+export const commentsGet = (id) => (dispatch, _getState, api) =>
+	api.get(`${AppRoute.COMMENT}/${id}`).then(({ data }) => {
+		return dispatch(ActionCreator.loadingComments(data))
+	})

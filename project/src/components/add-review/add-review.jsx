@@ -1,14 +1,18 @@
 import React, { useCallback, useRef, useState } from 'react'
+import { connect } from 'react-redux'
 import { HeaderClassNames } from '../../const/const'
+import { getFilm } from '../../store/selectors'
 import Header from '../header/header'
 import HeaderBreadcrumbs from '../header/header-breadcrumbs'
+import PropTypes from 'prop-types'
+import { propFilm } from '../../props/props'
 
 const InputName = {
 	rating: 'rating',
 	review: 'review-text',
 }
 
-const AddReview = () => {
+const AddReview = ({ film }) => {
 	const titleRating = [...Array(10).keys()].map((el) => ++el)
 	const [rating, setRating] = useState(0)
 	const [review, setReview] = useState('')
@@ -23,8 +27,6 @@ const AddReview = () => {
 	})
 
 	const handleFieldChange = useCallback((evt) => {
-		evt.preventDefault()
-
 		const { value, name } = evt.target
 
 		switch (name) {
@@ -56,8 +58,8 @@ const AddReview = () => {
 
 				<div className='film-card__poster film-card__poster--small'>
 					<img
-						src='img/the-grand-budapest-hotel-poster.jpg'
-						alt='The Grand Budapest Hotel poster'
+						src={film.posterImage}
+						alt={film.name}
 						width='218'
 						height='327'
 					/>
@@ -87,7 +89,7 @@ const AddReview = () => {
 										className='rating__label'
 										htmlFor={`star-${arr.length - index}`}
 									>
-										{arr.length - index}
+										{`Rating ${arr.length - index}`}
 									</label>
 								</React.Fragment>
 							))}
@@ -114,4 +116,12 @@ const AddReview = () => {
 	)
 }
 
-export default AddReview
+AddReview.propTypes = {
+	film: PropTypes.shape(propFilm),
+}
+
+const mapStateToProps = (state, { activeId }) => ({
+	film: getFilm(state, activeId),
+})
+
+export default connect(mapStateToProps)(AddReview)

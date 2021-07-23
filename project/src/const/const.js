@@ -9,6 +9,7 @@ export const AppClient = {
 
 export const AppRoute = {
 	FILMS: '/films',
+	COMMENT: '/comments',
 }
 
 export const HeaderClassNames = {

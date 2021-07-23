@@ -8,26 +8,11 @@ import { getFilm, getFilmsSimilar } from '../../store/selectors'
 import { propFilm } from '../../props/props'
 import { fetchFilmsListSimilar } from '../../store/api-actions'
 import { Link } from 'react-router-dom'
+import CardTabs from '../card-tabs/card-tabs'
 
 const FilmCard = (props) => {
 	const { film, filmsSimilar, loadingFilmsSimilar } = props
-	const {
-		name,
-		genre,
-		released,
-		posterImage,
-		rating,
-		scoresCount,
-		description,
-		director,
-		starring,
-		id,
-	} = film
-
-	console.log(film)
-	console.log(filmsSimilar)
-
-	const starringToString = starring.join(', ')
+	const { name, genre, released, posterImage, id } = film
 
 	useEffect(() => {
 		loadingFilmsSimilar(id)
@@ -56,15 +41,15 @@ const FilmCard = (props) => {
 							</p>
 
 							<div className='film-card__buttons'>
-								<button
+								<Link
 									className='btn btn--play film-card__button'
-									type='button'
+									to={`/player/${id}`}
 								>
 									<svg viewBox='0 0 19 19' width='19' height='19'>
 										<use xlinkHref='#play-s'></use>
 									</svg>
 									<span>Play</span>
-								</button>
+								</Link>
 								<button
 									className='btn btn--list film-card__button'
 									type='button'
@@ -93,47 +78,7 @@ const FilmCard = (props) => {
 						</div>
 
 						<div className='film-card__desc'>
-							<nav className='film-nav film-card__nav'>
-								<ul className='film-nav__list'>
-									<li className='film-nav__item film-nav__item--active'>
-										<a href='#' className='film-nav__link'>
-											Overview
-										</a>
-									</li>
-									<li className='film-nav__item'>
-										<a href='#' className='film-nav__link'>
-											Details
-										</a>
-									</li>
-									<li className='film-nav__item'>
-										<a href='#' className='film-nav__link'>
-											Reviews
-										</a>
-									</li>
-								</ul>
-							</nav>
-
-							<div className='film-rating'>
-								<div className='film-rating__score'>{rating}</div>
-								<p className='film-rating__meta'>
-									<span className='film-rating__level'>Very good</span>
-									<span className='film-rating__count'>
-										{scoresCount} ratings
-									</span>
-								</p>
-							</div>
-
-							<div className='film-card__text'>
-								<p>{description}</p>
-
-								<p className='film-card__director'>
-									<strong>Director: {director}</strong>
-								</p>
-
-								<p className='film-card__starring'>
-									<strong>Starring: {starringToString} and other</strong>
-								</p>
-							</div>
+							<CardTabs film={film} />
 						</div>
 					</div>
 				</div>

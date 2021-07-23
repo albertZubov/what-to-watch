@@ -2,28 +2,27 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { propFilm } from '../../props/props'
 import { Link } from 'react-router-dom'
+import PlayerVideo from '../player/player-video'
 
-const FilmCardPreview = (props) => {
-	const { previewImage, name, id } = props.film
-	const [currentID, setCurrentID] = useState(0)
-	console.log(currentID)
+const FilmCardPreview = ({ film }) => {
+	const [isPlaying, setIsPlaying] = useState(false)
 
 	return (
 		<article
 			className='small-film-card catalog__films-card'
-			onMouseOver={() => setCurrentID(id)}
-			onMouseLeave={() => setCurrentID(0)}
+			onMouseOver={() => setIsPlaying(true)}
+			onMouseLeave={() => setIsPlaying(false)}
 		>
 			<div className='small-film-card__image'>
-				<img src={previewImage} alt={name} width='280' height='175' />
+				<PlayerVideo film={film} isPlaying={isPlaying} />
 			</div>
 			<h3 className='small-film-card__title'>
 				<Link
-					to={`/films/${id}`}
+					to={`/films/${film.id}`}
 					className='small-film-card__link'
 					href='film-page.html'
 				>
-					{name}
+					{film.name}
 				</Link>
 			</h3>
 		</article>
