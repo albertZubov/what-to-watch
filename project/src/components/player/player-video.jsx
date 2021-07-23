@@ -2,20 +2,16 @@ import React from 'react'
 import { propFilm } from '../../props/props'
 import PropTypes from 'prop-types'
 
-const PlayerVideo = (props) => {
-	const { film, isPlaying } = props
-	const { previewVideoLink, posterImage } = film
-	const { refLink, onTimeUpdate, onDurationChange } = props
-
+const PlayerVideo = ({ film, refLink, onTimeUpdate, onDurationChange }) => {
 	return (
 		<video
-			src={previewVideoLink}
+			src={film.videoLink}
 			className='player__video'
-			poster={posterImage}
+			poster='img/player-poster.jpg'
 			ref={refLink}
 			onTimeUpdate={onTimeUpdate}
 			onDurationChange={onDurationChange}
-			autoPlay={isPlaying}
+			autoPlay
 			muted
 		></video>
 	)
@@ -26,7 +22,6 @@ PlayerVideo.propTypes = {
 	onTimeUpdate: PropTypes.func,
 	onDurationChange: PropTypes.func,
 	refLink: PropTypes.object,
-	isPlaying: PropTypes.bool,
 }
 
 export default PlayerVideo

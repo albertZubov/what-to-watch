@@ -1,20 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { propFilm } from '../../props/props'
 import { Link } from 'react-router-dom'
-import PlayerVideo from '../player/player-video'
+import PlayerVideoPreview from '../player/player-video-preview'
 
 const FilmCardPreview = ({ film }) => {
-	const [isPlaying, setIsPlaying] = useState(false)
+	// TODO недоделал при наведении - загрузку видео
+	// const [isPlaying, setIsPlaying] = useState(false)
 
 	return (
 		<article
 			className='small-film-card catalog__films-card'
-			onMouseOver={() => setIsPlaying(true)}
-			onMouseLeave={() => setIsPlaying(false)}
+			// onMouseOver={() => setIsPlaying(true)}
+			// onMouseLeave={() => setIsPlaying(false)}
 		>
 			<div className='small-film-card__image'>
-				<PlayerVideo film={film} isPlaying={isPlaying} />
+				{/* <PlayerVideoPreview film={film} isPlaying={isPlaying} /> */}
+				<PlayerVideoPreview film={film} />
 			</div>
 			<h3 className='small-film-card__title'>
 				<Link

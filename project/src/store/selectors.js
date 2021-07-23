@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import { sortArrOnGenres } from '../utils/utils'
 
 export const getFilms = (state) => state.DATA.films
 export const getFilmsSimilar = (state) => state.DATA.filmsSimilar
@@ -8,4 +9,8 @@ export const getGenres = createSelector(getFilms, (films) => [
 	...new Set(films.map((film) => film.genre)),
 ])
 export const getComments = (state) => state.DATA.comments
-// export const getActiveTab = (state) => state.PROCESS.activeTab
+export const getActiveGenre = (state) => state.PROCESS.activeGenre
+export const getGenresFilms = createSelector(
+	[getFilms, getActiveGenre],
+	(films, activeGenre) => sortArrOnGenres(films)[activeGenre]
+)

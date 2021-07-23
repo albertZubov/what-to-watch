@@ -2,6 +2,7 @@ export const ActionType = {
 	LOAD_FILMS: 'LOAD_FILMS',
 	LOAD_FILMS_SIMILAR: 'LOAD_FILMS_SIMILAR',
 	LOAD_COMMENTS: 'LOAD_COMMENTS',
+	GENRE_SELECTION: 'GENRE_SELECTION',
 }
 
 export const ActionCreator = {
@@ -18,5 +19,10 @@ export const ActionCreator = {
 	loadingComments: (comments) => ({
 		type: ActionType.LOAD_COMMENTS,
 		payload: comments,
+	}),
+
+	changeGenre: (genre) => ({
+		type: ActionType.GENRE_SELECTION,
+		payload: genre,
 	}),
 }

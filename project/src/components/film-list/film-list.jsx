@@ -1,14 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { propFilm } from '../../props/props'
 import { connect } from 'react-redux'
-import { getFilms } from '../../store/selectors'
 import FilmCardPreview from '../film-card-preview/film-card-preview'
+import { getGenresFilms } from '../../store/selectors'
 
-const FilmList = ({ films }) => {
+const FilmList = ({ filmsOnGenre }) => {
 	return (
 		<div className='catalog__films-list'>
-			{films.map((film) => (
+			{filmsOnGenre.map((film) => (
 				<FilmCardPreview film={film} key={film.id} />
 			))}
 		</div>
@@ -16,11 +15,11 @@ const FilmList = ({ films }) => {
 }
 
 FilmList.propTypes = {
-	films: PropTypes.arrayOf(PropTypes.shape(propFilm)),
+	filmsOnGenre: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = (state) => ({
-	films: getFilms(state),
+	filmsOnGenre: getGenresFilms(state),
 })
 
 export default connect(mapStateToProps)(FilmList)

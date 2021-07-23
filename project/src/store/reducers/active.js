@@ -1,21 +1,22 @@
-// import { extend } from '../../utils/utils'
-// import { ActionType } from '../action'
+import { extend } from '../../utils/utils'
+import { ActionType } from '../action'
+import { DEFAULT_GENRE } from '../../const/const'
 
-// const active = () => {
-// 	const initialState = {
-// 		activeTab: 'Overview',
-// 	}
+const active = () => {
+	const initialState = {
+		activeGenre: DEFAULT_GENRE,
+	}
 
-// 	return (state = initialState, action) => {
-// 		switch (action.type) {
-// 			case ActionType.CHANGE_TAB:
-// 				return extend(state, {
-// 					activeTab: action.payload,
-// 				})
-// 		}
+	return (state = initialState, action) => {
+		switch (action.type) {
+			case ActionType.GENRE_SELECTION:
+				return extend(state, {
+					activeGenre: action.payload,
+				})
+		}
 
-// 		return state
-// 	}
-// }
+		return state
+	}
+}
 
-// export { active }
+export { active }

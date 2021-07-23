@@ -2,8 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { videoAdapter } from '../../utils/utils'
 import PlayerVideo from './player-video'
+import { connect } from 'react-redux'
+import { getFilm } from '../../store/selectors'
+import { propFilm } from '../../props/props'
 
-const Player = ({ activeId }) => {
+const Player = ({ film }) => {
 	const videoRef = useRef()
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [videoDuration, setVideoDuration] = useState(1)
@@ -20,7 +23,7 @@ const Player = ({ activeId }) => {
 	return (
 		<div className='player'>
 			<PlayerVideo
-				activeId={activeId}
+				film={film}
 				refLink={videoRef}
 				onTimeUpdate={() =>
 					setCurrentTime(Math.floor(videoRef.current.currentTime))
@@ -101,8 +104,12 @@ const Player = ({ activeId }) => {
 	)
 }
 
+const mapStateToProps = (state, { activeId }) => ({
+	film: getFilm(state, activeId),
+})
+
 Player.propTypes = {
-	activeId: PropTypes.number.isRequired,
+	film: PropTypes.shape(propFilm),
 }
 
-export default Player
+export default connect(mapStateToProps)(Player)
