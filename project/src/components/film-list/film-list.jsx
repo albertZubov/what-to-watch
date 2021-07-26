@@ -1,26 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { propFilm } from '../../props/props'
 import { connect } from 'react-redux'
-import { getFilms } from '../../store/selectors'
 import FilmCardPreview from '../film-card-preview/film-card-preview'
+import { getGenresFilms } from '../../store/selectors'
+import ButtonShowMore from '../button-show-more/button-show-more'
 
-const FilmList = ({ films }) => {
+const DEFAULT_FILMS = 8
+const ADD_FILMS = 8
+
+const FilmList = ({ filmsOnGenre }) => {
+	const [quantity, setQuantity] = useState(DEFAULT_FILMS)
+
+	const filmsArr =
+		filmsOnGenre.length > DEFAULT_FILMS
+			? filmsOnGenre.slice(0, quantity)
+			: filmsOnGenre
+	const showButton =
+		filmsOnGenre.length > DEFAULT_FILMS && filmsOnGenre.length >= quantity ? (
+			<ButtonShowMore onClickButton={() => setQuantity(quantity + ADD_FILMS)} />
+		) : (
+			''
+		)
+
 	return (
-		<div className='catalog__films-list'>
-			{films.map((film) => (
-				<FilmCardPreview film={film} key={film.id} />
-			))}
-		</div>
+		<>
+			<div className='catalog__films-list'>
+				{filmsArr.map((film) => (
+					<FilmCardPreview film={film} key={film.id} />
+				))}
+			</div>
+			{showButton}
+		</>
 	)
 }
 
 FilmList.propTypes = {
-	films: PropTypes.arrayOf(PropTypes.shape(propFilm)),
+	filmsOnGenre: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = (state) => ({
-	films: getFilms(state),
+	filmsOnGenre: getGenresFilms(state),
 })
 
 export default connect(mapStateToProps)(FilmList)

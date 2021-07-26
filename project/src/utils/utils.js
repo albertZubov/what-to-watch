@@ -65,3 +65,15 @@ export const getTime = (timeMinutes) => {
 		minutes,
 	}
 }
+
+export const sortArrOnGenres = (arr) =>
+	arr.reduce(
+		(accumulator, currentValue) => {
+			const { genre } = currentValue
+			accumulator[genre] = accumulator[genre]
+				? [...accumulator[genre], currentValue]
+				: [currentValue]
+			return accumulator
+		},
+		{ 'All genres': arr }
+	)

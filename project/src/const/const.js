@@ -17,3 +17,5 @@ export const HeaderClassNames = {
 	MAIN: 'film-card__head',
 	MY_LIST: 'user-page__head',
 }
+
+export const DEFAULT_GENRE = 'All genres'

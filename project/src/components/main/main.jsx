@@ -2,12 +2,10 @@ import React from 'react'
 import { HeaderClassNames } from '../../const/const'
 import Header from '../header/header'
 import Footer from '../footer/footer'
-import { connect } from 'react-redux'
-import { getGenres } from '../../store/selectors'
-import PropTypes from 'prop-types'
 import FilmList from '../film-list/film-list'
+import GenresList from '../genres-list/genres-list'
 
-const Main = ({ genres }) => {
+const Main = () => {
 	return (
 		<React.Fragment>
 			<section className='film-card'>
@@ -17,11 +15,8 @@ const Main = ({ genres }) => {
 						alt='The Grand Budapest Hotel'
 					/>
 				</div>
-
 				<h1 className='visually-hidden'>WTW</h1>
-
 				<Header clHeader={HeaderClassNames.MAIN} />
-
 				<div className='film-card__wrap'>
 					<div className='film-card__info'>
 						<div className='film-card__poster'>
@@ -67,45 +62,13 @@ const Main = ({ genres }) => {
 			<div className='page-content'>
 				<section className='catalog'>
 					<h2 className='catalog__title visually-hidden'>Catalog</h2>
-
-					<ul className='catalog__genres-list'>
-						<li className='catalog__genres-item catalog__genres-item--active'>
-							<a href='#' className='catalog__genres-link'>
-								All genres
-							</a>
-						</li>
-						{genres.map((el) => {
-							return (
-								<li className='catalog__genres-item' key={el}>
-									<a href='#' className='catalog__genres-link'>
-										{el}
-									</a>
-								</li>
-							)
-						})}
-					</ul>
-
+					<GenresList />
 					<FilmList />
-
-					<div className='catalog__more'>
-						<button className='catalog__button' type='button'>
-							Show more
-						</button>
-					</div>
 				</section>
-
 				<Footer />
 			</div>
 		</React.Fragment>
 	)
 }
 
-Main.propTypes = {
-	genres: PropTypes.array.isRequired,
-}
-
-const mapStateToProps = (state) => ({
-	genres: getGenres(state),
-})
-
-export default connect(mapStateToProps)(Main)
+export default Main
