@@ -15,11 +15,8 @@ const Main = () => {
 						alt='The Grand Budapest Hotel'
 					/>
 				</div>
-
 				<h1 className='visually-hidden'>WTW</h1>
-
 				<Header clHeader={HeaderClassNames.MAIN} />
-
 				<div className='film-card__wrap'>
 					<div className='film-card__info'>
 						<div className='film-card__poster'>
@@ -65,18 +62,9 @@ const Main = () => {
 			<div className='page-content'>
 				<section className='catalog'>
 					<h2 className='catalog__title visually-hidden'>Catalog</h2>
-
 					<GenresList />
-
 					<FilmList />
-
-					<div className='catalog__more'>
-						<button className='catalog__button' type='button'>
-							Show more
-						</button>
-					</div>
 				</section>
-
 				<Footer />
 			</div>
 		</React.Fragment>
