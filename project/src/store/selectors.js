@@ -14,3 +14,5 @@ export const getGenresFilms = createSelector(
 	[getFilms, getActiveGenre],
 	(films, activeGenre) => sortArrOnGenres(films)[activeGenre]
 )
+export const getAuthorizationStatus = (state) => state.USER.authorizationStatus
+export const getUserData = (state) => state.USER.userData

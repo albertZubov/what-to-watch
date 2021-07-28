@@ -1,5 +1,6 @@
-import { AppRoute } from '../const/const'
-import { formattingDataServerToClinet } from '../utils/utils'
+import browserHistory from '../browser-history'
+import { AppRoute, AuthorizationStatus } from '../const/const'
+import { formattingDataServerToClinet, serverAdapter } from '../utils/utils'
 import { ActionCreator } from './action'
 
 export const fetchFilmsList = () => (dispatch, _getState, api) =>
@@ -19,3 +20,25 @@ export const commentsGet = (id) => (dispatch, _getState, api) =>
 	api.get(`${AppRoute.COMMENT}/${id}`).then(({ data }) => {
 		return dispatch(ActionCreator.loadingComments(data))
 	})
+
+export const checkAuth = () => (dispatch, _getState, api) =>
+	api
+		.get(AppRoute.LOGIN)
+		.then(() => {
+			dispatch(ActionCreator.requreAuthorization(AuthorizationStatus.AUTH))
+		})
+		.catch((err) => console.log(err))
+
+/* eslint-disable indent */
+export const login = ({ login: email, password: password }) => {
+	return (dispatch, _getState, api) =>
+		api
+			.post(AppRoute.LOGIN, { email, password })
+			.then(({ data }) => {
+				localStorage.setItem('token', data.token),
+					dispatch(ActionCreator.loadUserData(serverAdapter(data))),
+					dispatch(ActionCreator.requreAuthorization(AuthorizationStatus.AUTH))
+			})
+			.then(() => browserHistory.push(AppRoute.ROOT))
+}
+/* eslint-enable indent */

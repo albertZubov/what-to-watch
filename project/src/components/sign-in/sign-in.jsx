@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useCallback, useRef } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { login } from '../../store/api-actions'
 import Footer from '../footer/footer'
 
-const SignIn = () => {
+const SignIn = ({ onSubmit }) => {
+	const loginRef = useRef(null)
+	const passwordRef = useRef(null)
+
+	const handleSubmit = useCallback((evt) => {
+		evt.preventDefault()
+		onSubmit({
+			login: loginRef.current.value,
+			password: passwordRef.current.value,
+		})
+	})
+
 	return (
 		<div className='user-page'>
 			<header className='page-header user-page__head'>
@@ -17,10 +31,11 @@ const SignIn = () => {
 			</header>
 
 			<div className='sign-in user-page__content'>
-				<form action='#' className='sign-in__form'>
+				<form action='#' className='sign-in__form' onSubmit={handleSubmit}>
 					<div className='sign-in__fields'>
 						<div className='sign-in__field'>
 							<input
+								ref={loginRef}
 								className='sign-in__input'
 								type='email'
 								placeholder='Email address'
@@ -36,6 +51,7 @@ const SignIn = () => {
 						</div>
 						<div className='sign-in__field'>
 							<input
+								ref={passwordRef}
 								className='sign-in__input'
 								type='password'
 								placeholder='Password'
@@ -63,4 +79,12 @@ const SignIn = () => {
 	)
 }
 
-export default SignIn
+SignIn.propTypes = {
+	onSubmit: PropTypes.func.isRequired,
+}
+
+const mapDispatchToProps = (dispatch) => ({
+	onSubmit: (authData) => dispatch(login(authData)),
+})
+
+export default connect(null, mapDispatchToProps)(SignIn)

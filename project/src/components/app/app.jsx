@@ -2,17 +2,18 @@ import React from 'react'
 import Main from '../main/main'
 import FilmCard from '../film-card/film-card'
 import { AppClient } from '../../const/const'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Router as BrowserRouter, Switch, Route } from 'react-router-dom'
 import AddReview from '../add-review/add-review'
 import MyList from '../my-list/my-list'
 import SignIn from '../sign-in/sign-in'
 import Player from '../player/player'
+import browserHistory from '../../browser-history'
 
 const App = () => {
 	return (
-		<BrowserRouter>
+		<BrowserRouter history={browserHistory}>
 			<Switch>
-				<Route exact path={AppClient.ROOT} render={() => <Main />} />
+				<Route exact path={AppClient.ROOT} component={Main} />
 				<Route
 					exact
 					path={AppClient.ADD_REVIEW_ID}
