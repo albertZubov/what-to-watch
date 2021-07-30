@@ -22,6 +22,19 @@ const loadData = () => {
 				return extend(state, {
 					comments: action.payload,
 				})
+
+			case ActionType.CHANGE_FAVORITE: {
+				const newFilms = state.films.map((film) => {
+					if (film.id === action.payload.id) {
+						return action.payload
+					}
+					return film
+				})
+
+				return extend(state, {
+					films: newFilms,
+				})
+			}
 		}
 
 		return state

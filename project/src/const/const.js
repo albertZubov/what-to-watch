@@ -13,6 +13,7 @@ export const AppRoute = {
 	LOGIN: '/login',
 	LOGOUT: '/logout',
 	ROOT: '/',
+	FAVORITES: '/favorite',
 }
 
 export const HeaderClassNames = {

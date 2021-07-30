@@ -77,3 +77,5 @@ export const sortArrOnGenres = (arr) =>
 		},
 		{ 'All genres': arr }
 	)
+
+export const transformBoolToNumber = (boolean) => (boolean ? 1 : 0)

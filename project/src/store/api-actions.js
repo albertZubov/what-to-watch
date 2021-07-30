@@ -2,6 +2,7 @@ import browserHistory from '../browser-history'
 import { AppRoute, AuthorizationStatus } from '../const/const'
 import { formattingDataServerToClinet, serverAdapter } from '../utils/utils'
 import { ActionCreator } from './action'
+import { transformBoolToNumber } from '../utils/utils'
 
 export const fetchFilmsList = () => (dispatch, _getState, api) =>
 	api.get(AppRoute.FILMS).then(({ data }) => {
@@ -54,3 +55,10 @@ export const logout = () => (dispatch, _getState, api) =>
 		.delete(AppRoute.LOGOUT)
 		.then(({ data }) => localStorage.setItem('token', data.token))
 		.then(() => dispatch(ActionCreator.logOut()))
+
+export const favoritePost = (id, status) => (dispatch, _getState, api) =>
+	api
+		.post(`${AppRoute.FAVORITES}/${id}/${transformBoolToNumber(status)}`)
+		.then(({ data }) =>
+			dispatch(ActionCreator.changeFavorite(serverAdapter(data)))
+		)

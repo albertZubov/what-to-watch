@@ -10,7 +10,7 @@ import {
 	getFilmsSimilar,
 } from '../../store/selectors'
 import { propFilm } from '../../props/props'
-import { fetchFilmsListSimilar } from '../../store/api-actions'
+import { favoritePost, fetchFilmsListSimilar } from '../../store/api-actions'
 import { Link } from 'react-router-dom'
 import CardTabs from '../card-tabs/card-tabs'
 
@@ -19,12 +19,19 @@ const FilmCard = ({
 	filmsSimilar,
 	loadingFilmsSimilar,
 	authorizationStatus,
+	setFavorite,
 }) => {
-	const { name, genre, released, posterImage, id } = film
+	const { name, genre, released, posterImage, id, isFavorite } = film
 
 	useEffect(() => {
 		loadingFilmsSimilar(id)
 	}, [])
+
+	// TODO
+	// https://up.htmlacademy.ru/react/7/tasks/14 - Задача 3
+	// - реализовать скрытие\добавление плюса и галочки MyList
+	// - Реализовать на главной странице логику по добавлению
+	// фильма (а также кнопок - MyList AddReview)
 
 	return (
 		<React.Fragment>
@@ -58,23 +65,26 @@ const FilmCard = ({
 									</svg>
 									<span>Play</span>
 								</Link>
-								<button
-									className='btn btn--list film-card__button'
-									type='button'
-								>
-									<svg viewBox='0 0 19 20' width='19' height='20'>
-										<use xlinkHref='#add'></use>
-									</svg>
-									<span>My list</span>
-								</button>
 								{authorizationStatus === AuthorizationStatus.AUTH ? (
-									<Link
-										to={`/films/${id}/review`}
-										href='add-review.html'
-										className='btn film-card__button'
-									>
-										Add review
-									</Link>
+									<>
+										<button
+											className='btn btn--list film-card__button'
+											type='button'
+											onClick={() => setFavorite(id, !isFavorite)}
+										>
+											<svg viewBox='0 0 19 20' width='19' height='20'>
+												<use xlinkHref='#add'></use>
+											</svg>
+											<span>My list</span>
+										</button>
+										<Link
+											to={`/films/${id}/review`}
+											href='add-review.html'
+											className='btn film-card__button'
+										>
+											Add review
+										</Link>
+									</>
 								) : (
 									''
 								)}
@@ -134,6 +144,7 @@ FilmCard.propTypes = {
 	filmsSimilar: PropTypes.arrayOf(PropTypes.shape(propFilm)),
 	loadingFilmsSimilar: PropTypes.func.isRequired,
 	authorizationStatus: PropTypes.string.isRequired,
+	setFavorite: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state, { activeId }) => ({
@@ -144,6 +155,7 @@ const mapStateToProps = (state, { activeId }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	loadingFilmsSimilar: (id) => dispatch(fetchFilmsListSimilar(id)),
+	setFavorite: (id, status) => dispatch(favoritePost(id, status)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilmCard)
