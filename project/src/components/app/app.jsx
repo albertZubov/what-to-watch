@@ -8,6 +8,7 @@ import MyList from '../my-list/my-list'
 import SignIn from '../sign-in/sign-in'
 import Player from '../player/player'
 import browserHistory from '../../browser-history'
+import PrivateRoute from '../private-route/private-route'
 
 const App = () => {
 	return (
@@ -24,14 +25,18 @@ const App = () => {
 					path={AppClient.FILM_ID}
 					render={({ match }) => <FilmCard activeId={+match.params.id} />}
 				/>
-				<Route exact path={AppClient.MY_LIST} render={() => <MyList />} />
+				<PrivateRoute
+					exact
+					path={AppClient.MY_LIST}
+					render={() => <MyList />}
+				/>
 				<Route exact path={AppClient.LOGIN} render={() => <SignIn />} />
 				<Route
 					exact
 					path={AppClient.PLAYER_ID}
 					render={({ match }) => <Player activeId={+match.params.id} />}
 				/>
-				<Route path='*'>404</Route>
+				<Route path='*'>404 Not Found</Route>
 			</Switch>
 		</BrowserRouter>
 	)

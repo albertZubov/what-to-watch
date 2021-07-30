@@ -11,6 +11,7 @@ export const AppRoute = {
 	FILMS: '/films',
 	COMMENT: '/comments',
 	LOGIN: '/login',
+	LOGOUT: '/logout',
 	ROOT: '/',
 }
 

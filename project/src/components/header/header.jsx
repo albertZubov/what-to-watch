@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import cl from 'classnames'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { AppClient } from '../../const/const'
+import { AppClient, AuthorizationStatus } from '../../const/const'
 import { connect } from 'react-redux'
-import { getUserData } from '../../store/selectors'
+import { getAuthorizationStatus, getUserData } from '../../store/selectors'
 import { propUser } from '../../props/props'
+import { logout } from '../../store/api-actions'
 
-const Header = ({ clHeader, children, userData }) => {
-	const { avatarUrl, email } = userData
-	const showName = email ? email : 'Sign in'
+const Header = ({
+	clHeader,
+	children,
+	userData,
+	authorizationStatus,
+	logOut,
+}) => {
+	const { avatarUrl } = userData
+	const handleSubmitLogOut = useCallback(() => {
+		if (authorizationStatus === AuthorizationStatus.AUTH) {
+			logOut()
+		}
+	}, [])
 
 	return (
 		<header className={cl('page-header', clHeader)}>
@@ -23,14 +34,22 @@ const Header = ({ clHeader, children, userData }) => {
 			{children}
 			<ul className='user-block'>
 				<li className='user-block__item'>
-					<div className='user-block__avatar'>
-						<img src={avatarUrl} alt='User avatar' width='63' height='63' />
-					</div>
+					<Link to={AppClient.MY_LIST}>
+						<div className='user-block__avatar'>
+							<img src={avatarUrl} alt='User avatar' width='63' height='63' />
+						</div>
+					</Link>
 				</li>
 				<li className='user-block__item'>
-					<Link className='user-block__link' to={AppClient.LOGIN}>
-						{showName}
-					</Link>
+					{authorizationStatus === AuthorizationStatus.NO_AUTH ? (
+						<Link className='user-block__link' to={AppClient.LOGIN}>
+							Sign in
+						</Link>
+					) : (
+						<button className='user-block__link' onClick={handleSubmitLogOut}>
+							Sign out
+						</button>
+					)}
 				</li>
 			</ul>
 		</header>
@@ -44,10 +63,17 @@ Header.propTypes = {
 		PropTypes.node,
 	]),
 	userData: PropTypes.shape(propUser),
+	authorizationStatus: PropTypes.string.isRequired,
+	logOut: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
 	userData: getUserData(state),
+	authorizationStatus: getAuthorizationStatus(state),
 })
 
-export default connect(mapStateToProps)(Header)
+const mapDispatchToProps = (dispatch) => ({
+	logOut: () => dispatch(logout()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

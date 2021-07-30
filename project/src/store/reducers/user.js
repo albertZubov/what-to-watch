@@ -7,7 +7,7 @@ const user = () => {
 		authorizationStatus: AuthorizationStatus.NO_AUTH,
 		userData: {
 			id: 0,
-			email: 'Sign in',
+			email: '',
 			name: 'Victor',
 			avatarUrl: '../img/avatar.jpg',
 			token: '',
@@ -24,6 +24,11 @@ const user = () => {
 			case ActionType.LOAD_USER_DATA:
 				return extend(state, {
 					userData: action.payload,
+				})
+			case ActionType.LOG_OUT:
+				return extend(state, {
+					authorizationStatus: AuthorizationStatus.NO_AUTH,
+					userData: initialState.userData,
 				})
 		}
 
