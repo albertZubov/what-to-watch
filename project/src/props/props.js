@@ -19,3 +19,11 @@ export const propFilm = {
 	videoLink: PropTypes.string.isRequired,
 	starring: PropTypes.array.isRequired,
 }
+
+export const propUser = {
+	id: PropTypes.number.isRequired,
+	email: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
+	avatarUrl: PropTypes.string.isRequired,
+	token: PropTypes.string.isRequired,
+}

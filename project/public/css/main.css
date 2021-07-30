@@ -1367,7 +1367,10 @@ main {
   font-weight: bold;
   text-decoration: none;
   -webkit-transition: color 0.2s;
-  transition: color 0.2s; }
+  transition: color 0.2s;
+  border: none;
+  background: none; }
+
   .user-block__link:hover {
     color: #C9B37E; }
 

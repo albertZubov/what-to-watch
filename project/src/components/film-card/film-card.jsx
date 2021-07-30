@@ -1,17 +1,25 @@
 import React, { useEffect } from 'react'
-import { HeaderClassNames } from '../../const/const'
+import { AuthorizationStatus, HeaderClassNames } from '../../const/const'
 import Header from '../header/header'
 import Footer from '../footer/footer'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { getFilm, getFilmsSimilar } from '../../store/selectors'
+import {
+	getAuthorizationStatus,
+	getFilm,
+	getFilmsSimilar,
+} from '../../store/selectors'
 import { propFilm } from '../../props/props'
 import { fetchFilmsListSimilar } from '../../store/api-actions'
 import { Link } from 'react-router-dom'
 import CardTabs from '../card-tabs/card-tabs'
 
-const FilmCard = (props) => {
-	const { film, filmsSimilar, loadingFilmsSimilar } = props
+const FilmCard = ({
+	film,
+	filmsSimilar,
+	loadingFilmsSimilar,
+	authorizationStatus,
+}) => {
 	const { name, genre, released, posterImage, id } = film
 
 	useEffect(() => {
@@ -59,13 +67,17 @@ const FilmCard = (props) => {
 									</svg>
 									<span>My list</span>
 								</button>
-								<Link
-									to={`/films/${id}/review`}
-									href='add-review.html'
-									className='btn film-card__button'
-								>
-									Add review
-								</Link>
+								{authorizationStatus === AuthorizationStatus.AUTH ? (
+									<Link
+										to={`/films/${id}/review`}
+										href='add-review.html'
+										className='btn film-card__button'
+									>
+										Add review
+									</Link>
+								) : (
+									''
+								)}
 							</div>
 						</div>
 					</div>
@@ -121,11 +133,13 @@ FilmCard.propTypes = {
 	film: PropTypes.shape(propFilm),
 	filmsSimilar: PropTypes.arrayOf(PropTypes.shape(propFilm)),
 	loadingFilmsSimilar: PropTypes.func.isRequired,
+	authorizationStatus: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = (state, { activeId }) => ({
 	film: getFilm(state, activeId),
 	filmsSimilar: getFilmsSimilar(state),
+	authorizationStatus: getAuthorizationStatus(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -3,6 +3,10 @@ export const ActionType = {
 	LOAD_FILMS_SIMILAR: 'LOAD_FILMS_SIMILAR',
 	LOAD_COMMENTS: 'LOAD_COMMENTS',
 	GENRE_SELECTION: 'GENRE_SELECTION',
+	REQUIRED_AUTHORIZATION: 'REQUIRED_AUTHORIZATION',
+	LOAD_USER_DATA: 'LOAD_USER_DATA',
+	REDIRECT_TO_ROUTE: 'REDIRECT_TO_ROUTE',
+	LOG_OUT: 'LOG_OUT',
 }
 
 export const ActionCreator = {
@@ -24,5 +28,19 @@ export const ActionCreator = {
 	changeGenre: (genre) => ({
 		type: ActionType.GENRE_SELECTION,
 		payload: genre,
+	}),
+
+	requreAuthorization: (status) => ({
+		type: ActionType.REQUIRED_AUTHORIZATION,
+		payload: status,
+	}),
+
+	loadUserData: (userData) => ({
+		type: ActionType.LOAD_USER_DATA,
+		payload: userData,
+	}),
+
+	logOut: () => ({
+		type: ActionType.LOG_OUT,
 	}),
 }

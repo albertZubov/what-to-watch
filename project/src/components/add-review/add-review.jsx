@@ -6,22 +6,22 @@ import Header from '../header/header'
 import HeaderBreadcrumbs from '../header/header-breadcrumbs'
 import PropTypes from 'prop-types'
 import { propFilm } from '../../props/props'
+import { commentsPost } from '../../store/api-actions'
 
 const InputName = {
 	rating: 'rating',
 	review: 'review-text',
 }
 
-const AddReview = ({ film }) => {
+const AddReview = ({ film, commentPost }) => {
 	const titleRating = [...Array(10).keys()].map((el) => ++el)
 	const [rating, setRating] = useState(0)
 	const [review, setReview] = useState('')
 	const formRef = useRef()
-	console.log(rating)
-	console.log(review)
 
 	const handleSubmit = useCallback((evt) => {
 		evt.preventDefault()
+		commentPost(review, rating, film.id)
 
 		formRef.current.reset()
 	})
@@ -118,10 +118,16 @@ const AddReview = ({ film }) => {
 
 AddReview.propTypes = {
 	film: PropTypes.shape(propFilm),
+	commentPost: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state, { activeId }) => ({
 	film: getFilm(state, activeId),
 })
 
-export default connect(mapStateToProps)(AddReview)
+const mapDispatchToProps = (dispatch) => ({
+	commentPost: (comment, rating, id) =>
+		dispatch(commentsPost(comment, rating, id)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddReview)

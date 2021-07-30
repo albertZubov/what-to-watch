@@ -10,6 +10,9 @@ export const AppClient = {
 export const AppRoute = {
 	FILMS: '/films',
 	COMMENT: '/comments',
+	LOGIN: '/login',
+	LOGOUT: '/logout',
+	ROOT: '/',
 }
 
 export const HeaderClassNames = {
@@ -19,3 +22,8 @@ export const HeaderClassNames = {
 }
 
 export const DEFAULT_GENRE = 'All genres'
+
+export const AuthorizationStatus = {
+	AUTH: 'AUTH',
+	NO_AUTH: 'NO_AUTH',
+}

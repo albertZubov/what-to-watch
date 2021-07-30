@@ -1,8 +1,27 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import cl from 'classnames'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+import { AppClient, AuthorizationStatus } from '../../const/const'
+import { connect } from 'react-redux'
+import { getAuthorizationStatus, getUserData } from '../../store/selectors'
+import { propUser } from '../../props/props'
+import { logout } from '../../store/api-actions'
 
-const Header = ({ clHeader, children }) => {
+const Header = ({
+	clHeader,
+	children,
+	userData,
+	authorizationStatus,
+	logOut,
+}) => {
+	const { avatarUrl } = userData
+	const handleSubmitLogOut = useCallback(() => {
+		if (authorizationStatus === AuthorizationStatus.AUTH) {
+			logOut()
+		}
+	}, [])
+
 	return (
 		<header className={cl('page-header', clHeader)}>
 			<div className='logo'>
@@ -15,17 +34,22 @@ const Header = ({ clHeader, children }) => {
 			{children}
 			<ul className='user-block'>
 				<li className='user-block__item'>
-					<div className='user-block__avatar'>
-						<img
-							src='img/avatar.jpg'
-							alt='User avatar'
-							width='63'
-							height='63'
-						/>
-					</div>
+					<Link to={AppClient.MY_LIST}>
+						<div className='user-block__avatar'>
+							<img src={avatarUrl} alt='User avatar' width='63' height='63' />
+						</div>
+					</Link>
 				</li>
 				<li className='user-block__item'>
-					<a className='user-block__link'>Sign out</a>
+					{authorizationStatus === AuthorizationStatus.NO_AUTH ? (
+						<Link className='user-block__link' to={AppClient.LOGIN}>
+							Sign in
+						</Link>
+					) : (
+						<button className='user-block__link' onClick={handleSubmitLogOut}>
+							Sign out
+						</button>
+					)}
 				</li>
 			</ul>
 		</header>
@@ -38,6 +62,18 @@ Header.propTypes = {
 		PropTypes.arrayOf(PropTypes.node),
 		PropTypes.node,
 	]),
+	userData: PropTypes.shape(propUser),
+	authorizationStatus: PropTypes.string.isRequired,
+	logOut: PropTypes.func.isRequired,
 }
 
-export default Header
+const mapStateToProps = (state) => ({
+	userData: getUserData(state),
+	authorizationStatus: getAuthorizationStatus(state),
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	logOut: () => dispatch(logout()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
