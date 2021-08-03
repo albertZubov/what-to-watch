@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/app/app'
-import { checkAuth, fetchFilmsList } from './store/api-actions'
+import { checkAuth, fetchFilmsList, getPromoFilm } from './store/api-actions'
 import rootReducer from './store/reducers/root'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
@@ -20,7 +20,13 @@ const store = createStore(
 	composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api)))
 )
 
-Promise.all([store.dispatch(fetchFilmsList()), store.dispatch(checkAuth())])
+store.dispatch(getPromoFilm())
+
+Promise.all([
+	store.dispatch(fetchFilmsList()),
+	store.dispatch(checkAuth()),
+	store.dispatch(getPromoFilm()),
+])
 	.then(() => {
 		ReactDOM.render(
 			<Provider store={store}>

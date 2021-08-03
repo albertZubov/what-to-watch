@@ -18,3 +18,4 @@ export const getAuthorizationStatus = (state) => state.USER.authorizationStatus
 export const getUserData = (state) => state.USER.userData
 export const getFilmsFavorite = (state) =>
 	getFilms(state).filter((film) => film.isFavorite)
+export const getPromoFilm = (state) => state.DATA.promoFilm

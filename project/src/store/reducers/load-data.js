@@ -6,6 +6,7 @@ const loadData = () => {
 		films: [],
 		filmsSimilar: [],
 		comments: [],
+		promoFilm: {},
 	}
 
 	return (state = initialState, action) => {
@@ -23,6 +24,11 @@ const loadData = () => {
 					comments: action.payload,
 				})
 
+			case ActionType.LOAD_PROMO:
+				return extend(state, {
+					promoFilm: action.payload,
+				})
+
 			case ActionType.CHANGE_FAVORITE: {
 				const newFilms = state.films.map((film) => {
 					if (film.id === action.payload.id) {
@@ -33,6 +39,7 @@ const loadData = () => {
 
 				return extend(state, {
 					films: newFilms,
+					promoFilm: action.payload,
 				})
 			}
 		}

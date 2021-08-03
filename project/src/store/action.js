@@ -8,6 +8,7 @@ export const ActionType = {
 	REDIRECT_TO_ROUTE: 'REDIRECT_TO_ROUTE',
 	LOG_OUT: 'LOG_OUT',
 	CHANGE_FAVORITE: 'CHANGE_FAVORITE',
+	LOAD_PROMO: 'LOAD_PROMO',
 }
 
 export const ActionCreator = {
@@ -48,5 +49,10 @@ export const ActionCreator = {
 	changeFavorite: (payload) => ({
 		type: ActionType.CHANGE_FAVORITE,
 		payload,
+	}),
+
+	loadingPromoFilm: (promo) => ({
+		type: ActionType.LOAD_PROMO,
+		payload: promo,
 	}),
 }

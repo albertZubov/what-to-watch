@@ -62,3 +62,9 @@ export const favoritePost = (id, status) => (dispatch, _getState, api) =>
 		.then(({ data }) =>
 			dispatch(ActionCreator.changeFavorite(serverAdapter(data)))
 		)
+
+export const getPromoFilm = () => (dispatch, _getState, api) =>
+	api.get(AppRoute.PROMO).then(({ data }) => {
+		const formatData = serverAdapter(data)
+		dispatch(ActionCreator.loadingPromoFilm(formatData))
+	})
