@@ -25,11 +25,11 @@ const Header = ({
 	return (
 		<header className={cl('page-header', clHeader)}>
 			<div className='logo'>
-				<a className='logo__link'>
+				<Link className='logo__link' to={AppClient.ROOT}>
 					<span className='logo__letter logo__letter--1'>W</span>
 					<span className='logo__letter logo__letter--2'>T</span>
 					<span className='logo__letter logo__letter--3'>W</span>
-				</a>
+				</Link>
 			</div>
 			{children}
 			<ul className='user-block'>

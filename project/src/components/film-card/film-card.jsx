@@ -1,26 +1,20 @@
 import React, { useEffect } from 'react'
-import { AuthorizationStatus, HeaderClassNames } from '../../const/const'
+import { HeaderClassNames } from '../../const/const'
 import Header from '../header/header'
 import Footer from '../footer/footer'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import {
-	getAuthorizationStatus,
-	getFilm,
-	getFilmsSimilar,
-} from '../../store/selectors'
+import { getFilm, getFilmsSimilar } from '../../store/selectors'
 import { propFilm } from '../../props/props'
 import { fetchFilmsListSimilar } from '../../store/api-actions'
 import { Link } from 'react-router-dom'
 import CardTabs from '../card-tabs/card-tabs'
+import PrivateComponent from '../private-components/private-component'
+import ButtonMyList from '../private-buttons/button-my-list'
+import ButtonAddReview from '../private-buttons/button-add-review'
 
-const FilmCard = ({
-	film,
-	filmsSimilar,
-	loadingFilmsSimilar,
-	authorizationStatus,
-}) => {
-	const { name, genre, released, posterImage, id } = film
+const FilmCard = ({ film, filmsSimilar, loadingFilmsSimilar }) => {
+	const { name, genre, released, posterImage, id, isFavorite } = film
 
 	useEffect(() => {
 		loadingFilmsSimilar(id)
@@ -58,26 +52,10 @@ const FilmCard = ({
 									</svg>
 									<span>Play</span>
 								</Link>
-								<button
-									className='btn btn--list film-card__button'
-									type='button'
-								>
-									<svg viewBox='0 0 19 20' width='19' height='20'>
-										<use xlinkHref='#add'></use>
-									</svg>
-									<span>My list</span>
-								</button>
-								{authorizationStatus === AuthorizationStatus.AUTH ? (
-									<Link
-										to={`/films/${id}/review`}
-										href='add-review.html'
-										className='btn film-card__button'
-									>
-										Add review
-									</Link>
-								) : (
-									''
-								)}
+								<PrivateComponent>
+									<ButtonMyList id={id} isFavorite={isFavorite} />
+									<ButtonAddReview id={id} />
+								</PrivateComponent>
 							</div>
 						</div>
 					</div>
@@ -133,13 +111,11 @@ FilmCard.propTypes = {
 	film: PropTypes.shape(propFilm),
 	filmsSimilar: PropTypes.arrayOf(PropTypes.shape(propFilm)),
 	loadingFilmsSimilar: PropTypes.func.isRequired,
-	authorizationStatus: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = (state, { activeId }) => ({
 	film: getFilm(state, activeId),
 	filmsSimilar: getFilmsSimilar(state),
-	authorizationStatus: getAuthorizationStatus(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

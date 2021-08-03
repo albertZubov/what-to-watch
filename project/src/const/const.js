@@ -8,11 +8,13 @@ export const AppClient = {
 }
 
 export const AppRoute = {
+	PROMO: '/promo',
 	FILMS: '/films',
 	COMMENT: '/comments',
 	LOGIN: '/login',
 	LOGOUT: '/logout',
 	ROOT: '/',
+	FAVORITES: '/favorite',
 }
 
 export const HeaderClassNames = {
