@@ -20,8 +20,8 @@ export const ActionCreator = {
 	loadingFilmsSimilar: (films) => ({
 		type: ActionType.LOAD_FILMS_SIMILAR,
 		payload: films,
-	}),
-
+	}), 
+  
 	loadingComments: (comments) => ({
 		type: ActionType.LOAD_COMMENTS,
 		payload: comments,
