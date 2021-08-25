@@ -13,6 +13,9 @@ const InputName = {
 	review: 'review-text',
 }
 
+const MIN_QUANTITY_SYMBOLS = 50
+const MAX_QUANTITY_SYMBOLS = 400
+
 const AddReview = ({ film, commentPost }) => {
 	const titleRating = [...Array(10).keys()].map((el) => ++el)
 	const [rating, setRating] = useState(0)
@@ -26,8 +29,8 @@ const AddReview = ({ film, commentPost }) => {
 		formRef.current.reset()
 	})
 
-	const handleFieldChange = useCallback((evt) => {
-		const { value, name } = evt.target
+	const handleFieldChange = useCallback(({ target }) => {
+		const { value, name } = target
 
 		switch (name) {
 			case InputName.rating:
@@ -100,12 +103,24 @@ const AddReview = ({ film, commentPost }) => {
 						<textarea
 							className='add-review__textarea'
 							name='review-text'
+							maxLength='400'
+							minLength='50'
 							id='review-text'
 							placeholder='Review text'
 							onChange={handleFieldChange}
 						></textarea>
 						<div className='add-review__submit'>
-							<button className='add-review__btn' type='submit'>
+							<button
+								className='add-review__btn'
+								type='submit'
+								disabled={
+									!(
+										rating &&
+										review.length > MIN_QUANTITY_SYMBOLS &&
+										review.length < MAX_QUANTITY_SYMBOLS
+									)
+								}
+							>
 								Post
 							</button>
 						</div>

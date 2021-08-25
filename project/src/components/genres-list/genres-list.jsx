@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { getGenres } from '../../store/selectors'
+import { getActiveGenre, getGenres } from '../../store/selectors'
 import { connect } from 'react-redux'
 import { ActionCreator } from '../../store/action'
 import { DEFAULT_GENRE } from '../../const/const'
+import cl from 'classnames'
 
-const GenresList = ({ changeGenre, genres }) => {
+const GenresList = ({ changeGenre, genres, activeGenre }) => {
 	return (
 		<ul
 			className='catalog__genres-list'
@@ -17,7 +18,12 @@ const GenresList = ({ changeGenre, genres }) => {
 		>
 			{[DEFAULT_GENRE, ...genres].map((el) => {
 				return (
-					<li className='catalog__genres-item' key={el}>
+					<li
+						className={cl('catalog__genres-item', {
+							'catalog__genres-item--active': el === activeGenre,
+						})}
+						key={el}
+					>
 						<a className='catalog__genres-link'>{el}</a>
 					</li>
 				)
@@ -29,10 +35,12 @@ const GenresList = ({ changeGenre, genres }) => {
 GenresList.propTypes = {
 	changeGenre: PropTypes.func.isRequired,
 	genres: PropTypes.array.isRequired,
+	activeGenre: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = (state) => ({
 	genres: getGenres(state),
+	activeGenre: getActiveGenre(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1021,6 +1021,21 @@ main {
   .player__progress::-webkit-progress-value {
     background: #D9CD8D; }
 
+  .player__progress {
+    display: block;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: #D9CD8D;
+    font-size: 0;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    }
+
 .player__time-value {
   width: 60px;
   -ms-flex-negative: 0;

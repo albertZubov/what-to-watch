@@ -22,7 +22,7 @@ const FilmList = ({ filmsOnGenre }) => {
 			''
 		)
 
-	return (
+	return ( 
 		<>
 			<div className='catalog__films-list'>
 				{filmsArr.map((film) => (

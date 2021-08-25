@@ -29,7 +29,9 @@ export const videoAdapter = {
 	},
 
 	progress: (currentTime, duration) =>
-		Math.floor(currentTime) / (Math.floor(duration) / 100),
+		Math.round(currentTime) / (Math.round(duration) / 100),
+
+	changeTime: (timeSeconds, duration) => (duration / 100) * timeSeconds,
 }
 
 export const getDate = (dateTime) => {
@@ -79,3 +81,15 @@ export const sortArrOnGenres = (arr) =>
 	)
 
 export const transformBoolToNumber = (boolean) => (boolean ? 1 : 0)
+
+export const getRatingTitle = (rating) => {
+	const ratingTitleToNumber = [
+		{ max: 3, value: 'Bad' },
+		{ max: 5, value: 'Normal' },
+		{ max: 8, value: 'Good' },
+		{ max: 10, value: 'Very good' },
+		{ max: 11, value: 'Awesome' },
+	]
+
+	return ratingTitleToNumber.find(({ max }) => rating < max).value
+}

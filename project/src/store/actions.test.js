@@ -38,7 +38,3 @@ describe('Actions', () => {
 		).toEqual(expectedAction)
 	})
 })
-
-// TODO
-// https://up.htmlacademy.ru/react/7/tasks/16
-// посмотреть инфу про TypeScript
