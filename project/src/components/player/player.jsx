@@ -5,18 +5,16 @@ import PlayerVideo from './player-video'
 import { connect } from 'react-redux'
 import { getFilm } from '../../store/selectors'
 import { propFilm } from '../../props/props'
-import '../../style-css/player-loading.css'
+import '../../style-css/style.css'
 import cl from 'classnames'
 import browserHistory from '../../browser-history'
 
-const Player = ({ film, history }) => {
+const Player = ({ film }) => {
 	const videoRef = useRef()
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [currentTime, setCurrentTime] = useState(0)
 	const [played, setPlayed] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
-
-	console.log(history)
 
 	useEffect(() => {
 		if (videoRef.current) {
@@ -146,7 +144,6 @@ const mapStateToProps = (state, { activeId }) => ({
 
 Player.propTypes = {
 	film: PropTypes.shape(propFilm),
-	history: PropTypes.object,
 }
 
 export default connect(mapStateToProps)(Player)

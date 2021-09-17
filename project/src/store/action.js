@@ -8,7 +8,7 @@ export const ActionType = {
 	REDIRECT_TO_ROUTE: 'REDIRECT_TO_ROUTE',
 	LOG_OUT: 'LOG_OUT',
 	CHANGE_FAVORITE: 'CHANGE_FAVORITE',
-	LOAD_PROMO: 'LOAD_PROMO',
+	LOAD_PROMO_FILMS: 'LOAD_PROMO_FILMS',
 }
 
 export const ActionCreator = {
@@ -20,8 +20,8 @@ export const ActionCreator = {
 	loadingFilmsSimilar: (films) => ({
 		type: ActionType.LOAD_FILMS_SIMILAR,
 		payload: films,
-	}), 
-  
+	}),
+
 	loadingComments: (comments) => ({
 		type: ActionType.LOAD_COMMENTS,
 		payload: comments,
@@ -51,8 +51,8 @@ export const ActionCreator = {
 		payload,
 	}),
 
-	loadingPromoFilm: (promo) => ({
-		type: ActionType.LOAD_PROMO,
+	loadingPromoFilms: (promo) => ({
+		type: ActionType.LOAD_PROMO_FILMS,
 		payload: promo,
 	}),
 }

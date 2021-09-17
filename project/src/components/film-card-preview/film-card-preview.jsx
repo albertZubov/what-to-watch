@@ -8,7 +8,6 @@ const FilmCardPreview = ({ film }) => {
 	const videoRef = useRef(null)
 	const [isPending, setIsPending] = useState(false)
 
-	// TODO позаниматься оптимизацией - убрать лишний рендер
 	const onPlayVideo = () => {
 		if (isPending) return
 		videoRef.current.play().then(setIsPending).catch(setIsPending)
