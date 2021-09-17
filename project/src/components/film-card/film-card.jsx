@@ -12,6 +12,7 @@ import CardTabs from '../card-tabs/card-tabs'
 import PrivateComponent from '../private-components/private-component'
 import ButtonMyList from '../private-buttons/button-my-list'
 import ButtonAddReview from '../private-buttons/button-add-review'
+import FilmCardPreview from '../film-card-preview/film-card-preview'
 
 const FilmCard = ({ film, filmsSimilar, loadingFilmsSimilar }) => {
 	const { name, genre, released, posterImage, id, isFavorite } = film
@@ -60,47 +61,26 @@ const FilmCard = ({ film, filmsSimilar, loadingFilmsSimilar }) => {
 						</div>
 					</div>
 				</div>
-
 				<div className='film-card__wrap film-card__translate-top'>
 					<div className='film-card__info'>
 						<div className='film-card__poster film-card__poster--big'>
 							<img src={posterImage} alt={name} width='218' height='327' />
 						</div>
-
 						<div className='film-card__desc'>
 							<CardTabs film={film} />
 						</div>
 					</div>
 				</div>
 			</section>
-
 			<div className='page-content'>
 				<section className='catalog catalog--like-this'>
 					<h2 className='catalog__title'>More like this</h2>
 					<div className='catalog__films-list'>
 						{filmsSimilar.map((filmSm) => (
-							<article
-								key={filmSm.name + id}
-								className='small-film-card catalog__films-card'
-							>
-								<div className='small-film-card__image'>
-									<img
-										src={filmSm.previewImage}
-										alt={filmSm.name}
-										width='280'
-										height='175'
-									/>
-								</div>
-								<h3 className='small-film-card__title'>
-									<a className='small-film-card__link' href='film-page.html'>
-										{filmSm.name}
-									</a>
-								</h3>
-							</article>
+							<FilmCardPreview film={filmSm} key={filmSm.name + id} />
 						))}
 					</div>
 				</section>
-
 				<Footer />
 			</div>
 		</React.Fragment>
@@ -115,7 +95,7 @@ FilmCard.propTypes = {
 
 const mapStateToProps = (state, { activeId }) => ({
 	film: getFilm(state, activeId),
-	filmsSimilar: getFilmsSimilar(state),
+	filmsSimilar: getFilmsSimilar(state).slice(0, 4),
 })
 
 const mapDispatchToProps = (dispatch) => ({

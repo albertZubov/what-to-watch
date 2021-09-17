@@ -939,7 +939,6 @@ main {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
   /* &::after {
     content: '';
     position: absolute;
@@ -950,6 +949,7 @@ main {
     right: 0;
     background: rgba(0,0,0,0.40);
   } */ }
+
 
 .player__video {
   width: 100%;
@@ -1016,6 +1016,8 @@ main {
     background: rgba(255, 251, 231, 0.35); }
   .player__progress::-webkit-progress-value {
     background: #D9CD8D; }
+
+
 
 .player__time-value {
   width: 60px;
