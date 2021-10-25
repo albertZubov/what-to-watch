@@ -1,21 +1,39 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { HeaderClassNames } from '../../const/const'
 import Header from '../header/header'
 import Footer from '../footer/footer'
 import FilmList from '../film-list/film-list'
 import GenresList from '../genres-list/genres-list'
 import { connect } from 'react-redux'
-import { getPromoFilm } from '../../store/selectors'
+import { getPromoFilms } from '../../store/selectors'
 import PropTypes from 'prop-types'
-import PrivateComponent from '../private-components/private-component'
-import ButtonMyList from '../private-buttons/button-my-list'
-import { Link } from 'react-router-dom'
+import './../../style-css/style.css'
+import cl from 'classnames'
+import PlayerYoutube from '../player/player-youtube'
 
-const Main = ({ promoFilm }) => {
-	const { posterImage, name, genre, released, id, isFavorite } = promoFilm
+const Main = ({ promoFilms }) => {
+	const [films, setFilms] = useState(Array.from(promoFilms))
+	const [startPreview, setStartPreview] = useState(false)
+	const [idVideo, setIdVideo] = useState('')
+	const videoRef = useRef('')
+
+	const shiftArrayRight = () => {
+		const first = films.shift()
+		setFilms([...films, first])
+	}
+
+	const shiftArrayLeft = () => {
+		const last = films.pop()
+		setFilms([last, ...films])
+	}
+
+	const handleClickPreview = (id) => {
+		setStartPreview(true)
+		setIdVideo(id)
+	}
 
 	return (
-		<React.Fragment>
+		<>
 			<section className='film-card'>
 				<div className='film-card__bg'>
 					<img
@@ -26,34 +44,44 @@ const Main = ({ promoFilm }) => {
 				<h1 className='visually-hidden'>WTW</h1>
 				<Header clHeader={HeaderClassNames.MAIN} />
 				<div className='film-card__wrap'>
-					<div className='film-card__info'>
-						<div className='film-card__poster'>
-							<img src={posterImage} alt={name} width='218' height='327' />
-						</div>
+					<button
+						className='film-card__btn film-card__btn--back'
+						onClick={shiftArrayLeft}
+					>
+						<svg viewBox='0 0 98 98' width='78' height='78'>
+							<use xlinkHref='#switch-btn'></use>
+						</svg>
+					</button>
+					<div className='film-card__info film-card__info--main'>
+						{films.map((film, id) => {
+							const { img, name, videoId } = film
 
-						<div className='film-card__desc'>
-							<h2 className='film-card__title'>{name}</h2>
-							<p className='film-card__meta'>
-								<span className='film-card__genre'>{genre}</span>
-								<span className='film-card__year'>{released}</span>
-							</p>
-
-							<div className='film-card__buttons'>
-								<Link
-									className='btn btn--play film-card__button'
-									to={`/player/${id}`}
+							return (
+								<div
+									className={cl('film-card__preview', {
+										'film-card__preview--active': id === 1,
+									})}
+									key={name}
+									tabIndex={id}
 								>
-									<svg viewBox='0 0 19 19' width='19' height='19'>
-										<use xlinkHref='#play-s'></use>
-									</svg>
-									<span>Play</span>
-								</Link>
-								<PrivateComponent>
-									<ButtonMyList id={id} isFavorite={isFavorite} />
-								</PrivateComponent>
-							</div>
-						</div>
+									<div
+										className='film-card__preview-wrap'
+										onClick={() => handleClickPreview(videoId)}
+									>
+										<img src={img} alt={name} width='620' height='322' />
+									</div>
+								</div>
+							)
+						})}
 					</div>
+					<button
+						className='film-card__btn film-card__btn--next'
+						onClick={shiftArrayRight}
+					>
+						<svg viewBox='0 0 98 98' width='78' height='78'>
+							<use xlinkHref='#switch-btn'></use>
+						</svg>
+					</button>
 				</div>
 			</section>
 			<div className='page-content'>
@@ -64,16 +92,30 @@ const Main = ({ promoFilm }) => {
 				</section>
 				<Footer />
 			</div>
-		</React.Fragment>
+			<div
+				className={cl('popup', {
+					'popup--active': startPreview,
+				})}
+				ref={videoRef}
+			>
+				<div className='popup__video'>
+					<PlayerYoutube videoId={idVideo} closeVideo={!startPreview} />
+					<button
+						className='popup__close'
+						onClick={() => setStartPreview(false)}
+					></button>
+				</div>
+			</div>
+		</>
 	)
 }
 
 Main.propTypes = {
-	promoFilm: PropTypes.object.isRequired,
+	promoFilms: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = (state) => ({
-	promoFilm: getPromoFilm(state),
+	promoFilms: getPromoFilms(state),
 })
 
 export default connect(mapStateToProps)(Main)

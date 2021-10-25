@@ -1,0 +1,34 @@
+{
+  "promo_films": [
+    {
+      "img" : "img/promo-aleksandr.webp", 
+      "name" : "Aleksandr",
+      "videoId" : "tQetl1k8_rw"
+    },
+    {
+      "img" : "img/promo-forest-of-self-killers.webp", 
+      "name" : "Forest of self killers",
+      "videoId" : "BDs_DYow7xA"
+    },
+    {
+      "img" : "img/promo-ice-trap.webp", 
+      "name" : "Ice trap",
+      "videoId" : "Aa5zV39yniY"
+    },
+    {
+      "img" : "img/promo-last-viking.webp", 
+      "name" : "Last viking",
+      "videoId" : "UdP5e8Vl1bw"
+    },
+    {
+      "img" : "img/promo-loft.webp", 
+      "name" : "Loft",
+      "videoId" : "F59cxQFVbFQ"
+    },
+    {
+      "img" : "img/promo-men-in-black.webp", 
+      "name" : "Men in black",
+      "videoId" : "1Q4mhYF9aQQ"
+    }
+  ]
+}
