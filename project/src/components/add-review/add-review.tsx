@@ -1,35 +1,41 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { FC, useCallback, useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import { HeaderClassNames } from '../../const/const'
 import { getFilm } from '../../store/selectors'
 import Header from '../header/header'
 import HeaderBreadcrumbs from '../header/header-breadcrumbs'
-import PropTypes from 'prop-types'
-import { propFilm } from '../../props/props'
 import { commentsPost } from '../../store/api-actions'
+import { filmType, stateType } from '../../types/types'
+
+const MIN_QUANTITY_SYMBOLS = 50
+const MAX_QUANTITY_SYMBOLS = 400
+const QUANTITY_ITEMS = 10
 
 const InputName = {
 	rating: 'rating',
 	review: 'review-text',
 }
 
-const MIN_QUANTITY_SYMBOLS = 50
-const MAX_QUANTITY_SYMBOLS = 400
+const arrayNumbers = [...Array(QUANTITY_ITEMS).keys()].map((el) => ++el)
 
-const AddReview = ({ film, commentPost }) => {
-	const titleRating = [...Array(10).keys()].map((el) => ++el)
-	const [rating, setRating] = useState(0)
-	const [review, setReview] = useState('')
-	const formRef = useRef()
+interface PropsType {
+	film: filmType
+	commentPost: (comment: string, rating: number, id: number) => Promise<''>
+}
 
-	const handleSubmit = useCallback((evt) => {
+const AddReview: FC<PropsType> = ({ film, commentPost }) => {
+	const [rating, setRating] = useState<number>(0)
+	const [review, setReview] = useState<string>('')
+	const formRef = useRef<HTMLFormElement | null>(null)
+
+	const handleSubmit = (evt: React.FormEvent): void => {
 		evt.preventDefault()
 		commentPost(review, rating, film.id)
 
-		formRef.current.reset()
-	})
+		formRef.current && formRef.current.reset()
+	}
 
-	const handleFieldChange = useCallback(({ target }) => {
+	const handleFieldChange = ({ target }: any) => {
 		const { value, name } = target
 
 		switch (name) {
@@ -41,7 +47,7 @@ const AddReview = ({ film, commentPost }) => {
 				setReview(value)
 				break
 		}
-	})
+	}
 
 	return (
 		<section className='film-card film-card--full'>
@@ -78,7 +84,7 @@ const AddReview = ({ film, commentPost }) => {
 				>
 					<div className='rating'>
 						<div className='rating__stars'>
-							{titleRating.map((number, index, arr) => (
+							{arrayNumbers.map((number, index, arr) => (
 								<React.Fragment key={number}>
 									<input
 										className='rating__input'
@@ -103,8 +109,8 @@ const AddReview = ({ film, commentPost }) => {
 						<textarea
 							className='add-review__textarea'
 							name='review-text'
-							maxLength='400'
-							minLength='50'
+							maxLength={MAX_QUANTITY_SYMBOLS}
+							minLength={MIN_QUANTITY_SYMBOLS}
 							id='review-text'
 							placeholder='Review text'
 							onChange={handleFieldChange}
@@ -131,17 +137,15 @@ const AddReview = ({ film, commentPost }) => {
 	)
 }
 
-AddReview.propTypes = {
-	film: PropTypes.shape(propFilm),
-	commentPost: PropTypes.func.isRequired,
-}
-
-const mapStateToProps = (state, { activeId }) => ({
+const mapStateToProps = (
+	state: stateType,
+	{ activeId }: { activeId: number }
+) => ({
 	film: getFilm(state, activeId),
 })
 
-const mapDispatchToProps = (dispatch) => ({
-	commentPost: (comment, rating, id) =>
+const mapDispatchToProps = (dispatch: any) => ({
+	commentPost: (comment: string, rating: number, id: number) =>
 		dispatch(commentsPost(comment, rating, id)),
 })
 

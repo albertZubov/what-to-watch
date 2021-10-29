@@ -2,13 +2,20 @@ import React from 'react'
 import Main from '../main/main'
 import FilmCard from '../film-card/film-card'
 import { AppClient } from '../../const/const'
-import { Router as BrowserRouter, Switch, Route } from 'react-router-dom'
+import {
+	Router as BrowserRouter,
+	Switch,
+	Route,
+	RouteComponentProps,
+} from 'react-router-dom'
 import AddReview from '../add-review/add-review'
 import MyList from '../my-list/my-list'
 import SignIn from '../sign-in/sign-in'
 import Player from '../player/player'
 import browserHistory from '../../browser-history'
 import PrivateRoute from '../private-route/private-route'
+
+type TParams = { id: string }
 
 const App = () => {
 	return (
@@ -18,7 +25,9 @@ const App = () => {
 				<Route
 					exact
 					path={AppClient.ADD_REVIEW_ID}
-					render={({ match }) => <AddReview activeId={+match.params.id} />}
+					render={({ match }: RouteComponentProps<TParams>): JSX.Element => (
+						<AddReview activeId={+match.params.id} />
+					)}
 				/>
 				<Route
 					exact

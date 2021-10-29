@@ -1,12 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/app/app'
-import {
-	checkAuth,
-	fetchFilmsList,
-	getPromoFilm,
-	getPromoFilms,
-} from './store/api-actions'
+import { checkAuth, fetchFilmsList, getPromoFilms } from './store/api-actions'
 import rootReducer from './store/reducers/root'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'

@@ -30,6 +30,8 @@ export const commentsGet = (id) => {
 }
 
 export const commentsPost = (comment, rating, id) => {
+	// console.log(comment)
+	// console.log(rating)
 	return (_dispatch, _getState, { api }) =>
 		api
 			.post(`${AppRoute.COMMENT}/${id}`, { comment, rating })
