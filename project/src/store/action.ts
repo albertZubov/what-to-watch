@@ -14,48 +14,46 @@ export const ActionType = {
 } as const
 
 export const ActionCreator = {
-	loadingFilms: (films: filmType[]): LoadingFilmsActionType => ({
+	loadingFilms: (films: filmType[]) => ({
 		type: ActionType.LOAD_FILMS,
 		payload: films,
 	}),
 
-	loadingFilmsSimilar: (films: filmType[]): LoadingFilmsSimilarActionType => ({
+	loadingFilmsSimilar: (films: filmType[]) => ({
 		type: ActionType.LOAD_FILMS_SIMILAR,
 		payload: films,
 	}),
 
-	loadingComments: (comments: commentType[]): LoadingCommentsActionType => ({
+	loadingComments: (comments: commentType[]) => ({
 		type: ActionType.LOAD_COMMENTS,
 		payload: comments,
 	}),
 
-	changeGenre: (genre: string): ChangeGenreActionType => ({
+	changeGenre: (genre: string) => ({
 		type: ActionType.GENRE_SELECTION,
 		payload: genre,
 	}),
 
-	requreAuthorization: (status: string): RequreAuthorizationActionType => ({
+	requreAuthorization: (status: string) => ({
 		type: ActionType.REQUIRED_AUTHORIZATION,
 		payload: status,
 	}),
 
-	loadUserData: (userData: userType): LoadUserDataActionType => ({
+	loadUserData: (userData: userType) => ({
 		type: ActionType.LOAD_USER_DATA,
 		payload: userData,
 	}),
 
-	logOut: (): LogOutActionType => ({
+	logOut: () => ({
 		type: ActionType.LOG_OUT,
 	}),
 
-	changeFavorite: (payload: filmType): ChangeFavoriteActionType => ({
+	changeFavorite: (payload: filmType) => ({
 		type: ActionType.CHANGE_FAVORITE,
 		payload,
 	}),
 
-	loadingPromoFilms: (
-		promo: Array<promoFilmType>
-	): LoadingPromoFilmsActionType => ({
+	loadingPromoFilms: (promo: Array<promoFilmType>) => ({
 		type: ActionType.LOAD_PROMO_FILMS,
 		payload: promo,
 	}),

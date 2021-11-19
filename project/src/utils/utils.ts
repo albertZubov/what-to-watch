@@ -1,5 +1,3 @@
-import { initialStateReducerType } from '../types/types'
-
 export const extend = (a: any, b: any) => Object.assign({}, a, b)
 
 export const serverAdapter = (obj: any) =>

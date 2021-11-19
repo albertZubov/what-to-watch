@@ -11,7 +11,7 @@ export type userType = {
 	token: string
 }
 
-export type filmType = {
+export interface filmType {
 	backgroundColor: string
 	backgroundImage: string
 	description: string

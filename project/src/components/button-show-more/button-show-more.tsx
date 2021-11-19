@@ -4,6 +4,8 @@ type propsType = {
 	onClickButton: MouseEventHandler<HTMLButtonElement>
 }
 
+// TODO: переименовать все питы на верхний регистр
+
 const ButtonShowMore = ({ onClickButton }: propsType) => {
 	return (
 		<div className='catalog__more'>

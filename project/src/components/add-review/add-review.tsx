@@ -16,10 +16,12 @@ const InputName = {
 	review: 'review-text',
 }
 
+// TODO: Указать типы для any в событиях
+
 const arrayNumbers = [...Array(QUANTITY_ITEMS).keys()].map((el) => ++el)
 
 interface IPropsType {
-	film: filmType | undefined
+	film?: filmType
 	commentPost: (comment: string, rating: number, id: number) => Promise<string>
 }
 

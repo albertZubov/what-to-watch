@@ -14,6 +14,9 @@ const TabNames = {
 	REVIEWS: 'Reviews',
 }
 
+// TODO: Переделать все массивы на новый вид записи
+// TODO: Поправить проверку типа target
+
 type propsType = {
 	film: filmType
 	comments: Array<commentType>
@@ -38,10 +41,10 @@ const CardTabs = ({ film, loadComments, comments }: propsType) => {
 			<nav className='film-nav film-card__nav'>
 				<ul
 					className='film-nav__list'
-					onClick={({ target }) => {
-						const targetType = target as HTMLElement
-						if (targetType.tagName === 'A' && targetType.textContent !== null) {
-							setActiveTabName(targetType.textContent)
+					onClick={({ target }: MouseEventHandler<HTMLAnchorElement>) => {
+						// const targetType = target as HTMLElement
+						if (target.tagName === 'A') {
+							setActiveTabName(target.textContent)
 						}
 					}}
 				>
