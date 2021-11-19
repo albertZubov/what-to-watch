@@ -1,7 +1,9 @@
-export const extend = (a, b) => Object.assign({}, a, b)
+import { initialStateReducerType } from '../types/types'
 
-export const serverAdapter = (obj) =>
-	Object.keys(obj).reduce((newObj, key) => {
+export const extend = (a: any, b: any) => Object.assign({}, a, b)
+
+export const serverAdapter = (obj: any) =>
+	Object.keys(obj).reduce((newObj: any, key) => {
 		const value = obj[key]
 		const newKey = key.replace(/\_([a-z])/g, (_, chr) => chr.toUpperCase())
 		newObj[newKey] =
@@ -9,15 +11,15 @@ export const serverAdapter = (obj) =>
 		return newObj
 	}, {})
 
-export const formattingDataServerToClinet = (arrData) =>
+export const formattingDataServerToClinet = (arrData: Array<any>) =>
 	arrData.map((obj) => serverAdapter(obj))
 
 export const videoAdapter = {
-	time: (timeSeconds) => {
+	time: (timeSeconds: number) => {
 		const oneHours = 3600
 		const oneMinutes = 60
-		const hours = `0${Math.floor(timeSeconds / oneHours)}`.slice(-2)
-		const minutes = `0${Math.floor(
+		const hours = +`0${Math.floor(timeSeconds / oneHours)}`.slice(-2)
+		const minutes = +`0${Math.floor(
 			(timeSeconds - hours * oneHours) / oneMinutes
 		)}`.slice(-2)
 
@@ -28,13 +30,14 @@ export const videoAdapter = {
 		return `${hours}:${minutes}:${seconds}`
 	},
 
-	progress: (currentTime, duration) =>
+	progress: (currentTime: number, duration: number) =>
 		Math.round(currentTime) / (Math.round(duration) / 100),
 
-	changeTime: (timeSeconds, duration) => (duration / 100) * timeSeconds,
+	changeTime: (timeSeconds: number, duration: number) =>
+		(duration / 100) * timeSeconds,
 }
 
-export const getDate = (dateTime) => {
+export const getDate = (dateTime: string) => {
 	const arrDate = dateTime.split('T')
 	const date = arrDate[0].split('-')
 	const time = arrDate[1].split(':')
@@ -53,11 +56,11 @@ export const getDate = (dateTime) => {
 	}
 }
 
-export const getTime = (timeMinutes) => {
+export const getTime = (timeMinutes: number) => {
 	const oneHours = 3600
 	const oneMinutes = 60
 	const seconds = timeMinutes * oneMinutes
-	const hours = `${Math.floor(seconds / oneHours)}`
+	const hours = +`${Math.floor(seconds / oneHours)}`
 	const minutes = `0${Math.floor(
 		(seconds - hours * oneHours) / oneMinutes
 	)}`.slice(-2)
@@ -68,7 +71,7 @@ export const getTime = (timeMinutes) => {
 	}
 }
 
-export const sortArrOnGenres = (arr) =>
+export const sortArrOnGenres = (arr: Array<any>) =>
 	arr.reduce(
 		(accumulator, currentValue) => {
 			const { genre } = currentValue
@@ -80,9 +83,9 @@ export const sortArrOnGenres = (arr) =>
 		{ 'All genres': arr }
 	)
 
-export const transformBoolToNumber = (boolean) => (boolean ? 1 : 0)
+export const transformBoolToNumber = (boolean: boolean) => (boolean ? 1 : 0)
 
-export const getRatingTitle = (rating) => {
+export const getRatingTitle = (rating: number) => {
 	const ratingTitleToNumber = [
 		{ max: 3, value: 'Bad' },
 		{ max: 5, value: 'Normal' },
@@ -91,5 +94,7 @@ export const getRatingTitle = (rating) => {
 		{ max: 11, value: 'Awesome' },
 	]
 
-	return ratingTitleToNumber.find(({ max }) => rating < max).value
+	const result = ratingTitleToNumber.find(({ max }) => rating < max)
+
+	return result && result.value
 }

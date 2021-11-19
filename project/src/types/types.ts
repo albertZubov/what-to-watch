@@ -3,7 +3,7 @@ type userCommentType = {
 	name: string
 }
 
-type userType = {
+export type userType = {
 	id: number
 	name: string
 	email: string
@@ -47,10 +47,16 @@ export type stateType = {
 		films: Array<filmType>
 		filmsSimilar: Array<filmType>
 		comments: Array<commentType>
-		promoFilms: Array<filmType>
+		promoFilms: Array<promoFilmType>
 	}
 	USER: {
 		authorizationStatus: string
 		userData: userType
 	}
+}
+
+export type promoFilmType = {
+	img: string
+	name: string
+	videoId: string
 }

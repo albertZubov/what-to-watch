@@ -1,5 +1,5 @@
 import { extend } from '../../utils/utils'
-import { ActionType } from '../action'
+import { ActionType, TypesActions } from '../action'
 import { AuthorizationStatus } from '../../const/const'
 
 const user = () => {
@@ -14,7 +14,9 @@ const user = () => {
 		},
 	}
 
-	return (state = initialState, action) => {
+	type InitialState = typeof initialState
+
+	return (state = initialState, action: TypesActions): InitialState => {
 		switch (action.type) {
 			case ActionType.REQUIRED_AUTHORIZATION:
 				return extend(state, {

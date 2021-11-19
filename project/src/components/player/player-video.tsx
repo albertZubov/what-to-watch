@@ -1,6 +1,16 @@
 import React from 'react'
-import { propFilm } from '../../props/props'
-import PropTypes from 'prop-types'
+import { filmType } from '../../types/types'
+
+type propsType = {
+	film: filmType
+	refLink: React.LegacyRef<HTMLVideoElement>
+	onTimeUpdate: React.ReactEventHandler<HTMLVideoElement>
+	onDurationChange: React.ReactEventHandler<HTMLVideoElement>
+	onLoadedData: React.ReactEventHandler<HTMLVideoElement>
+	onSeeked: React.ReactEventHandler<HTMLVideoElement>
+	onSeeking: React.ReactEventHandler<HTMLVideoElement>
+	onClick: React.ReactEventHandler<HTMLVideoElement>
+}
 
 const PlayerVideo = ({
 	film,
@@ -11,7 +21,7 @@ const PlayerVideo = ({
 	onSeeked,
 	onSeeking,
 	onClick,
-}) => {
+}: propsType) => {
 	return (
 		<video
 			src={film.videoLink}
@@ -28,17 +38,6 @@ const PlayerVideo = ({
 			muted
 		></video>
 	)
-}
-
-PlayerVideo.propTypes = {
-	film: PropTypes.shape(propFilm),
-	onTimeUpdate: PropTypes.func,
-	onDurationChange: PropTypes.func,
-	refLink: PropTypes.object,
-	onLoadedData: PropTypes.func,
-	onSeeked: PropTypes.func,
-	onSeeking: PropTypes.func,
-	onClick: PropTypes.func,
 }
 
 export default PlayerVideo

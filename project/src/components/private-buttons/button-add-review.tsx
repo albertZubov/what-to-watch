@@ -1,8 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-const ButtonAddReview = ({ id }) => {
+const ButtonAddReview = ({ id }: { id: number }) => {
 	return (
 		<Link
 			to={`/films/${id}/review`}
@@ -12,10 +11,6 @@ const ButtonAddReview = ({ id }) => {
 			Add review
 		</Link>
 	)
-}
-
-ButtonAddReview.propTypes = {
-	id: PropTypes.number.isRequired,
 }
 
 export default ButtonAddReview

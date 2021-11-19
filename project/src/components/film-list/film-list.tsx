@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import FilmCardPreview from '../film-card-preview/film-card-preview'
 import { getGenresFilms } from '../../store/selectors'
 import ButtonShowMore from '../button-show-more/button-show-more'
+import { filmType, stateType } from '../../types/types'
 
 const DEFAULT_FILMS = 8
 const ADD_FILMS = 8
 
-const FilmList = ({ filmsOnGenre }) => {
+const FilmList = ({ filmsOnGenre }: { filmsOnGenre: Array<filmType> }) => {
 	const [quantity, setQuantity] = useState(DEFAULT_FILMS)
 
 	const filmsArr =
@@ -22,7 +22,7 @@ const FilmList = ({ filmsOnGenre }) => {
 			''
 		)
 
-	return ( 
+	return (
 		<>
 			<div className='catalog__films-list'>
 				{filmsArr.map((film) => (
@@ -34,11 +34,7 @@ const FilmList = ({ filmsOnGenre }) => {
 	)
 }
 
-FilmList.propTypes = {
-	filmsOnGenre: PropTypes.array.isRequired,
-}
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: stateType) => ({
 	filmsOnGenre: getGenresFilms(state),
 })
 

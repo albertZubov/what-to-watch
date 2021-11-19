@@ -1,16 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
 import { videoAdapter } from '../../utils/utils'
 import PlayerVideo from './player-video'
 import { connect } from 'react-redux'
 import { getFilm } from '../../store/selectors'
-import { propFilm } from '../../props/props'
 import '../../style-css/style.css'
 import cl from 'classnames'
 import browserHistory from '../../browser-history'
+import { filmType, stateType } from '../../types/types'
 
-const Player = ({ film }) => {
-	const videoRef = useRef()
+const Player = ({ film }: { film: filmType | undefined }) => {
+	const videoRef = useRef<HTMLVideoElement>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [currentTime, setCurrentTime] = useState(0)
 	const [played, setPlayed] = useState(0)
@@ -23,43 +22,51 @@ const Player = ({ film }) => {
 	}, [isPlaying])
 
 	useEffect(() => {
-		if (played) {
+		if (played && videoRef.current !== null) {
 			setCurrentTime(videoAdapter.changeTime(played, videoRef.current.duration))
 		}
 	}, [played])
 
-	const handleSeekChange = ({ target }) => {
+	const handleSeekChange = ({ target }: any) => {
 		setPlayed(target.value)
 	}
 
-	const handleMouseDown = () => {
-		setIsPlaying(false)
-	}
+	const handleMouseDown = () => setIsPlaying(false)
 
 	const handleMouseUp = () => {
-		if (currentTime) {
+		if (currentTime && videoRef.current !== null) {
 			videoRef.current.currentTime = currentTime
 			setIsPlaying(true)
 		}
 	}
 
 	const handleTimeUpdate = () => {
-		setPlayed(videoAdapter.progress(currentTime, videoRef.current.duration))
-		setCurrentTime(videoRef.current.currentTime)
+		if (videoRef.current !== null) {
+			setPlayed(videoAdapter.progress(currentTime, videoRef.current.duration))
+			setCurrentTime(videoRef.current.currentTime)
+		}
 	}
 
 	return (
 		<div className='player'>
-			<PlayerVideo
-				film={film}
-				refLink={videoRef}
-				onTimeUpdate={handleTimeUpdate}
-				onDurationChange={() => Math.round(videoRef.current.duration)}
-				onLoadedData={() => setIsLoading(true)}
-				onSeeking={() => setIsLoading(false)}
-				onSeeked={() => setIsLoading(true)}
-				onClick={() => setIsPlaying(!isPlaying)}
-			/>
+			{film ? (
+				<PlayerVideo
+					film={film}
+					refLink={videoRef}
+					onTimeUpdate={handleTimeUpdate}
+					onDurationChange={() => {
+						if (videoRef.current !== null) {
+							Math.round(videoRef.current.duration)
+						}
+					}}
+					onLoadedData={() => setIsLoading(true)}
+					onSeeking={() => setIsLoading(false)}
+					onSeeked={() => setIsLoading(true)}
+					onClick={() => setIsPlaying(!isPlaying)}
+				/>
+			) : (
+				''
+			)}
 			<div
 				className={cl('player__loading', {
 					'player__loading--active': !isLoading,
@@ -125,7 +132,11 @@ const Player = ({ film }) => {
 					<button
 						type='button'
 						className='player__full-screen'
-						onClick={() => videoRef.current.requestFullscreen()}
+						onClick={() => {
+							if (videoRef.current !== null) {
+								videoRef.current.requestFullscreen()
+							}
+						}}
 					>
 						<svg viewBox='0 0 27 27' width='27' height='27'>
 							<use xlinkHref='#full-screen'></use>
@@ -138,12 +149,11 @@ const Player = ({ film }) => {
 	)
 }
 
-const mapStateToProps = (state, { activeId }) => ({
+const mapStateToProps = (
+	state: stateType,
+	{ activeId }: { activeId: number }
+) => ({
 	film: getFilm(state, activeId),
 })
-
-Player.propTypes = {
-	film: PropTypes.shape(propFilm),
-}
 
 export default connect(mapStateToProps)(Player)

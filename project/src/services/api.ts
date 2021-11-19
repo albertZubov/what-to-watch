@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
 const BACKEND_URL = 'https://7.react.pages.academy/wtw'
 const BACKEND_MOCK_URL = 'http://localhost:3000/'
-const REQUEST_TIMEOUT = '5000'
+const REQUEST_TIMEOUT = 5000
 
 const HttpCode = {
 	UNAUTHORIZED: 401,
@@ -10,7 +10,7 @@ const HttpCode = {
 
 const token = localStorage.getItem('token') ?? ''
 
-export const createAPI = (onUnauthorized) => {
+export const createAPI = (onUnauthorized: () => string) => {
 	const api = axios.create({
 		baseURL: BACKEND_URL,
 		timeout: REQUEST_TIMEOUT,
@@ -26,12 +26,12 @@ export const createAPI = (onUnauthorized) => {
 		withCredentials: true,
 	})
 
-	const onSuccess = (response) => response
+	const onSuccess = (response: AxiosResponse<any>) => response
 
-	const onFail = (err) => {
+	const onFail = (err: AxiosError<any>) => {
 		const { response } = err
 
-		if (response.status === HttpCode.UNAUTHORIZED) {
+		if (response && response.status === HttpCode.UNAUTHORIZED) {
 			onUnauthorized()
 			throw err
 		}

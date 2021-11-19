@@ -1,20 +1,38 @@
 import React, { useCallback, useRef } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { login } from '../../store/api-actions'
 import Footer from '../footer/footer'
 
-const SignIn = ({ onSubmit }) => {
-	const loginRef = useRef(null)
-	const passwordRef = useRef(null)
+type authDataType = {
+	login: string
+	password: string
+}
 
-	const handleSubmit = useCallback((evt) => {
+interface ISubmitLoginType {
+	avatarUrl: string
+	email: string
+	id: number
+	name: string
+	token: string
+}
+
+type propsType = {
+	onSubmit: (authData: authDataType) => Promise<ISubmitLoginType>
+}
+
+const SignIn = ({ onSubmit }: propsType) => {
+	const loginRef = useRef<HTMLInputElement>(null)
+	const passwordRef = useRef<HTMLInputElement>(null)
+
+	const handleSubmit = (evt: any) => {
 		evt.preventDefault()
-		onSubmit({
-			login: loginRef.current.value,
-			password: passwordRef.current.value,
-		})
-	})
+		if (loginRef.current !== null && passwordRef.current !== null) {
+			onSubmit({
+				login: loginRef.current.value,
+				password: passwordRef.current.value,
+			})
+		}
+	}
 
 	return (
 		<div className='user-page'>
@@ -79,12 +97,8 @@ const SignIn = ({ onSubmit }) => {
 	)
 }
 
-SignIn.propTypes = {
-	onSubmit: PropTypes.func.isRequired,
-}
-
-const mapDispatchToProps = (dispatch) => ({
-	onSubmit: (authData) => dispatch(login(authData)),
+const mapDispatchToProps = (dispatch: any) => ({
+	onSubmit: (authData: authDataType) => dispatch(login(authData)),
 })
 
 export default connect(null, mapDispatchToProps)(SignIn)

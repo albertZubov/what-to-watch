@@ -1,9 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { propFilm } from '../../props/props'
 import { getRatingTitle } from '../../utils/utils'
+import { filmType } from '../../types/types'
 
-const CardTabOverview = ({ film }) => {
+const CardTabOverview = ({ film }: { film: filmType }) => {
 	const { rating, scoresCount, description, director, starring } = film
 	const starringToString = starring.join(', ')
 
@@ -32,10 +31,6 @@ const CardTabOverview = ({ film }) => {
 			</div>
 		</React.Fragment>
 	)
-}
-
-CardTabOverview.propTypes = {
-	film: PropTypes.shape(propFilm),
 }
 
 export default CardTabOverview

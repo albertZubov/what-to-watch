@@ -1,20 +1,22 @@
 import React, { useRef, useState } from 'react'
-import PropTypes from 'prop-types'
-import { propFilm } from '../../props/props'
 import { Link } from 'react-router-dom'
 import PlayerVideoPreview from '../player/player-video-preview'
+import { filmType } from '../../types/types'
 
-const FilmCardPreview = ({ film }) => {
-	const videoRef = useRef(null)
+const FilmCardPreview = ({ film }: { film: filmType }) => {
+	const videoRef = useRef<HTMLVideoElement>(null)
 	const [isPending, setIsPending] = useState(false)
 
 	const onPlayVideo = () => {
-		if (isPending) return
-		videoRef.current.play().then(setIsPending).catch(setIsPending)
+		if (isPending || videoRef.current === null) return
+		videoRef.current
+			.play()
+			.then(() => setIsPending)
+			.catch(setIsPending)
 	}
 
 	const onPauseVideo = () => {
-		if (isPending) return
+		if (isPending || videoRef.current === null) return
 		videoRef.current.load()
 	}
 
@@ -37,10 +39,6 @@ const FilmCardPreview = ({ film }) => {
 			</h3>
 		</article>
 	)
-}
-
-FilmCardPreview.propTypes = {
-	film: PropTypes.shape(propFilm),
 }
 
 export default FilmCardPreview

@@ -5,9 +5,9 @@ import Footer from '../footer/footer'
 import FilmCardPreview from '../film-card-preview/film-card-preview'
 import { connect } from 'react-redux'
 import { getFilmsFavorite } from '../../store/selectors'
-import PropTypes from 'prop-types'
+import { filmType, stateType } from '../../types/types'
 
-const MyList = ({ filmsFavorite }) => {
+const MyList = ({ filmsFavorite }: { filmsFavorite: Array<filmType> }) => {
 	return (
 		<div className='user-page'>
 			<Header clHeader={HeaderClassNames.MY_LIST}>
@@ -28,11 +28,7 @@ const MyList = ({ filmsFavorite }) => {
 	)
 }
 
-MyList.propTypes = {
-	filmsFavorite: PropTypes.array.isRequired,
-}
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: stateType) => ({
 	filmsFavorite: getFilmsFavorite(state),
 })
 

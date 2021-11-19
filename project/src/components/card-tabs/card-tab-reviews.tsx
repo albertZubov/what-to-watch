@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { getDate } from '../../utils/utils'
+import { commentType } from '../../types/types'
 
-const CardTabReviews = ({ comments }) => {
+const CardTabReviews = ({ comments }: { comments: Array<commentType> }) => {
 	return (
 		<div className='film-card__reviews film-card__row'>
 			<div className='film-card__reviews-col'>
@@ -27,10 +28,6 @@ const CardTabReviews = ({ comments }) => {
 			</div>
 		</div>
 	)
-}
-
-CardTabReviews.propTypes = {
-	comments: PropTypes.array.isRequired,
 }
 
 export default CardTabReviews

@@ -1,10 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { propFilm } from '../../props/props'
 import { getTime } from '../../utils/utils'
+import { filmType } from '../../types/types'
 
-const CardTabDetails = (props) => {
-	const { released, genre, director, starring, id, runTime } = props.film
+const CardTabDetails = ({ film }: { film: filmType }) => {
+	const { released, genre, director, starring, id, runTime } = film
 	const { hours, minutes } = getTime(runTime)
 
 	return (
@@ -44,10 +43,6 @@ const CardTabDetails = (props) => {
 			</div>
 		</div>
 	)
-}
-
-CardTabDetails.propTypes = {
-	film: PropTypes.shape(propFilm),
 }
 
 export default CardTabDetails

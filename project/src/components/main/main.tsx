@@ -6,28 +6,30 @@ import FilmList from '../film-list/film-list'
 import GenresList from '../genres-list/genres-list'
 import { connect } from 'react-redux'
 import { getPromoFilms } from '../../store/selectors'
-import PropTypes from 'prop-types'
 import './../../style-css/style.css'
 import cl from 'classnames'
 import PlayerYoutube from '../player/player-youtube'
+import { promoFilmType, stateType } from '../../types/types'
 
-const Main = ({ promoFilms }) => {
-	const [films, setFilms] = useState(Array.from(promoFilms))
+const Main = ({ promoFilms }: { promoFilms: Array<promoFilmType> }) => {
+	const [films, setFilms] = useState<Array<promoFilmType>>(
+		Array.from(promoFilms)
+	)
 	const [startPreview, setStartPreview] = useState(false)
 	const [idVideo, setIdVideo] = useState('')
-	const videoRef = useRef('')
+	const videoRef = useRef<HTMLDivElement>(null)
 
 	const shiftArrayRight = () => {
 		const first = films.shift()
-		setFilms([...films, first])
+		first && setFilms([...films, first])
 	}
 
 	const shiftArrayLeft = () => {
 		const last = films.pop()
-		setFilms([last, ...films])
+		last && setFilms([last, ...films])
 	}
 
-	const handleClickPreview = (id) => {
+	const handleClickPreview = (id: string) => {
 		setStartPreview(true)
 		setIdVideo(id)
 	}
@@ -110,11 +112,7 @@ const Main = ({ promoFilms }) => {
 	)
 }
 
-Main.propTypes = {
-	promoFilms: PropTypes.array.isRequired,
-}
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: stateType) => ({
 	promoFilms: getPromoFilms(state),
 })
 

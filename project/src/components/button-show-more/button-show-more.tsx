@@ -1,7 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { MouseEventHandler } from 'react'
 
-const ButtonShowMore = ({ onClickButton }) => {
+type propsType = {
+	onClickButton: MouseEventHandler<HTMLButtonElement>
+}
+
+const ButtonShowMore = ({ onClickButton }: propsType) => {
 	return (
 		<div className='catalog__more'>
 			<button className='catalog__button' type='button' onClick={onClickButton}>
@@ -9,10 +12,6 @@ const ButtonShowMore = ({ onClickButton }) => {
 			</button>
 		</div>
 	)
-}
-
-ButtonShowMore.propTypes = {
-	onClickButton: PropTypes.func.isRequired,
 }
 
 export default ButtonShowMore

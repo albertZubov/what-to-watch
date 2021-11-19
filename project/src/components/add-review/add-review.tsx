@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef, useState } from 'react'
+import React, { ReactElement, useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import { HeaderClassNames } from '../../const/const'
 import { getFilm } from '../../store/selectors'
@@ -18,19 +18,20 @@ const InputName = {
 
 const arrayNumbers = [...Array(QUANTITY_ITEMS).keys()].map((el) => ++el)
 
-interface PropsType {
-	film: filmType
-	commentPost: (comment: string, rating: number, id: number) => Promise<''>
+interface IPropsType {
+	film: filmType | undefined
+	commentPost: (comment: string, rating: number, id: number) => Promise<string>
 }
 
-const AddReview: FC<PropsType> = ({ film, commentPost }) => {
+const AddReview = ({ film, commentPost }: IPropsType) => {
 	const [rating, setRating] = useState<number>(0)
 	const [review, setReview] = useState<string>('')
 	const formRef = useRef<HTMLFormElement | null>(null)
 
-	const handleSubmit = (evt: React.FormEvent): void => {
+	const handleSubmit = (evt: React.FormEvent) => {
 		evt.preventDefault()
-		commentPost(review, rating, film.id)
+
+		if (film) commentPost(review, rating, film.id)
 
 		formRef.current && formRef.current.reset()
 	}
@@ -49,7 +50,7 @@ const AddReview: FC<PropsType> = ({ film, commentPost }) => {
 		}
 	}
 
-	return (
+	return film ? (
 		<section className='film-card film-card--full'>
 			<div className='film-card__header'>
 				<div className='film-card__bg'>
@@ -134,7 +135,7 @@ const AddReview: FC<PropsType> = ({ film, commentPost }) => {
 				</form>
 			</div>
 		</section>
-	)
+	) : null
 }
 
 const mapStateToProps = (

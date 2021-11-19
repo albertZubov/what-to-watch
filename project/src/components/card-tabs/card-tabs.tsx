@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { MouseEventHandler, useEffect, useState } from 'react'
 import cl from 'classnames'
-import PropTypes from 'prop-types'
-import { propFilm } from '../../props/props'
 import CardTabOverview from './card-tab-overview'
 import CardTabDetails from './card-tab-details'
 import CardTabReviews from './card-tab-reviews'
-import { commentsGet } from '../../store/api-actions.js'
+import { commentsGet } from '../../store/api-actions'
 import { connect } from 'react-redux'
 import { getComments } from '../../store/selectors'
+import { commentType, filmType, stateType } from '../../types/types'
 
 const TabNames = {
 	OVERVIEW: 'Overview',
@@ -15,8 +14,14 @@ const TabNames = {
 	REVIEWS: 'Reviews',
 }
 
-const CardTabs = ({ film, loadComments, comments }) => {
-	const [activeTabName, setActiveTabName] = useState(TabNames.OVERVIEW)
+type propsType = {
+	film: filmType
+	comments: Array<commentType>
+	loadComments: (id: number) => Promise<Array<commentType>>
+}
+
+const CardTabs = ({ film, loadComments, comments }: propsType) => {
+	const [activeTabName, setActiveTabName] = useState<string>(TabNames.OVERVIEW)
 
 	const TabsComponents = {
 		[TabNames.OVERVIEW]: <CardTabOverview film={film} />,
@@ -34,8 +39,9 @@ const CardTabs = ({ film, loadComments, comments }) => {
 				<ul
 					className='film-nav__list'
 					onClick={({ target }) => {
-						if (target.tagName === 'A') {
-							setActiveTabName(target.textContent)
+						const targetType = target as HTMLElement
+						if (targetType.tagName === 'A' && targetType.textContent !== null) {
+							setActiveTabName(targetType.textContent)
 						}
 					}}
 				>
@@ -56,18 +62,12 @@ const CardTabs = ({ film, loadComments, comments }) => {
 	)
 }
 
-CardTabs.propTypes = {
-	film: PropTypes.shape(propFilm),
-	loadComments: PropTypes.func.isRequired,
-	comments: PropTypes.array.isRequired,
-}
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: stateType) => ({
 	comments: getComments(state),
 })
 
-const mapDispatchToProps = (dispatch) => ({
-	loadComments: (id) => dispatch(commentsGet(id)),
+const mapDispatchToProps = (dispatch: any) => ({
+	loadComments: (id: number) => dispatch(commentsGet(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardTabs)

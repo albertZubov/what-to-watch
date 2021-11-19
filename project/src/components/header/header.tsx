@@ -1,12 +1,19 @@
 import React, { useCallback } from 'react'
 import cl from 'classnames'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { AppClient, AuthorizationStatus } from '../../const/const'
 import { connect } from 'react-redux'
 import { getAuthorizationStatus, getUserData } from '../../store/selectors'
-import { propUser } from '../../props/props'
 import { logout } from '../../store/api-actions'
+import { stateType, userType } from '../../types/types'
+
+type propsType = {
+	clHeader: string
+	children?: React.ReactNode
+	userData: userType
+	authorizationStatus: string
+	logOut: () => Promise<string>
+}
 
 const Header = ({
 	clHeader,
@@ -14,7 +21,7 @@ const Header = ({
 	userData,
 	authorizationStatus,
 	logOut,
-}) => {
+}: propsType) => {
 	const { avatarUrl } = userData
 	const handleSubmitLogOut = useCallback(() => {
 		if (authorizationStatus === AuthorizationStatus.AUTH) {
@@ -56,23 +63,12 @@ const Header = ({
 	)
 }
 
-Header.propTypes = {
-	clHeader: PropTypes.string.isRequired,
-	children: PropTypes.oneOfType([
-		PropTypes.arrayOf(PropTypes.node),
-		PropTypes.node,
-	]),
-	userData: PropTypes.shape(propUser),
-	authorizationStatus: PropTypes.string.isRequired,
-	logOut: PropTypes.func.isRequired,
-}
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: stateType) => ({
 	userData: getUserData(state),
 	authorizationStatus: getAuthorizationStatus(state),
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: any) => ({
 	logOut: () => dispatch(logout()),
 })
 

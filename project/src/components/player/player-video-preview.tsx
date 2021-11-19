@@ -1,8 +1,12 @@
 import React from 'react'
-import { propFilm } from '../../props/props'
-import PropTypes from 'prop-types'
+import { filmType } from '../../types/types'
 
-const PlayerVideoPreview = ({ film, videoRef }) => {
+type propsType = {
+	film: filmType
+	videoRef: React.LegacyRef<HTMLVideoElement>
+}
+
+const PlayerVideoPreview = ({ film, videoRef }: propsType) => {
 	const { previewVideoLink, posterImage } = film
 
 	return (
@@ -15,11 +19,6 @@ const PlayerVideoPreview = ({ film, videoRef }) => {
 			preload={'none'}
 		></video>
 	)
-}
-
-PlayerVideoPreview.propTypes = {
-	film: PropTypes.shape(propFilm),
-	videoRef: PropTypes.object,
 }
 
 export default PlayerVideoPreview

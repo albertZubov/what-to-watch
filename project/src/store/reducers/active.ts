@@ -1,5 +1,5 @@
 import { extend } from '../../utils/utils'
-import { ActionType } from '../action'
+import { ActionType, TypesActions } from '../action'
 import { DEFAULT_GENRE } from '../../const/const'
 
 const active = () => {
@@ -7,7 +7,9 @@ const active = () => {
 		activeGenre: DEFAULT_GENRE,
 	}
 
-	return (state = initialState, action) => {
+	type InitialState = typeof initialState
+
+	return (state = initialState, action: TypesActions): InitialState => {
 		switch (action.type) {
 			case ActionType.GENRE_SELECTION:
 				return extend(state, {
