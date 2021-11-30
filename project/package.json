@@ -11,13 +11,14 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-redux": "^7.2.2",
+    "react-redux": "^7.2.6",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-youtube": "^7.13.1",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "typescript": "^4.5.2"
   },
   "scripts": {
     "start": "concurrently \"npm run mock-server arg\" \"set PORT=3001 && react-scripts --openssl-legacy-provider start arg\"",
@@ -52,20 +53,20 @@
     "@testing-library/react": "^11.2.0",
     "@testing-library/react-hooks": "^5.1.0",
     "@testing-library/user-event": "^12.8.0",
+    "@types/react-redux": "^7.1.20",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
     "axios-mock-adapter": "^1.19.0",
+    "concurrently": "6.4.0",
     "eslint": "7.27.0",
     "eslint-config-htmlacademy": "^4.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": " ^7.22.0",
     "eslint-plugin-react-hooks": " ^4.2.0",
+    "json-server": "^0.16.3",
     "prettier": "^2.3.0",
     "redux-devtools-extension": "^2.13.9",
-    "redux-mock-store": "^1.5.4",
-
-    "json-server": "^0.16.3",
-    "concurrently": "6.4.0"
+    "redux-mock-store": "^1.5.4"
   }
 }
