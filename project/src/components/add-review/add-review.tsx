@@ -1,11 +1,11 @@
-import React, { ReactElement, useRef, useState } from 'react'
+import React, { ChangeEvent, useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import { HeaderClassNames } from '../../const/const'
 import { getFilm } from '../../store/selectors'
 import Header from '../header/header'
 import HeaderBreadcrumbs from '../header/header-breadcrumbs'
 import { commentsPost } from '../../store/api-actions'
-import { filmType, stateType } from '../../types/types'
+import { FilmType, StateType } from '../../types/types'
 
 const MIN_QUANTITY_SYMBOLS = 50
 const MAX_QUANTITY_SYMBOLS = 400
@@ -16,16 +16,14 @@ const InputName = {
 	review: 'review-text',
 }
 
-// TODO: Указать типы для any в событиях
-
 const arrayNumbers = [...Array(QUANTITY_ITEMS).keys()].map((el) => ++el)
 
-interface IPropsType {
-	film?: filmType
+interface PropsType {
+	film?: FilmType
 	commentPost: (comment: string, rating: number, id: number) => Promise<string>
 }
 
-const AddReview = ({ film, commentPost }: IPropsType) => {
+const AddReview = ({ film, commentPost }: PropsType) => {
 	const [rating, setRating] = useState<number>(0)
 	const [review, setReview] = useState<string>('')
 	const formRef = useRef<HTMLFormElement | null>(null)
@@ -38,12 +36,14 @@ const AddReview = ({ film, commentPost }: IPropsType) => {
 		formRef.current && formRef.current.reset()
 	}
 
-	const handleFieldChange = ({ target }: any) => {
-		const { value, name } = target
+	const handleFieldChange = (
+		evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		const { value, name } = evt.target
 
 		switch (name) {
 			case InputName.rating:
-				setRating(value)
+				setRating(+value)
 				break
 
 			case InputName.review:
@@ -141,7 +141,7 @@ const AddReview = ({ film, commentPost }: IPropsType) => {
 }
 
 const mapStateToProps = (
-	state: stateType,
+	state: StateType,
 	{ activeId }: { activeId: number }
 ) => ({
 	film: getFilm(state, activeId),

@@ -5,31 +5,31 @@ import { ActionCreator } from './action'
 import { transformBoolToNumber } from '../utils/utils'
 import { ThunkAction } from 'redux-thunk'
 import {
-	commentType,
-	filmType,
-	promoFilmType,
-	stateType,
-	userType,
+	CommentType,
+	FilmType,
+	PromoFilmType,
+	StateType,
+	UserType,
 } from '../types/types'
 import { AnyAction } from 'redux'
 
 type AppThunk<ReturnType = void> = ThunkAction<
 	ReturnType,
-	stateType,
+	StateType | Record<string, unknown>,
 	{ api: any },
 	AnyAction
 >
 
 type AppThunkMock<ReturnType = void> = ThunkAction<
 	ReturnType,
-	stateType,
+	StateType | Record<string, unknown>,
 	{ mockApi: any },
 	AnyAction
 >
 
-export const fetchFilmsList = (): AppThunk => {
+export const fetchFilmsList = (): AppThunk<Promise<FilmType[]>> => {
 	return (dispatch, _getState, { api }) =>
-		api.get(AppRoute.FILMS).then(({ data }: { data: Array<filmType> }) => {
+		api.get(AppRoute.FILMS).then(({ data }: { data: FilmType[] }) => {
 			const formatData = formattingDataServerToClinet(data)
 			dispatch(ActionCreator.loadingFilms(formatData))
 			return formatData
@@ -40,7 +40,7 @@ export const fetchFilmsListSimilar = (id: number): AppThunk => {
 	return (dispatch, _getState, { api }) =>
 		api
 			.get(`${AppRoute.FILMS}/${id}/similar`)
-			.then(({ data }: { data: Array<filmType> }) => {
+			.then(({ data }: { data: FilmType[] }) => {
 				const formatData = formattingDataServerToClinet(data)
 				return dispatch(ActionCreator.loadingFilmsSimilar(formatData))
 			})
@@ -50,7 +50,7 @@ export const commentsGet = (id: number): AppThunk => {
 	return (dispatch, _getState, { api }) =>
 		api
 			.get(`${AppRoute.COMMENT}/${id}`)
-			.then(({ data }: { data: Array<commentType> }) => {
+			.then(({ data }: { data: CommentType[] }) => {
 				return dispatch(ActionCreator.loadingComments(data))
 			})
 }
@@ -70,7 +70,7 @@ export const checkAuth = (): AppThunk => {
 	return (dispatch, _getState, { api }) =>
 		api
 			.get(AppRoute.LOGIN)
-			.then(({ data }: { data: userType }) => {
+			.then(({ data }: { data: UserType }) => {
 				dispatch(ActionCreator.loadUserData(serverAdapter(data)))
 				dispatch(ActionCreator.requreAuthorization(AuthorizationStatus.AUTH))
 			})
@@ -87,7 +87,7 @@ export const login = ({
 	return (dispatch, _getState, { api }) =>
 		api
 			.post(AppRoute.LOGIN, { email, password })
-			.then(({ data }: { data: userType }) => {
+			.then(({ data }: { data: UserType }) => {
 				localStorage.setItem('token', data.token)
 				dispatch(ActionCreator.loadUserData(serverAdapter(data)))
 				dispatch(ActionCreator.requreAuthorization(AuthorizationStatus.AUTH))
@@ -109,7 +109,7 @@ export const favoritePost = (id: number, status: boolean): AppThunk => {
 	return (dispatch, _getState, { api }) =>
 		api
 			.post(`${AppRoute.FAVORITES}/${id}/${transformBoolToNumber(status)}`)
-			.then(({ data }: { data: filmType }) =>
+			.then(({ data }: { data: FilmType }) =>
 				dispatch(ActionCreator.changeFavorite(serverAdapter(data)))
 			)
 }
@@ -127,7 +127,7 @@ export const getPromoFilms = (): AppThunkMock => {
 	return (dispatch, _getState, { mockApi }) =>
 		mockApi
 			.get('/promo_films')
-			.then(({ data }: { data: Array<promoFilmType> }) =>
+			.then(({ data }: { data: PromoFilmType[] }) =>
 				dispatch(ActionCreator.loadingPromoFilms(data))
 			)
 }

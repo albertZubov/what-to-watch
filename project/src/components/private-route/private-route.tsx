@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { ComponentType } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { AuthorizationStatus, AppClient } from '../../const/const'
 import { getAuthorizationStatus } from '../../store/selectors'
-import { stateType } from '../../types/types'
+import { StateType } from '../../types/types'
 
 type propsType = {
 	render: () => JSX.Element | undefined
@@ -12,7 +12,7 @@ type propsType = {
 	authorizationStatus: string
 }
 
-const PrivateRoute: React.ComponentType<any> = ({
+const PrivateRoute: ComponentType<any> = ({
 	render,
 	path,
 	exact,
@@ -33,7 +33,7 @@ const PrivateRoute: React.ComponentType<any> = ({
 	)
 }
 
-const mapStateToProps = (state: stateType) => ({
+const mapStateToProps = (state: StateType) => ({
 	authorizationStatus: getAuthorizationStatus(state),
 })
 

@@ -1,4 +1,4 @@
-import { filmType } from '../../types/types'
+import { FilmType } from '../../types/types'
 import { extend } from '../../utils/utils'
 import { ActionType, TypesActions } from '../action'
 
@@ -10,9 +10,7 @@ const loadData = () => {
 		promoFilms: [],
 	}
 
-	type InitialState = typeof initialState
-
-	return (state = initialState, action: TypesActions): InitialState => {
+	return (state = initialState, action: TypesActions) => {
 		switch (action.type) {
 			case ActionType.LOAD_FILMS:
 				return extend(state, {
@@ -33,14 +31,13 @@ const loadData = () => {
 				})
 
 			case ActionType.CHANGE_FAVORITE: {
-				const newFilms = state.films.map((film: filmType) => {
+				const newFilms = state.films.map((film: FilmType) => {
 					if (film.id === action.payload.id) return action.payload
 					return film
 				})
 
 				return extend(state, {
 					films: newFilms,
-					promoFilm: action.payload,
 				})
 			}
 		}

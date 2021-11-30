@@ -11,19 +11,19 @@ import PrivateComponent from '../private-components/private-component'
 import ButtonMyList from '../private-buttons/button-my-list'
 import ButtonAddReview from '../private-buttons/button-add-review'
 import FilmCardPreview from '../film-card-preview/film-card-preview'
-import { filmType, stateType } from '../../types/types'
+import { FilmType, StateType } from '../../types/types'
 
-type propsType = {
-	film: filmType | undefined
-	filmsSimilar: Array<filmType>
-	loadingFilmsSimilar: (id: number) => Promise<Array<filmType>>
+type PropsType = {
+	film: FilmType | undefined
+	filmsSimilar: FilmType[]
+	loadingFilmsSimilar: (id: number) => Promise<FilmType[]>
 }
 
 const FilmCard = ({
 	film,
 	filmsSimilar,
 	loadingFilmsSimilar,
-}: propsType): any => {
+}: PropsType): any => {
 	useEffect(() => {
 		if (film) loadingFilmsSimilar(film.id)
 	}, [])
@@ -101,7 +101,7 @@ const FilmCard = ({
 }
 
 const mapStateToProps = (
-	state: stateType,
+	state: StateType,
 	{ activeId }: { activeId: number }
 ) => ({
 	film: getFilm(state, activeId),

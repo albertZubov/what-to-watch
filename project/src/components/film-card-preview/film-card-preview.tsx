@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PlayerVideoPreview from '../player/player-video-preview'
-import { filmType } from '../../types/types'
+import { FilmType } from '../../types/types'
 
-const FilmCardPreview = ({ film }: { film: filmType }) => {
+const FilmCardPreview = ({ film }: { film: FilmType }) => {
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const [isPending, setIsPending] = useState(false)
 

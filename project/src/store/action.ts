@@ -1,4 +1,4 @@
-import { commentType, filmType, promoFilmType, userType } from '../types/types'
+import { CommentType, FilmType, PromoFilmType, UserType } from '../types/types'
 
 export const ActionType = {
 	LOAD_FILMS: 'LOAD_FILMS',
@@ -14,17 +14,17 @@ export const ActionType = {
 } as const
 
 export const ActionCreator = {
-	loadingFilms: (films: filmType[]) => ({
+	loadingFilms: (films: FilmType[]) => ({
 		type: ActionType.LOAD_FILMS,
 		payload: films,
 	}),
 
-	loadingFilmsSimilar: (films: filmType[]) => ({
+	loadingFilmsSimilar: (films: FilmType[]) => ({
 		type: ActionType.LOAD_FILMS_SIMILAR,
 		payload: films,
 	}),
 
-	loadingComments: (comments: commentType[]) => ({
+	loadingComments: (comments: CommentType[]) => ({
 		type: ActionType.LOAD_COMMENTS,
 		payload: comments,
 	}),
@@ -39,7 +39,7 @@ export const ActionCreator = {
 		payload: status,
 	}),
 
-	loadUserData: (userData: userType) => ({
+	loadUserData: (userData: UserType) => ({
 		type: ActionType.LOAD_USER_DATA,
 		payload: userData,
 	}),
@@ -48,12 +48,12 @@ export const ActionCreator = {
 		type: ActionType.LOG_OUT,
 	}),
 
-	changeFavorite: (payload: filmType) => ({
+	changeFavorite: (payload: FilmType) => ({
 		type: ActionType.CHANGE_FAVORITE,
 		payload,
 	}),
 
-	loadingPromoFilms: (promo: Array<promoFilmType>) => ({
+	loadingPromoFilms: (promo: PromoFilmType[]) => ({
 		type: ActionType.LOAD_PROMO_FILMS,
 		payload: promo,
 	}),
@@ -62,17 +62,17 @@ export const ActionCreator = {
 // Types
 type LoadingFilmsActionType = {
 	type: typeof ActionType.LOAD_FILMS
-	payload: filmType[]
+	payload: FilmType[]
 }
 
 type LoadingFilmsSimilarActionType = {
 	type: typeof ActionType.LOAD_FILMS_SIMILAR
-	payload: filmType[]
+	payload: FilmType[]
 }
 
 type LoadingCommentsActionType = {
 	type: typeof ActionType.LOAD_COMMENTS
-	payload: commentType[]
+	payload: CommentType[]
 }
 
 type ChangeGenreActionType = {
@@ -80,14 +80,14 @@ type ChangeGenreActionType = {
 	payload: string
 }
 
-type RequreAuthorizationActionType = {
+export type RequreAuthorizationActionType = {
 	type: typeof ActionType.REQUIRED_AUTHORIZATION
 	payload: string
 }
 
 type LoadUserDataActionType = {
 	type: typeof ActionType.LOAD_USER_DATA
-	payload: userType
+	payload: UserType
 }
 
 type LogOutActionType = {
@@ -96,12 +96,12 @@ type LogOutActionType = {
 
 type ChangeFavoriteActionType = {
 	type: typeof ActionType.CHANGE_FAVORITE
-	payload: filmType
+	payload: FilmType
 }
 
 type LoadingPromoFilmsActionType = {
 	type: typeof ActionType.LOAD_PROMO_FILMS
-	payload: Array<promoFilmType>
+	payload: PromoFilmType[]
 }
 
 export type TypesActions =

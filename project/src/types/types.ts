@@ -1,9 +1,9 @@
-type userCommentType = {
+type UserCommentType = {
 	id: number
 	name: string
 }
 
-export type userType = {
+export type UserType = {
 	id: number
 	name: string
 	email: string
@@ -11,7 +11,7 @@ export type userType = {
 	token: string
 }
 
-export interface filmType {
+export interface FilmType {
 	backgroundColor: string
 	backgroundImage: string
 	description: string
@@ -25,37 +25,37 @@ export interface filmType {
 	previewVideoLink: string
 	rating: number
 	released: number
-	runTime: number
+	runTime: number 
 	scoresCount: number
 	starring: Array<string>
 	videoLink: string
 }
 
-export type commentType = {
+export type CommentType = {
 	id: number
 	rating: number
 	comment: string
 	date: string
-	user: userCommentType
+	user: UserCommentType
 }
 
-export type stateType = {
+export type StateType = {
 	PROCESS: {
 		activeGenre: string
 	}
 	DATA: {
-		films: Array<filmType>
-		filmsSimilar: Array<filmType>
-		comments: Array<commentType>
-		promoFilms: Array<promoFilmType>
+		films: Array<FilmType>
+		filmsSimilar: Array<FilmType>
+		comments: Array<CommentType>
+		promoFilms: Array<PromoFilmType>
 	}
 	USER: {
 		authorizationStatus: string
-		userData: userType
+		userData: UserType
 	}
 }
 
-export type promoFilmType = {
+export type PromoFilmType = {
 	img: string
 	name: string
 	videoId: string

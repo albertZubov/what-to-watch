@@ -1,4 +1,7 @@
-export const extend = (a: any, b: any) => Object.assign({}, a, b)
+import { CommentType, FilmType, PromoFilmType, UserType } from '../types/types'
+
+export const extend = (a: StateUtilsType, b: ActionsUtilsType) =>
+	Object.assign({}, a, b)
 
 export const serverAdapter = (obj: any) =>
 	Object.keys(obj).reduce((newObj: any, key) => {
@@ -9,7 +12,7 @@ export const serverAdapter = (obj: any) =>
 		return newObj
 	}, {})
 
-export const formattingDataServerToClinet = (arrData: Array<any>) =>
+export const formattingDataServerToClinet = (arrData: any[]) =>
 	arrData.map((obj) => serverAdapter(obj))
 
 export const videoAdapter = {
@@ -69,7 +72,7 @@ export const getTime = (timeMinutes: number) => {
 	}
 }
 
-export const sortArrOnGenres = (arr: Array<any>) =>
+export const sortArrOnGenres = (arr: any[]) =>
 	arr.reduce(
 		(accumulator, currentValue) => {
 			const { genre } = currentValue
@@ -93,6 +96,70 @@ export const getRatingTitle = (rating: number) => {
 	]
 
 	const result = ratingTitleToNumber.find(({ max }) => rating < max)
-
 	return result && result.value
+}
+
+// Types
+
+type StateUtilsType =
+	| StateLoadReducerType
+	| StateActiveReducerType
+	| StateUserReducerType
+
+type ActionsUtilsType =
+	| ActionLoadFilmsType
+	| ActionLoadFilmsSimilarType
+	| ActionLoadCommentsType
+	| ActionLoadPromoFilmsType
+	| ActionChangeFavoriteType
+	| ActionGenreSelectionType
+	| ActionRequredAuthorizationType
+	| ActionLoadUserType
+	| ActionLogOutType
+
+type StateLoadReducerType = {
+	films: Array<FilmType>
+	filmsSimilar: Array<FilmType>
+	comments: Array<CommentType>
+	promoFilms: Array<PromoFilmType>
+}
+
+type StateActiveReducerType = {
+	activeGenre: string
+}
+
+type StateUserReducerType = {
+	authorizationStatus: string
+	userData: UserType
+}
+
+type ActionLoadFilmsType = {
+	films: FilmType[]
+}
+
+type ActionLoadFilmsSimilarType = {
+	filmsSimilar: FilmType[]
+}
+
+type ActionLoadCommentsType = {
+	comments: CommentType[]
+}
+type ActionLoadPromoFilmsType = {
+	promoFilms: PromoFilmType[]
+}
+type ActionChangeFavoriteType = {
+	films: FilmType[]
+}
+type ActionGenreSelectionType = {
+	activeGenre: string
+}
+type ActionRequredAuthorizationType = {
+	authorizationStatus: string
+}
+type ActionLoadUserType = {
+	userData: UserType
+}
+type ActionLogOutType = {
+	userData: UserType
+	authorizationStatus: string
 }

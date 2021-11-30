@@ -1,12 +1,10 @@
 import React, { MouseEventHandler } from 'react'
 
-type propsType = {
+type PropsType = {
 	onClickButton: MouseEventHandler<HTMLButtonElement>
 }
 
-// TODO: переименовать все питы на верхний регистр
-
-const ButtonShowMore = ({ onClickButton }: propsType) => {
+const ButtonShowMore = ({ onClickButton }: PropsType) => {
 	return (
 		<div className='catalog__more'>
 			<button className='catalog__button' type='button' onClick={onClickButton}>

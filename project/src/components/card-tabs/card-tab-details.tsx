@@ -1,8 +1,8 @@
 import React from 'react'
 import { getTime } from '../../utils/utils'
-import { filmType } from '../../types/types'
+import { FilmType } from '../../types/types'
 
-const CardTabDetails = ({ film }: { film: filmType }) => {
+const CardTabDetails = ({ film }: { film: FilmType }) => {
 	const { released, genre, director, starring, id, runTime } = film
 	const { hours, minutes } = getTime(runTime)
 

@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import FilmCardPreview from '../film-card-preview/film-card-preview'
 import { getGenresFilms } from '../../store/selectors'
 import ButtonShowMore from '../button-show-more/button-show-more'
-import { filmType, stateType } from '../../types/types'
+import { FilmType, StateType } from '../../types/types'
 
 const DEFAULT_FILMS = 8
 const ADD_FILMS = 8
 
-const FilmList = ({ filmsOnGenre }: { filmsOnGenre: Array<filmType> }) => {
+const FilmList = ({ filmsOnGenre }: { filmsOnGenre: FilmType[] }) => {
 	const [quantity, setQuantity] = useState(DEFAULT_FILMS)
 
 	const filmsArr =
@@ -34,7 +34,7 @@ const FilmList = ({ filmsOnGenre }: { filmsOnGenre: Array<filmType> }) => {
 	)
 }
 
-const mapStateToProps = (state: stateType) => ({
+const mapStateToProps = (state: StateType) => ({
 	filmsOnGenre: getGenresFilms(state),
 })
 

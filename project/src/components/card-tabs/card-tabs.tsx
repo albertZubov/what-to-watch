@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import cl from 'classnames'
 import CardTabOverview from './card-tab-overview'
 import CardTabDetails from './card-tab-details'
@@ -6,7 +6,7 @@ import CardTabReviews from './card-tab-reviews'
 import { commentsGet } from '../../store/api-actions'
 import { connect } from 'react-redux'
 import { getComments } from '../../store/selectors'
-import { commentType, filmType, stateType } from '../../types/types'
+import { CommentType, FilmType, StateType } from '../../types/types'
 
 const TabNames = {
 	OVERVIEW: 'Overview',
@@ -14,16 +14,13 @@ const TabNames = {
 	REVIEWS: 'Reviews',
 }
 
-// TODO: Переделать все массивы на новый вид записи
-// TODO: Поправить проверку типа target
-
-type propsType = {
-	film: filmType
-	comments: Array<commentType>
-	loadComments: (id: number) => Promise<Array<commentType>>
+type PropsType = {
+	film: FilmType
+	comments: CommentType[]
+	loadComments: (id: number) => Promise<CommentType[]>
 }
 
-const CardTabs = ({ film, loadComments, comments }: propsType) => {
+const CardTabs = ({ film, loadComments, comments }: PropsType) => {
 	const [activeTabName, setActiveTabName] = useState<string>(TabNames.OVERVIEW)
 
 	const TabsComponents = {
@@ -41,10 +38,10 @@ const CardTabs = ({ film, loadComments, comments }: propsType) => {
 			<nav className='film-nav film-card__nav'>
 				<ul
 					className='film-nav__list'
-					onClick={({ target }: MouseEventHandler<HTMLAnchorElement>) => {
-						// const targetType = target as HTMLElement
-						if (target.tagName === 'A') {
-							setActiveTabName(target.textContent)
+					onClick={({ target }: { target: EventTarget }) => {
+						const targetType = target as HTMLLinkElement
+						if (targetType.textContent && targetType.tagName === 'A') {
+							setActiveTabName(targetType.textContent)
 						}
 					}}
 				>
@@ -65,7 +62,7 @@ const CardTabs = ({ film, loadComments, comments }: propsType) => {
 	)
 }
 
-const mapStateToProps = (state: stateType) => ({
+const mapStateToProps = (state: StateType) => ({
 	comments: getComments(state),
 })
 

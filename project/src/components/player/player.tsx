@@ -6,9 +6,9 @@ import { getFilm } from '../../store/selectors'
 import '../../style-css/style.css'
 import cl from 'classnames'
 import browserHistory from '../../browser-history'
-import { filmType, stateType } from '../../types/types'
+import { FilmType, StateType } from '../../types/types'
 
-const Player = ({ film }: { film: filmType | undefined }) => {
+const Player = ({ film }: { film: FilmType | undefined }) => {
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [currentTime, setCurrentTime] = useState(0)
@@ -150,7 +150,7 @@ const Player = ({ film }: { film: filmType | undefined }) => {
 }
 
 const mapStateToProps = (
-	state: stateType,
+	state: StateType,
 	{ activeId }: { activeId: number }
 ) => ({
 	film: getFilm(state, activeId),

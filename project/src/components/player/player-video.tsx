@@ -1,8 +1,8 @@
 import React from 'react'
-import { filmType } from '../../types/types'
+import { FilmType } from '../../types/types'
 
 type propsType = {
-	film: filmType
+	film: FilmType
 	refLink: React.LegacyRef<HTMLVideoElement>
 	onTimeUpdate: React.ReactEventHandler<HTMLVideoElement>
 	onDurationChange: React.ReactEventHandler<HTMLVideoElement>

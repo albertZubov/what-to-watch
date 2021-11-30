@@ -7,16 +7,14 @@ const active = () => {
 		activeGenre: DEFAULT_GENRE,
 	}
 
-	type InitialState = typeof initialState
-
-	return (state = initialState, action: TypesActions): InitialState => {
+	return (state = initialState, action: TypesActions) => {
 		switch (action.type) {
 			case ActionType.GENRE_SELECTION:
 				return extend(state, {
 					activeGenre: action.payload,
 				})
 		}
-
+ 
 		return state
 	}
 }

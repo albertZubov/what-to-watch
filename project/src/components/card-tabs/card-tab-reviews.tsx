@@ -1,9 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { getDate } from '../../utils/utils'
-import { commentType } from '../../types/types'
+import { CommentType } from '../../types/types'
 
-const CardTabReviews = ({ comments }: { comments: Array<commentType> }) => {
+const CardTabReviews = ({ comments }: { comments: CommentType[] }) => {
 	return (
 		<div className='film-card__reviews film-card__row'>
 			<div className='film-card__reviews-col'>

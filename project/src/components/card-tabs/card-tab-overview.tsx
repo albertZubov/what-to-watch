@@ -1,8 +1,8 @@
 import React from 'react'
 import { getRatingTitle } from '../../utils/utils'
-import { filmType } from '../../types/types'
+import { FilmType } from '../../types/types'
 
-const CardTabOverview = ({ film }: { film: filmType }) => {
+const CardTabOverview = ({ film }: { film: FilmType }) => {
 	const { rating, scoresCount, description, director, starring } = film
 	const starringToString = starring.join(', ')
 

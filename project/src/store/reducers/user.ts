@@ -14,9 +14,7 @@ const user = () => {
 		},
 	}
 
-	type InitialState = typeof initialState
-
-	return (state = initialState, action: TypesActions): InitialState => {
+	return (state = initialState, action: TypesActions) => {
 		switch (action.type) {
 			case ActionType.REQUIRED_AUTHORIZATION:
 				return extend(state, {
@@ -34,7 +32,7 @@ const user = () => {
 				})
 		}
 
-		return state
+		return state 
 	}
 }
 

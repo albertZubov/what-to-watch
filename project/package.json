@@ -20,7 +20,7 @@
     "reselect": "^4.0.0"
   },
   "scripts": {
-    "start": "concurrently \"npm run mock-server arg\" \"set PORT=3001 && react-scripts start arg\"",
+    "start": "concurrently \"npm run mock-server arg\" \"set PORT=3001 && react-scripts --openssl-legacy-provider start arg\"",
     "build": "react-scripts build",
     "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
@@ -63,6 +63,9 @@
     "eslint-plugin-react-hooks": " ^4.2.0",
     "prettier": "^2.3.0",
     "redux-devtools-extension": "^2.13.9",
-    "redux-mock-store": "^1.5.4"
+    "redux-mock-store": "^1.5.4",
+
+    "json-server": "^0.16.3",
+    "concurrently": "6.4.0"
   }
 }

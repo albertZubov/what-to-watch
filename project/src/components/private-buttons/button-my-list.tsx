@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { favoritePost } from '../../store/api-actions'
-import { filmType } from '../../types/types'
+import { FilmType } from '../../types/types'
 
-type propsType = {
-	setFavorite: (id: number, status: boolean) => Promise<filmType>
+type PropsType = {
+	setFavorite: (id: number, status: boolean) => Promise<FilmType>
 	id: number
 	isFavorite: boolean
 }
@@ -14,7 +14,7 @@ const NamesBtnIcon = {
 	remove: 'in-list',
 }
 
-const ButtonMyList = ({ setFavorite, id, isFavorite }: propsType) => {
+const ButtonMyList = ({ setFavorite, id, isFavorite }: PropsType) => {
 	const btnIcon = isFavorite ? NamesBtnIcon.remove : NamesBtnIcon.add
 
 	return (

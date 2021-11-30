@@ -5,12 +5,12 @@ import { AppClient, AuthorizationStatus } from '../../const/const'
 import { connect } from 'react-redux'
 import { getAuthorizationStatus, getUserData } from '../../store/selectors'
 import { logout } from '../../store/api-actions'
-import { stateType, userType } from '../../types/types'
+import { StateType, UserType } from '../../types/types'
 
-type propsType = {
+type PropsType = {
 	clHeader: string
 	children?: React.ReactNode
-	userData: userType
+	userData: UserType
 	authorizationStatus: string
 	logOut: () => Promise<string>
 }
@@ -21,7 +21,7 @@ const Header = ({
 	userData,
 	authorizationStatus,
 	logOut,
-}: propsType) => {
+}: PropsType) => {
 	const { avatarUrl } = userData
 	const handleSubmitLogOut = useCallback(() => {
 		if (authorizationStatus === AuthorizationStatus.AUTH) {
@@ -63,7 +63,7 @@ const Header = ({
 	)
 }
 
-const mapStateToProps = (state: stateType) => ({
+const mapStateToProps = (state: StateType) => ({
 	userData: getUserData(state),
 	authorizationStatus: getAuthorizationStatus(state),
 })

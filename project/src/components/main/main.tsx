@@ -9,12 +9,10 @@ import { getPromoFilms } from '../../store/selectors'
 import './../../style-css/style.css'
 import cl from 'classnames'
 import PlayerYoutube from '../player/player-youtube'
-import { promoFilmType, stateType } from '../../types/types'
+import { PromoFilmType, StateType } from '../../types/types'
 
-const Main = ({ promoFilms }: { promoFilms: Array<promoFilmType> }) => {
-	const [films, setFilms] = useState<Array<promoFilmType>>(
-		Array.from(promoFilms)
-	)
+const Main = ({ promoFilms }: { promoFilms: PromoFilmType[] }) => {
+	const [films, setFilms] = useState<PromoFilmType[]>(Array.from(promoFilms))
 	const [startPreview, setStartPreview] = useState(false)
 	const [idVideo, setIdVideo] = useState('')
 	const videoRef = useRef<HTMLDivElement>(null)
@@ -112,7 +110,7 @@ const Main = ({ promoFilms }: { promoFilms: Array<promoFilmType> }) => {
 	)
 }
 
-const mapStateToProps = (state: stateType) => ({
+const mapStateToProps = (state: StateType) => ({
 	promoFilms: getPromoFilms(state),
 })
 

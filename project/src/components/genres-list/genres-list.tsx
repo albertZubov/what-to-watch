@@ -4,21 +4,21 @@ import { connect } from 'react-redux'
 import { ActionCreator } from '../../store/action'
 import { DEFAULT_GENRE } from '../../const/const'
 import cl from 'classnames'
-import { stateType } from '../../types/types'
+import { StateType } from '../../types/types'
 
-type propsType = {
+type PropsType = {
 	changeGenre: (genre: string) => string
-	genres: Array<string>
+	genres: string[]
 	activeGenre: string
 }
 
-const GenresList = ({ changeGenre, genres, activeGenre }: propsType) => {
+const GenresList = ({ changeGenre, genres, activeGenre }: PropsType) => {
 	return (
 		<ul
 			className='catalog__genres-list'
 			onClick={({ target }) => {
 				const targetType = target as HTMLElement
-				if (targetType.tagName === 'A' && targetType.textContent !== null) {
+				if (targetType.tagName === 'A' && targetType.textContent) {
 					changeGenre(targetType.textContent)
 				}
 			}}
@@ -39,7 +39,7 @@ const GenresList = ({ changeGenre, genres, activeGenre }: propsType) => {
 	)
 }
 
-const mapStateToProps = (state: stateType) => ({
+const mapStateToProps = (state: StateType) => ({
 	genres: getGenres(state),
 	activeGenre: getActiveGenre(state),
 })

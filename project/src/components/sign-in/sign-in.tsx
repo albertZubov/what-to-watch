@@ -1,14 +1,14 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useRef } from 'react'
 import { connect } from 'react-redux'
 import { login } from '../../store/api-actions'
 import Footer from '../footer/footer'
 
-type authDataType = {
+type AuthDataType = {
 	login: string
 	password: string
 }
 
-interface ISubmitLoginType {
+interface SubmitLoginType {
 	avatarUrl: string
 	email: string
 	id: number
@@ -16,11 +16,11 @@ interface ISubmitLoginType {
 	token: string
 }
 
-type propsType = {
-	onSubmit: (authData: authDataType) => Promise<ISubmitLoginType>
+type PropsType = {
+	onSubmit: (authData: AuthDataType) => Promise<SubmitLoginType>
 }
 
-const SignIn = ({ onSubmit }: propsType) => {
+const SignIn = ({ onSubmit }: PropsType) => {
 	const loginRef = useRef<HTMLInputElement>(null)
 	const passwordRef = useRef<HTMLInputElement>(null)
 
@@ -98,7 +98,7 @@ const SignIn = ({ onSubmit }: propsType) => {
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-	onSubmit: (authData: authDataType) => dispatch(login(authData)),
+	onSubmit: (authData: AuthDataType) => dispatch(login(authData)),
 })
 
 export default connect(null, mapDispatchToProps)(SignIn)

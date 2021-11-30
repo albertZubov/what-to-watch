@@ -1,7 +1,7 @@
 import { AuthorizationStatus } from '../../const/const'
 import { connect } from 'react-redux'
 import { getAuthorizationStatus } from '../../store/selectors'
-import { stateType } from '../../types/types'
+import { StateType } from '../../types/types'
 
 type propsType = {
 	children: JSX.Element
@@ -12,7 +12,7 @@ const PrivateComponent = ({ children, authorizationStatus }: propsType) => {
 	return authorizationStatus === AuthorizationStatus.AUTH ? children : null
 }
 
-const mapStateToProps = (state: stateType) => ({
+const mapStateToProps = (state: StateType) => ({
 	authorizationStatus: getAuthorizationStatus(state),
 })
 
