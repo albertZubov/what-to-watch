@@ -4,7 +4,7 @@ import { createAPI } from '../services/api'
 import { ActionType } from './action'
 import { commentsPost, favoritePost, fetchFilmsList } from './api-actions'
 
-const api = createAPI(() => {})
+const { api } = createAPI(() => {})
 
 describe('Async operations', () => {
 	beforeAll(() => {
@@ -25,7 +25,7 @@ describe('Async operations', () => {
 			.onPost(`${AppRoute.COMMENT}/${fakeUser.id}`)
 			.reply(200, [{ fake: true }])
 
-		return commentsLoader(dispatch, () => {}, api).then(() => {
+		return commentsLoader(dispatch, () => {}, { api }).then(() => {
 			expect(dispatch).toHaveBeenCalledTimes(0)
 		})
 	})
@@ -40,7 +40,7 @@ describe('Async operations', () => {
 			.onPost(`${AppRoute.FAVORITES}/${fakeFavorite.id}/${fakeFavorite.status}`)
 			.reply(200, { fake: true })
 
-		return favoriteLoader(dispatch, () => {}, api).then(() => {
+		return favoriteLoader(dispatch, () => {}, { api }).then(() => {
 			expect(dispatch).toHaveBeenCalledTimes(1)
 			expect(dispatch).toHaveBeenNthCalledWith(1, {
 				type: ActionType.CHANGE_FAVORITE,
@@ -56,7 +56,7 @@ describe('Async operations', () => {
 
 		apiMock.onGet(AppRoute.FILMS).reply(200, [{ fake: true }])
 
-		return filmsLoader(dispatch, () => {}, api).then(() => {
+		return filmsLoader(dispatch, () => {}, { api }).then(() => {
 			expect(dispatch).toHaveBeenCalledTimes(1)
 			expect(dispatch).toHaveBeenNthCalledWith(1, {
 				type: ActionType.LOAD_FILMS,
