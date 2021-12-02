@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { RequreAuthorizationActionType } from '../store/action'
 
 const BACKEND_URL = 'https://7.react.pages.academy/wtw'
-const BACKEND_MOCK_URL = 'http://localhost:3000/'
+const BACKEND_MOCK_URL = 'https://json-server-bd.glitch.me'
 const REQUEST_TIMEOUT = 5000
 
 const HttpCode = {
@@ -26,7 +26,6 @@ export const createAPI = (
 	const mockApi = axios.create({
 		baseURL: BACKEND_MOCK_URL,
 		timeout: REQUEST_TIMEOUT,
-		withCredentials: true,
 	})
 
 	const onSuccess = (response: AxiosResponse<any>) => response

@@ -8,7 +8,7 @@ export const AppClient = {
 }
 
 export const AppRoute = {
-	PROMO: '/promo',
+	PROMO: '/data.json',
 	FILMS: '/films',
 	COMMENT: '/comments',
 	LOGIN: '/login',
