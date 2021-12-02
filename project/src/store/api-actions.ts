@@ -125,9 +125,8 @@ export const favoritePost = (id: number, status: boolean): AppThunk => {
 
 export const getPromoFilms = (): AppThunkMock => {
 	return (dispatch, _getState, { mockApi }) =>
-		mockApi
-			.get('/promo_films')
-			.then(({ data }: { data: PromoFilmType[] }) =>
-				dispatch(ActionCreator.loadingPromoFilms(data))
-			)
+		mockApi.get(AppRoute.PROMO).then(({ data }: { data: PromoFilmType[] }) => {
+			const formatData = serverAdapter(data)
+			dispatch(ActionCreator.loadingPromoFilms(formatData.promoFilms))
+		})
 }
