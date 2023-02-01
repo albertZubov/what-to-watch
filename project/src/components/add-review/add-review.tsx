@@ -5,7 +5,8 @@ import { getFilm } from '../../store/selectors'
 import Header from '../header/header'
 import HeaderBreadcrumbs from '../header/header-breadcrumbs'
 import { commentsPost } from '../../store/api-actions'
-import { FilmType, StateType } from '../../types/types'
+import { StateType } from '../../types/types'
+import { useParams } from 'react-router-dom'
 
 const MIN_QUANTITY_SYMBOLS = 50
 const MAX_QUANTITY_SYMBOLS = 400
@@ -19,14 +20,17 @@ const InputName = {
 const arrayNumbers = [...Array(QUANTITY_ITEMS).keys()].map((el) => ++el)
 
 interface PropsType {
-	film?: FilmType
+	state: StateType
 	commentPost: (comment: string, rating: number, id: number) => Promise<string>
 }
 
-const AddReview = ({ film, commentPost }: PropsType) => {
+const AddReview = ({ state, commentPost }: PropsType) => {
 	const [rating, setRating] = useState<number>(0)
 	const [review, setReview] = useState<string>('')
 	const formRef = useRef<HTMLFormElement | null>(null)
+	//TODO дублирование - переделать при RTK
+	const { id } = useParams()
+	const film = id ? getFilm(state, +id) : undefined
 
 	const handleSubmit = (evt: React.FormEvent) => {
 		evt.preventDefault()
@@ -140,11 +144,8 @@ const AddReview = ({ film, commentPost }: PropsType) => {
 	) : null
 }
 
-const mapStateToProps = (
-	state: StateType,
-	{ activeId }: { activeId: number }
-) => ({
-	film: getFilm(state, activeId),
+const mapStateToProps = (state: StateType) => ({
+	state: state,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({

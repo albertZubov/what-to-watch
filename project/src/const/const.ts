@@ -1,10 +1,10 @@
 export const AppClient = {
 	ROOT: '/',
 	MY_LIST: '/mylist',
-	FILM_ID: '/films/:id',
+	FILM_ID: 'films/:id',
 	LOGIN: '/login',
-	ADD_REVIEW_ID: '/films/:id/review',
-	PLAYER_ID: '/player/:id',
+	ADD_REVIEW_ID: 'films/:id/review',
+	PLAYER_ID: 'player/:id',
 }
 
 export const AppRoute = {

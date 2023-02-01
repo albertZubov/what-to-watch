@@ -9,6 +9,7 @@ type propsType = {
 }
 
 const PrivateComponent = ({ children, authorizationStatus }: propsType) => {
+	console.log(authorizationStatus)
 	return authorizationStatus === AuthorizationStatus.AUTH ? children : null
 }
 

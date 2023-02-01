@@ -55,6 +55,9 @@ export const commentsGet = (id: number): AppThunk => {
 			})
 }
 
+// TODO сделать новую реализацию redirect вместо .then(() => browserHistory.push(`${AppRoute.FILMS}/${id}`))
+// https://github.com/htmlacademy-react/guess-melody-11/pull/7/commits/5ce58b37d0ed3e9b7dfe01c0f03dc670098e50ae
+
 export const commentsPost = (
 	comment: string,
 	rating: number,
@@ -92,7 +95,7 @@ export const login = ({
 				dispatch(ActionCreator.loadUserData(serverAdapter(data)))
 				dispatch(ActionCreator.requreAuthorization(AuthorizationStatus.AUTH))
 			})
-			.then(() => browserHistory.push(AppRoute.ROOT))
+			.then(() => browserHistory.back())
 }
 
 export const logout = (): AppThunk => {

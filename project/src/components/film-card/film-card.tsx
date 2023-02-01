@@ -12,18 +12,23 @@ import ButtonMyList from '../private-buttons/button-my-list'
 import ButtonAddReview from '../private-buttons/button-add-review'
 import FilmCardPreview from '../film-card-preview/film-card-preview'
 import { FilmType, StateType } from '../../types/types'
+import { useParams } from 'react-router-dom'
 
 type PropsType = {
-	film: FilmType | undefined
+	state: StateType
 	filmsSimilar: FilmType[]
 	loadingFilmsSimilar: (id: number) => Promise<FilmType[]>
 }
 
 const FilmCard = ({
-	film,
+	state,
 	filmsSimilar,
 	loadingFilmsSimilar,
 }: PropsType): any => {
+	// Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+	const params = useParams()
+	const film = params.id ? getFilm(state, +params.id) : undefined
+
 	useEffect(() => {
 		if (film) loadingFilmsSimilar(film.id)
 	}, [])
@@ -100,11 +105,8 @@ const FilmCard = ({
 	}
 }
 
-const mapStateToProps = (
-	state: StateType,
-	{ activeId }: { activeId: number }
-) => ({
-	film: getFilm(state, activeId),
+const mapStateToProps = (state: StateType) => ({
+	state: state,
 	filmsSimilar: getFilmsSimilar(state).slice(0, 4),
 })
 
