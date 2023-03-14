@@ -1,40 +1,21 @@
-import React, { ComponentType } from 'react'
-import { Route, Redirect } from 'react-router-dom'
-import { connect } from 'react-redux'
+import React from 'react'
 import { AuthorizationStatus, AppClient } from '../../const/const'
-import { getAuthorizationStatus } from '../../store/selectors'
-import { StateType } from '../../types/types'
+import { Navigate } from 'react-router-dom'
 
 type propsType = {
-	render: () => JSX.Element | undefined
-	path: string
-	exact: boolean | undefined
 	authorizationStatus: string
+	children: JSX.Element
 }
 
-const PrivateRoute: ComponentType<any> = ({
-	render,
-	path,
-	exact,
+const PrivateRoute = ({
 	authorizationStatus,
-}: propsType) => {
-	return (
-		<Route
-			exact={exact}
-			path={path}
-			render={() =>
-				authorizationStatus === AuthorizationStatus.AUTH ? (
-					render()
-				) : (
-					<Redirect to={AppClient.LOGIN} />
-				)
-			}
-		/>
+	children,
+}: propsType): JSX.Element => {
+	return authorizationStatus === AuthorizationStatus.AUTH ? (
+		children
+	) : (
+		<Navigate to={AppClient.LOGIN} />
 	)
 }
 
-const mapStateToProps = (state: StateType) => ({
-	authorizationStatus: getAuthorizationStatus(state),
-})
-
-export default connect(mapStateToProps)(PrivateRoute)
+export default PrivateRoute

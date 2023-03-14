@@ -41,7 +41,13 @@ const Header = ({
 			{children}
 			<ul className='user-block'>
 				<li className='user-block__item'>
-					<Link to={AppClient.MY_LIST}>
+					<Link
+						to={
+							authorizationStatus === AuthorizationStatus.NO_AUTH
+								? AppClient.LOGIN
+								: AppClient.MY_LIST
+						}
+					>
 						<div className='user-block__avatar'>
 							<img src={avatarUrl} alt='User avatar' width='63' height='63' />
 						</div>

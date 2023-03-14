@@ -6,14 +6,20 @@ import { getFilm } from '../../store/selectors'
 import '../../style-css/style.css'
 import cl from 'classnames'
 import browserHistory from '../../browser-history'
-import { FilmType, StateType } from '../../types/types'
+import { StateType } from '../../types/types'
+import { useParams } from 'react-router-dom'
 
-const Player = ({ film }: { film: FilmType | undefined }) => {
+// TODO попробовать изменить browserHistory на хук useHistory
+
+const Player = ({ state }: { state: StateType }) => {
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [currentTime, setCurrentTime] = useState(0)
 	const [played, setPlayed] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
+
+	const params = useParams()
+	const film = params.id ? getFilm(state, +params.id) : undefined
 
 	useEffect(() => {
 		if (videoRef.current) {
@@ -76,7 +82,7 @@ const Player = ({ film }: { film: FilmType | undefined }) => {
 				<div className='player__ball--small'></div>
 			</div>
 			<button
-				onClick={() => browserHistory.goBack()}
+				onClick={() => browserHistory.back()}
 				type='button'
 				className='player__exit'
 			>
@@ -149,11 +155,8 @@ const Player = ({ film }: { film: FilmType | undefined }) => {
 	)
 }
 
-const mapStateToProps = (
-	state: StateType,
-	{ activeId }: { activeId: number }
-) => ({
-	film: getFilm(state, activeId),
+const mapStateToProps = (state: StateType) => ({
+	state: state,
 })
 
 export default connect(mapStateToProps)(Player)
