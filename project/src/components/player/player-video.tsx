@@ -21,7 +21,7 @@ const PlayerVideo = ({
 	onSeeked,
 	onSeeking,
 	onClick,
-}: propsType) => {
+}: propsType): JSX.Element => {
 	return (
 		<video
 			src={film.videoLink}

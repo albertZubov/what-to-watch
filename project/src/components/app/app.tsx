@@ -1,7 +1,7 @@
 import React from 'react'
 import Main from '../main/main'
 import FilmCard from '../film-card/film-card'
-import { AppClient, AuthorizationStatus } from '../../const/const'
+import { AppClient } from '../../const/const'
 import { Route, Routes } from 'react-router-dom'
 import AddReview from '../add-review/add-review'
 import { Link } from 'react-router-dom'
@@ -12,11 +12,11 @@ import PrivateRoute from '../private-route/private-route'
 import HistoryRouter from '../history-route/history-route'
 import browserHistory from '../../browser-history'
 import { useSelector } from 'react-redux'
-import { StateType } from '../../types/types'
+import { State } from '../../types/state'
 
-const App = () => {
+const App = (): JSX.Element => {
 	const authorizationStatus = useSelector(
-		(state: StateType) => state.USER.authorizationStatus
+		(state: State) => state.USER.authorizationStatus
 	)
 
 	return (

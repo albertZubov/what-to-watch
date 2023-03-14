@@ -1,29 +1,36 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/app/app'
-import { checkAuth, fetchFilmsList, getPromoFilms } from './store/api-actions'
-import rootReducer from './store/reducers/root'
+import {
+	checkAuthAction,
+	fetchFilmsListAction,
+	fetchPromoFilmsAction,
+} from './store/api-actions'
+import { rootReducer } from './store/reducers/root'
 import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import thunk from 'redux-thunk'
 import { createAPI } from './services/api'
-import { ActionCreator } from './store/action'
+import { requreAuthorization } from './store/reducers/user'
 import { AuthorizationStatus } from './const/const'
+import { configureStore } from '@reduxjs/toolkit'
 
 const api = createAPI(() =>
-	store.dispatch(ActionCreator.requreAuthorization(AuthorizationStatus.NO_AUTH))
+	store.dispatch(requreAuthorization(AuthorizationStatus.NO_AUTH))
 )
 
-const store = createStore(
-	rootReducer,
-	composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api)))
-)
+export const store = configureStore({
+	reducer: rootReducer,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			thunk: {
+				extraArgument: api,
+			},
+		}),
+})
 
 Promise.all([
-	store.dispatch(fetchFilmsList()),
-	store.dispatch(checkAuth()),
-	store.dispatch(getPromoFilms()),
+	store.dispatch(fetchFilmsListAction()),
+	store.dispatch(checkAuthAction()),
+	store.dispatch(fetchPromoFilmsAction()),
 ])
 	.then(() => {
 		ReactDOM.render(

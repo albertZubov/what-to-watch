@@ -1,22 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { videoAdapter } from '../../utils/utils'
 import PlayerVideo from './player-video'
-import { connect } from 'react-redux'
 import { getFilm } from '../../store/selectors'
 import '../../style-css/style.css'
 import cl from 'classnames'
 import browserHistory from '../../browser-history'
-import { StateType } from '../../types/types'
 import { useParams } from 'react-router-dom'
+import { useAppSelector } from '../../hooks/hooks'
+import { State } from '../../types/state'
 
-// TODO попробовать изменить browserHistory на хук useHistory
-
-const Player = ({ state }: { state: StateType }) => {
+const Player = (): JSX.Element => {
+	const state = useAppSelector((st: State) => st)
 	const videoRef = useRef<HTMLVideoElement>(null)
-	const [isPlaying, setIsPlaying] = useState(false)
-	const [currentTime, setCurrentTime] = useState(0)
-	const [played, setPlayed] = useState(0)
-	const [isLoading, setIsLoading] = useState(false)
+	const [isPlaying, setIsPlaying] = useState<boolean>(false)
+	const [currentTime, setCurrentTime] = useState<number>(0)
+	const [played, setPlayed] = useState<number>(0)
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const params = useParams()
 	const film = params.id ? getFilm(state, +params.id) : undefined
@@ -33,8 +32,8 @@ const Player = ({ state }: { state: StateType }) => {
 		}
 	}, [played])
 
-	const handleSeekChange = ({ target }: any) => {
-		setPlayed(target.value)
+	const handleSeekChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+		setPlayed(+target.value)
 	}
 
 	const handleMouseDown = () => setIsPlaying(false)
@@ -155,8 +154,4 @@ const Player = ({ state }: { state: StateType }) => {
 	)
 }
 
-const mapStateToProps = (state: StateType) => ({
-	state: state,
-})
-
-export default connect(mapStateToProps)(Player)
+export default Player

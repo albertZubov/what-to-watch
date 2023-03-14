@@ -1,10 +1,8 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { favoritePost } from '../../store/api-actions'
-import { FilmType } from '../../types/types'
+import { useAppDispatch } from '../../hooks/hooks'
+import { sendFavoriteAction } from '../../store/api-actions'
 
 type PropsType = {
-	setFavorite: (id: number, status: boolean) => Promise<FilmType>
 	id: number
 	isFavorite: boolean
 }
@@ -14,14 +12,15 @@ const NamesBtnIcon = {
 	remove: 'in-list',
 }
 
-const ButtonMyList = ({ setFavorite, id, isFavorite }: PropsType) => {
+const ButtonMyList = ({ id, isFavorite }: PropsType): JSX.Element => {
 	const btnIcon = isFavorite ? NamesBtnIcon.remove : NamesBtnIcon.add
+	const dispatch = useAppDispatch()
 
 	return (
 		<button
 			className='btn btn--list film-card__button'
 			type='button'
-			onClick={() => setFavorite(id, !isFavorite)}
+			onClick={() => dispatch(sendFavoriteAction({ id, status: !isFavorite }))}
 		>
 			<svg viewBox='0 0 19 20' width='19' height='20'>
 				<use xlinkHref={`#${btnIcon}`}></use>
@@ -31,9 +30,4 @@ const ButtonMyList = ({ setFavorite, id, isFavorite }: PropsType) => {
 	)
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-	setFavorite: (id: number, status: boolean) =>
-		dispatch(favoritePost(id, status)),
-})
-
-export default connect(null, mapDispatchToProps)(ButtonMyList)
+export default ButtonMyList

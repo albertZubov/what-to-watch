@@ -1,49 +1,45 @@
+import { createSlice } from '@reduxjs/toolkit'
+import { NameSpace } from '../../const/const'
+import { Data } from '../../types/state'
 import { FilmType } from '../../types/types'
-import { extend } from '../../utils/utils'
-import { ActionType, TypesActions } from '../action'
+import {
+	fetchCommentsAction,
+	fetchFilmsListAction,
+	fetchFilmsListSimilarAction,
+	fetchPromoFilmsAction,
+	sendFavoriteAction,
+} from '../api-actions'
 
-const loadData = () => {
-	const initialState = {
-		films: [],
-		filmsSimilar: [],
-		comments: [],
-		promoFilms: [],
-	}
+const initialState: Data = {
+	films: [],
+	filmsSimilar: [],
+	comments: [],
+	promoFilms: [],
+}
 
-	return (state = initialState, action: TypesActions) => {
-		switch (action.type) {
-			case ActionType.LOAD_FILMS:
-				return extend(state, {
-					films: action.payload,
-				})
-			case ActionType.LOAD_FILMS_SIMILAR:
-				return extend(state, {
-					filmsSimilar: action.payload,
-				})
-			case ActionType.LOAD_COMMENTS:
-				return extend(state, {
-					comments: action.payload,
-				})
-
-			case ActionType.LOAD_PROMO_FILMS:
-				return extend(state, {
-					promoFilms: action.payload,
-				})
-
-			case ActionType.CHANGE_FAVORITE: {
-				const newFilms = state.films.map((film: FilmType) => {
+export const loadData = createSlice({
+	name: NameSpace.Data,
+	initialState,
+	reducers: {},
+	extraReducers(builder) {
+		builder
+			.addCase(fetchFilmsListAction.fulfilled, (state, action) => {
+				state.films = action.payload
+			})
+			.addCase(fetchPromoFilmsAction.fulfilled, (state, action) => {
+				state.promoFilms = action.payload.promoFilms
+			})
+			.addCase(fetchFilmsListSimilarAction.fulfilled, (state, action) => {
+				state.filmsSimilar = action.payload
+			})
+			.addCase(fetchCommentsAction.fulfilled, (state, action) => {
+				state.comments = action.payload
+			})
+			.addCase(sendFavoriteAction.fulfilled, (state, action) => {
+				state.films = state.films.map((film: FilmType) => {
 					if (film.id === action.payload.id) return action.payload
 					return film
 				})
-
-				return extend(state, {
-					films: newFilms,
-				})
-			}
-		}
-
-		return state
-	}
-}
-
-export { loadData }
+			})
+	},
+})

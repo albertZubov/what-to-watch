@@ -25,7 +25,7 @@ export interface FilmType {
 	previewVideoLink: string
 	rating: number
 	released: number
-	runTime: number 
+	runTime: number
 	scoresCount: number
 	starring: Array<string>
 	videoLink: string
@@ -35,28 +35,21 @@ export type CommentType = {
 	id: number
 	rating: number
 	comment: string
-	date: string
-	user: UserCommentType
-}
-
-export type StateType = {
-	PROCESS: {
-		activeGenre: string
-	}
-	DATA: {
-		films: Array<FilmType>
-		filmsSimilar: Array<FilmType>
-		comments: Array<CommentType>
-		promoFilms: Array<PromoFilmType>
-	}
-	USER: {
-		authorizationStatus: string
-		userData: UserType
-	}
+	date?: string
+	user?: UserCommentType
 }
 
 export type PromoFilmType = {
 	img: string
 	name: string
 	videoId: string
+}
+
+export type ArrayPromoFilmsType = {
+	promoFilms: Array<PromoFilmType>
+}
+
+export type AuthDataType = {
+	login: string
+	password: string
 }

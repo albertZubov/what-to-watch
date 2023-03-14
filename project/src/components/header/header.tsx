@@ -2,30 +2,26 @@ import React, { useCallback } from 'react'
 import cl from 'classnames'
 import { Link } from 'react-router-dom'
 import { AppClient, AuthorizationStatus } from '../../const/const'
-import { connect } from 'react-redux'
 import { getAuthorizationStatus, getUserData } from '../../store/selectors'
-import { logout } from '../../store/api-actions'
-import { StateType, UserType } from '../../types/types'
+import { logOutAction } from '../../store/api-actions'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { State } from '../../types/state'
 
 type PropsType = {
 	clHeader: string
 	children?: React.ReactNode
-	userData: UserType
-	authorizationStatus: string
-	logOut: () => Promise<string>
 }
 
-const Header = ({
-	clHeader,
-	children,
-	userData,
-	authorizationStatus,
-	logOut,
-}: PropsType) => {
-	const { avatarUrl } = userData
+const Header = ({ clHeader, children }: PropsType): JSX.Element => {
+	const dispatch = useAppDispatch()
+	const { avatarUrl } = useAppSelector((state: State) => getUserData(state))
+	const authorizationStatus = useAppSelector((state: State) =>
+		getAuthorizationStatus(state)
+	)
+
 	const handleSubmitLogOut = useCallback(() => {
 		if (authorizationStatus === AuthorizationStatus.AUTH) {
-			logOut()
+			dispatch(logOutAction())
 		}
 	}, [])
 
@@ -69,13 +65,4 @@ const Header = ({
 	)
 }
 
-const mapStateToProps = (state: StateType) => ({
-	userData: getUserData(state),
-	authorizationStatus: getAuthorizationStatus(state),
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-	logOut: () => dispatch(logout()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default Header

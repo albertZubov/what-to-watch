@@ -1,135 +1,155 @@
 import browserHistory from '../browser-history'
-import { AppRoute, AuthorizationStatus } from '../const/const'
+import { AppRoute } from '../const/const'
 import { formattingDataServerToClinet, serverAdapter } from '../utils/utils'
-import { ActionCreator } from './action'
 import { transformBoolToNumber } from '../utils/utils'
-import { ThunkAction } from 'redux-thunk'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
-	CommentType,
 	FilmType,
-	PromoFilmType,
-	StateType,
+	CommentType,
+	AuthDataType,
 	UserType,
+	ArrayPromoFilmsType,
 } from '../types/types'
-import { AnyAction } from 'redux'
+import { AppDispatch, State } from '../types/state'
+import { AxiosInstance } from 'axios'
 
-type AppThunk<ReturnType = void> = ThunkAction<
-	ReturnType,
-	StateType | Record<string, unknown>,
-	{ api: any },
-	AnyAction
->
-
-type AppThunkMock<ReturnType = void> = ThunkAction<
-	ReturnType,
-	StateType | Record<string, unknown>,
-	{ mockApi: any },
-	AnyAction
->
-
-export const fetchFilmsList = (): AppThunk<Promise<FilmType[]>> => {
-	return (dispatch, _getState, { api }) =>
-		api.get(AppRoute.FILMS).then(({ data }: { data: FilmType[] }) => {
-			const formatData = formattingDataServerToClinet(data)
-			dispatch(ActionCreator.loadingFilms(formatData))
-			return formatData
-		})
+interface apiType {
+	api: AxiosInstance
+	mockApi: AxiosInstance
 }
 
-export const fetchFilmsListSimilar = (id: number): AppThunk => {
-	return (dispatch, _getState, { api }) =>
-		api
-			.get(`${AppRoute.FILMS}/${id}/similar`)
-			.then(({ data }: { data: FilmType[] }) => {
-				const formatData = formattingDataServerToClinet(data)
-				return dispatch(ActionCreator.loadingFilmsSimilar(formatData))
-			})
-}
+export const fetchFilmsListAction = createAsyncThunk<
+	Array<FilmType>,
+	undefined,
+	{
+		dispatch: AppDispatch
+		state: State
+		extra: apiType
+	}
+>('data/fetchFilmList', async (_arg, { dispatch, extra: { api } }) => {
+	const { data } = await api.get(AppRoute.FILMS)
+	return formattingDataServerToClinet(data)
+})
 
-export const commentsGet = (id: number): AppThunk => {
-	return (dispatch, _getState, { api }) =>
-		api
-			.get(`${AppRoute.COMMENT}/${id}`)
-			.then(({ data }: { data: CommentType[] }) => {
-				return dispatch(ActionCreator.loadingComments(data))
-			})
-}
+export const fetchPromoFilmsAction = createAsyncThunk<
+	ArrayPromoFilmsType,
+	undefined,
+	{
+		dispatch: AppDispatch
+		state: State
+		extra: apiType
+	}
+>('data/fetchPromoFilms', async (_arg, { dispatch, extra: { mockApi } }) => {
+	const { data } = await mockApi.get(AppRoute.PROMO)
+	return serverAdapter(data)
+})
 
-// TODO сделать новую реализацию redirect вместо .then(() => browserHistory.push(`${AppRoute.FILMS}/${id}`))
-// https://github.com/htmlacademy-react/guess-melody-11/pull/7/commits/5ce58b37d0ed3e9b7dfe01c0f03dc670098e50ae
+export const fetchFilmsListSimilarAction = createAsyncThunk<
+	Array<FilmType>,
+	{ id: number },
+	{
+		dispatch: AppDispatch
+		state: State
+		extra: apiType
+	}
+>(
+	'data/fetchFilmsListSimilar',
+	async ({ id }, { dispatch, extra: { api } }) => {
+		const { data } = await api.get(`${AppRoute.FILMS}/${id}/similar`)
+		return formattingDataServerToClinet(data)
+	}
+)
 
-export const commentsPost = (
-	comment: string,
-	rating: number,
-	id: number
-): AppThunk => {
-	return (_dispatch, _getState, { api }) =>
-		api
-			.post(`${AppRoute.COMMENT}/${id}`, { comment, rating })
-			.then(() => browserHistory.push(`${AppRoute.FILMS}/${id}`))
-}
+export const fetchCommentsAction = createAsyncThunk<
+	Array<CommentType>,
+	{ id: number },
+	{
+		dispatch: AppDispatch
+		state: State
+		extra: apiType
+	}
+>('data/fetchComments', async ({ id }, { dispatch, extra: { api } }) => {
+	const { data } = await api.get(`${AppRoute.COMMENT}/${id}`)
+	return data
+})
 
-export const checkAuth = (): AppThunk => {
-	return (dispatch, _getState, { api }) =>
-		api
-			.get(AppRoute.LOGIN)
-			.then(({ data }: { data: UserType }) => {
-				dispatch(ActionCreator.loadUserData(serverAdapter(data)))
-				dispatch(ActionCreator.requreAuthorization(AuthorizationStatus.AUTH))
-			})
-			.catch((err: any) => console.log(err))
-}
+export const checkAuthAction = createAsyncThunk<
+	void,
+	undefined,
+	{
+		dispatch: AppDispatch
+		state: State
+		extra: apiType
+	}
+>('user/checkAuth', async (_arg, { dispatch, extra: { api } }) => {
+	await api.get(AppRoute.LOGIN)
+})
 
-export const login = ({
-	login: email,
-	password: password,
-}: {
-	login: string
-	password: string
-}): AppThunk => {
-	return (dispatch, _getState, { api }) =>
-		api
-			.post(AppRoute.LOGIN, { email, password })
-			.then(({ data }: { data: UserType }) => {
-				localStorage.setItem('token', data.token)
-				dispatch(ActionCreator.loadUserData(serverAdapter(data)))
-				dispatch(ActionCreator.requreAuthorization(AuthorizationStatus.AUTH))
-			})
-			.then(() => browserHistory.back())
-}
+export const sendCommentAction = createAsyncThunk<
+	void,
+	CommentType,
+	{
+		dispatch: AppDispatch
+		state: State
+		extra: apiType
+	}
+>(
+	'user/sendComment',
+	async ({ comment, rating, id }, { dispatch, extra: { api } }) => {
+		await api.post(`${AppRoute.COMMENT}/${id}`, { comment, rating })
+		browserHistory.back()
+	}
+)
 
-export const logout = (): AppThunk => {
-	return (dispatch, _getState, { api }) =>
-		api
-			.delete(AppRoute.LOGOUT)
-			.then(({ data }: { data: any }) =>
-				localStorage.setItem('token', data.token)
-			)
-			.then(() => dispatch(ActionCreator.logOut()))
-}
+export const logInAction = createAsyncThunk<
+	UserType,
+	AuthDataType,
+	{
+		dispatch: AppDispatch
+		state: State
+		extra: apiType
+	}
+>(
+	'user/logIn',
+	async (
+		{ login: email, password: password },
+		{ dispatch, extra: { api } }
+	) => {
+		const { data } = await api.post(AppRoute.LOGIN, { email, password })
+		localStorage.setItem('token', data.token)
+		browserHistory.back()
+		return serverAdapter(data)
+	}
+)
 
-export const favoritePost = (id: number, status: boolean): AppThunk => {
-	return (dispatch, _getState, { api }) =>
-		api
-			.post(`${AppRoute.FAVORITES}/${id}/${transformBoolToNumber(status)}`)
-			.then(({ data }: { data: FilmType }) =>
-				dispatch(ActionCreator.changeFavorite(serverAdapter(data)))
-			)
-}
+export const logOutAction = createAsyncThunk<
+	void,
+	undefined,
+	{
+		dispatch: AppDispatch
+		state: State
+		extra: apiType
+	}
+>('user/logOut', async (_arg, { dispatch, extra: { api } }) => {
+	const { data } = await api.delete(AppRoute.LOGOUT)
+	localStorage.setItem('token', data.token)
+})
 
-// После добавления слайдера с фильмами на главную страницу - промофильм там не отображается. Нет нужды в данном action
-// export const getPromoFilm = (): AppThunk => {
-// 	return (dispatch, _getState, { api }) =>
-// 		api.get(AppRoute.PROMO).then(({ data }: { data: any }) => {
-// 			const formatData = serverAdapter(data)
-// 			dispatch(ActionCreator.loadingPromoFilm(formatData))
-// 		})
-// }
 
-export const getPromoFilms = (): AppThunkMock => {
-	return (dispatch, _getState, { mockApi }) =>
-		mockApi.get(AppRoute.PROMO).then(({ data }: { data: PromoFilmType[] }) => {
-			const formatData = serverAdapter(data)
-			dispatch(ActionCreator.loadingPromoFilms(formatData.promoFilms))
-		})
-}
+export const sendFavoriteAction = createAsyncThunk<
+	FilmType,
+	{ id: number; status: boolean },
+	{
+		dispatch: AppDispatch
+		state: State
+		extra: apiType
+	}
+>(
+	'active/sendFavorite',
+	async ({ id, status }, { dispatch, extra: { api } }) => {
+		const { data } = await api.post(
+			`${AppRoute.FAVORITES}/${id}/${transformBoolToNumber(status)}`
+		)
+		return serverAdapter(data)
+	}
+)

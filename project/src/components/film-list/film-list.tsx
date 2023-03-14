@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import React, { ChangeEvent, useState } from 'react'
 import FilmCardPreview from '../film-card-preview/film-card-preview'
 import { getGenresFilms } from '../../store/selectors'
 import ButtonShowMore from '../button-show-more/button-show-more'
-import { FilmType, StateType } from '../../types/types'
 import './film-list.css'
+import { useAppSelector } from '../../hooks/hooks'
+import { State } from '../../types/state'
+import { FilmType } from '../../types/types'
 
 const DEFAULT_FILMS = 8
 const ADD_FILMS = 8
 
-const FilmList = ({ filmsOnGenre }: { filmsOnGenre: FilmType[] }) => {
-	const [quantity, setQuantity] = useState(DEFAULT_FILMS)
-	const [search, setSearch] = useState('')
+const FilmList = (): JSX.Element => {
+	const filmsOnGenre = useAppSelector((state: State) => getGenresFilms(state))
+	const [quantity, setQuantity] = useState<number>(DEFAULT_FILMS)
+	const [search, setSearch] = useState<string>('')
 
-	const films = filmsOnGenre.filter((el: any) =>
-		el.name.toLowerCase().includes(search)
+	const films = filmsOnGenre.filter((film: FilmType) =>
+		film.name.toLowerCase().includes(search)
 	)
 
 	const filmsArr =
@@ -30,14 +32,16 @@ const FilmList = ({ filmsOnGenre }: { filmsOnGenre: FilmType[] }) => {
 		<>
 			<form className='search'>
 				<input
-					onInput={({ target }: any) => setSearch(target.value)}
+					onInput={({ target }: ChangeEvent<HTMLInputElement>) =>
+						setSearch(target.value)
+					}
 					type='text'
 					placeholder='Название фильма'
 					className='search__input input'
 				/>
 			</form>
 			<div className='catalog__films-list'>
-				{filmsArr.map((film: any) => (
+				{filmsArr.map((film: FilmType) => (
 					<FilmCardPreview film={film} key={film.id} />
 				))}
 			</div>
@@ -46,8 +50,4 @@ const FilmList = ({ filmsOnGenre }: { filmsOnGenre: FilmType[] }) => {
 	)
 }
 
-const mapStateToProps = (state: StateType) => ({
-	filmsOnGenre: getGenresFilms(state),
-})
-
-export default connect(mapStateToProps)(FilmList)
+export default FilmList

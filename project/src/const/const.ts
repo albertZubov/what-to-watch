@@ -29,3 +29,10 @@ export const AuthorizationStatus = {
 	AUTH: 'AUTH',
 	NO_AUTH: 'NO_AUTH',
 }
+
+/* eslint-disable */
+export enum NameSpace {
+	Process = 'PROCESS',
+	Data = 'DATA',
+	User = 'USER',
+}

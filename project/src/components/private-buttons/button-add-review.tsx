@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const ButtonAddReview = ({ id }: { id: number }) => {
+const ButtonAddReview = ({ id }: { id: number }): JSX.Element => {
 	return (
 		<Link to={`/films/${id}/review`} className='btn film-card__button'>
 			Add review
