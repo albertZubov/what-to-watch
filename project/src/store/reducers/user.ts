@@ -3,7 +3,7 @@ import { AuthorizationStatus, NameSpace } from '../../const/const'
 import { User } from '../../types/state'
 import { checkAuthAction, logInAction, logOutAction } from '../api-actions'
 
-const initialState: User = {
+export const initialState: User = {
 	authorizationStatus: AuthorizationStatus.NO_AUTH,
 	userData: {
 		id: 0,
@@ -33,6 +33,10 @@ export const user = createSlice({
 			.addCase(logInAction.fulfilled, (state, action) => {
 				state.userData = action.payload
 				state.authorizationStatus = AuthorizationStatus.AUTH
+			})
+			.addCase(logInAction.rejected, (state) => {
+				state.userData = initialState.userData
+				state.authorizationStatus = AuthorizationStatus.NO_AUTH
 			})
 			.addCase(logOutAction.fulfilled, (state) => {
 				state.userData = initialState.userData

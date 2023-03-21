@@ -41,6 +41,7 @@ export const createAPI = (
 
 	const onFail = (err: AxiosError<{ error: string }>) => {
 		const { response } = err
+		// console.log('onFail', err)
 
 		if (response && response.status === HttpCode.UNAUTHORIZED) {
 			onUnauthorized()

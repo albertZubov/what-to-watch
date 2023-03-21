@@ -47,10 +47,12 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.0",
+    "@jedmao/redux-mock-store": "3.0.5",
+    "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "^11.2.0",
     "@testing-library/react-hooks": "^5.1.0",
     "@testing-library/user-event": "^12.8.0",
+    "@types/jest": "29.4.1",
     "@types/react-redux": "7.1.25",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",

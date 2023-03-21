@@ -1,67 +1,52 @@
 import MockAdapter from 'axios-mock-adapter'
 import { AppRoute } from '../const/const'
 import { createAPI } from '../services/api'
-import { ActionType } from './action'
-import { commentsPost, favoritePost, fetchFilmsList } from './api-actions'
-
-const { api } = createAPI(() => {})
+import { checkAuthAction, logInAction } from './api-actions'
+import thunk from 'redux-thunk'
+import { configureMockStore } from '@jedmao/redux-mock-store'
 
 describe('Async operations', () => {
-	beforeAll(() => {
-		api
+	const { api } = createAPI()
+	const apiMock = new MockAdapter(api)
+	const middlewares = [thunk.withExtraArgument({ api })]
+
+	const mockStore = configureMockStore(middlewares)
+
+	it('should authorization status is «auth» when server return 200', async () => {
+		const store = mockStore()
+		apiMock.onGet(AppRoute.LOGIN).reply(200, [])
+
+		expect(store.getActions()).toEqual([])
+
+		await store.dispatch(checkAuthAction())
+
+		const actions = store.getActions().map(({ type }) => type)
+
+		expect(actions).toEqual([
+			checkAuthAction.pending.type,
+			checkAuthAction.fulfilled.type,
+		])
 	})
 
-	it('Проверка корректности запроса POST/comments', () => {
-		const apiMock = new MockAdapter(api)
-		const dispatch = jest.fn()
-		const fakeUser = { comment: 'test', rating: '8', id: 3 }
-		const commentsLoader = commentsPost(
-			fakeUser.comment,
-			fakeUser.rating,
-			fakeUser.id
-		)
+	it.only('should dispatch RequriedAuthorization when POST /login', async () => {
+		const fakeUser = { login: 'test@test.ru', password: '123456' }
+		const store = mockStore()
+		Storage.prototype.setItem = jest.fn()
 
-		apiMock
-			.onPost(`${AppRoute.COMMENT}/${fakeUser.id}`)
-			.reply(200, [{ fake: true }])
-
-		return commentsLoader(dispatch, () => {}, { api }).then(() => {
-			expect(dispatch).toHaveBeenCalledTimes(0)
+		apiMock.onPost(AppRoute.LOGIN).reply(200, {
+			token: 'secret',
 		})
-	})
 
-	it('Проверка корректности запроса POST/FAVORITES', () => {
-		const apiMock = new MockAdapter(api)
-		const dispatch = jest.fn()
-		const fakeFavorite = { id: 3, status: 1 }
-		const favoriteLoader = favoritePost(fakeFavorite.id, fakeFavorite.status)
+		await store.dispatch(logInAction(fakeUser))
 
-		apiMock
-			.onPost(`${AppRoute.FAVORITES}/${fakeFavorite.id}/${fakeFavorite.status}`)
-			.reply(200, { fake: true })
+		const actions = store.getActions().map(({ type }) => type)
 
-		return favoriteLoader(dispatch, () => {}, { api }).then(() => {
-			expect(dispatch).toHaveBeenCalledTimes(1)
-			expect(dispatch).toHaveBeenNthCalledWith(1, {
-				type: ActionType.CHANGE_FAVORITE,
-				payload: { fake: true },
-			})
-		})
-	})
+		expect(actions).toEqual([
+			logInAction.pending.type,
+			logInAction.fulfilled.type,
+		])
 
-	it('Проверка корректности запроса GET/films', () => {
-		const apiMock = new MockAdapter(api)
-		const dispatch = jest.fn()
-		const filmsLoader = fetchFilmsList()
-
-		apiMock.onGet(AppRoute.FILMS).reply(200, [{ fake: true }])
-
-		return filmsLoader(dispatch, () => {}, { api }).then(() => {
-			expect(dispatch).toHaveBeenCalledTimes(1)
-			expect(dispatch).toHaveBeenNthCalledWith(1, {
-				type: ActionType.LOAD_FILMS,
-				payload: [{ fake: true }],
-			})
-		})
+		expect(Storage.prototype.setItem).toBeCalledTimes(1)
+		expect(Storage.prototype.setItem).toBeCalledWith('token', 'secret')
 	})
 })

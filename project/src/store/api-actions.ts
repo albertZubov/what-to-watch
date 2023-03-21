@@ -135,7 +135,6 @@ export const logOutAction = createAsyncThunk<
 	localStorage.setItem('token', data.token)
 })
 
-
 export const sendFavoriteAction = createAsyncThunk<
 	FilmType,
 	{ id: number; status: boolean },
