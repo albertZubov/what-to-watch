@@ -2,42 +2,35 @@ import React, { useEffect } from 'react'
 import { HeaderClassNames } from '../../const/const'
 import Header from '../header/header'
 import Footer from '../footer/footer'
-import { connect } from 'react-redux'
 import { getFilm, getFilmsSimilar } from '../../store/selectors'
-import { fetchFilmsListSimilar } from '../../store/api-actions'
+import { fetchFilmsListSimilarAction } from '../../store/api-actions'
 import { Link } from 'react-router-dom'
 import CardTabs from '../card-tabs/card-tabs'
 import PrivateComponent from '../private-components/private-component'
 import ButtonMyList from '../private-buttons/button-my-list'
 import ButtonAddReview from '../private-buttons/button-add-review'
 import FilmCardPreview from '../film-card-preview/film-card-preview'
-import { FilmType, StateType } from '../../types/types'
 import { useParams } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 
-type PropsType = {
-	state: StateType
-	filmsSimilar: FilmType[]
-	loadingFilmsSimilar: (id: number) => Promise<FilmType[]>
-}
-
-const FilmCard = ({
-	state,
-	filmsSimilar,
-	loadingFilmsSimilar,
-}: PropsType): any => {
-	// Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+const FilmCard = (): JSX.Element | null => {
+	const dispatch = useAppDispatch()
+	const state = useAppSelector((st) => st)
+	const filmsSimilar = getFilmsSimilar(state).slice(0, 4)
 	const params = useParams()
 	const film = params.id ? getFilm(state, +params.id) : undefined
 
 	useEffect(() => {
-		if (film) loadingFilmsSimilar(film.id)
+		if (film) {
+			dispatch(fetchFilmsListSimilarAction({ id: film.id }))
+		}
 	}, [])
 
 	if (film) {
 		const { name, genre, released, posterImage, id, isFavorite } = film
 
 		return (
-			<React.Fragment>
+			<>
 				<section className='film-card film-card--full'>
 					<div className='film-card__hero'>
 						<div className='film-card__bg'>
@@ -100,18 +93,11 @@ const FilmCard = ({
 					</section>
 					<Footer />
 				</div>
-			</React.Fragment>
+			</>
 		)
+	} else {
+		return null
 	}
 }
 
-const mapStateToProps = (state: StateType) => ({
-	state: state,
-	filmsSimilar: getFilmsSimilar(state).slice(0, 4),
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-	loadingFilmsSimilar: (id: number) => dispatch(fetchFilmsListSimilar(id)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(FilmCard)
+export default FilmCard

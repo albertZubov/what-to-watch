@@ -1,38 +1,24 @@
-import React, { useRef } from 'react'
-import { connect } from 'react-redux'
+import React, { FormEvent, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { AppClient } from '../../const/const'
-import { login } from '../../store/api-actions'
+import { useAppDispatch } from '../../hooks/hooks'
+import { logInAction } from '../../store/api-actions'
 import Footer from '../footer/footer'
 
-type AuthDataType = {
-	login: string
-	password: string
-}
-
-interface SubmitLoginType {
-	avatarUrl: string
-	email: string
-	id: number
-	name: string
-	token: string
-}
-
-type PropsType = {
-	onSubmit: (authData: AuthDataType) => Promise<SubmitLoginType>
-}
-
-const SignIn = ({ onSubmit }: PropsType) => {
+const SignIn = (): JSX.Element => {
+	const dispatch = useAppDispatch()
 	const loginRef = useRef<HTMLInputElement>(null)
 	const passwordRef = useRef<HTMLInputElement>(null)
 
-	const handleSubmit = (evt: any) => {
+	const handleSubmit = (evt: FormEvent) => {
 		evt.preventDefault()
 		if (loginRef.current !== null && passwordRef.current !== null) {
-			onSubmit({
-				login: loginRef.current.value,
-				password: passwordRef.current.value,
-			})
+			dispatch(
+				logInAction({
+					login: loginRef.current.value,
+					password: passwordRef.current.value,
+				})
+			)
 		}
 	}
 
@@ -99,8 +85,4 @@ const SignIn = ({ onSubmit }: PropsType) => {
 	)
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-	onSubmit: (authData: AuthDataType) => dispatch(login(authData)),
-})
-
-export default connect(null, mapDispatchToProps)(SignIn)
+export default SignIn

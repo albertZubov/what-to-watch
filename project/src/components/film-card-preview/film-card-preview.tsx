@@ -5,7 +5,7 @@ import { FilmType } from '../../types/types'
 
 const FilmCardPreview = ({ film }: { film: FilmType }) => {
 	const videoRef = useRef<HTMLVideoElement>(null)
-	const [isPending, setIsPending] = useState(false)
+	const [isPending, setIsPending] = useState<boolean>(false)
 
 	const onPlayVideo = () => {
 		if (isPending || videoRef.current === null) return

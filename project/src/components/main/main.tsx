@@ -4,17 +4,19 @@ import Header from '../header/header'
 import Footer from '../footer/footer'
 import FilmList from '../film-list/film-list'
 import GenresList from '../genres-list/genres-list'
-import { connect } from 'react-redux'
 import { getPromoFilms } from '../../store/selectors'
 import './../../style-css/style.css'
 import cl from 'classnames'
 import PlayerYoutube from '../player/player-youtube'
-import { PromoFilmType, StateType } from '../../types/types'
+import { PromoFilmType } from '../../types/types'
+import { useAppSelector } from '../../hooks/hooks'
+import { State } from '../../types/state'
 
-const Main = ({ promoFilms }: { promoFilms: PromoFilmType[] }) => {
+const Main = (): JSX.Element => {
+	const promoFilms = useAppSelector((state: State) => getPromoFilms(state))
 	const [films, setFilms] = useState<PromoFilmType[]>(Array.from(promoFilms))
-	const [startPreview, setStartPreview] = useState(false)
-	const [idVideo, setIdVideo] = useState('')
+	const [startPreview, setStartPreview] = useState<boolean>(false)
+	const [idVideo, setIdVideo] = useState<string>('')
 	const videoRef = useRef<HTMLDivElement>(null)
 
 	const shiftArrayRight = () => {
@@ -53,7 +55,7 @@ const Main = ({ promoFilms }: { promoFilms: PromoFilmType[] }) => {
 						</svg>
 					</button>
 					<div className='film-card__info film-card__info--main'>
-						{films.map((film, id) => {
+						{films.map((film: PromoFilmType, id: number) => {
 							const { img, name, videoId } = film
 
 							return (
@@ -110,8 +112,4 @@ const Main = ({ promoFilms }: { promoFilms: PromoFilmType[] }) => {
 	)
 }
 
-const mapStateToProps = (state: StateType) => ({
-	promoFilms: getPromoFilms(state),
-})
-
-export default connect(mapStateToProps)(Main)
+export default Main

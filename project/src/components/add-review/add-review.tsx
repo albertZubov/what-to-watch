@@ -1,12 +1,12 @@
-import React, { ChangeEvent, useRef, useState } from 'react'
-import { connect } from 'react-redux'
+import React, { ChangeEvent, FormEvent, useRef, useState } from 'react'
 import { HeaderClassNames } from '../../const/const'
 import { getFilm } from '../../store/selectors'
 import Header from '../header/header'
 import HeaderBreadcrumbs from '../header/header-breadcrumbs'
-import { commentsPost } from '../../store/api-actions'
-import { StateType } from '../../types/types'
-import { useParams } from 'react-router-dom'
+import { sendCommentAction } from '../../store/api-actions'
+import { Params, useParams } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { State } from '../../types/state'
 
 const MIN_QUANTITY_SYMBOLS = 50
 const MAX_QUANTITY_SYMBOLS = 400
@@ -17,25 +17,25 @@ const InputName = {
 	review: 'review-text',
 }
 
-const arrayNumbers = [...Array(QUANTITY_ITEMS).keys()].map((el) => ++el)
+const arrayNumbers: Array<number> = [...Array(QUANTITY_ITEMS).keys()].map(
+	(el) => ++el
+)
 
-interface PropsType {
-	state: StateType
-	commentPost: (comment: string, rating: number, id: number) => Promise<string>
-}
-
-const AddReview = ({ state, commentPost }: PropsType) => {
+const AddReview = (): JSX.Element | null => {
+	const dispatch = useAppDispatch()
 	const [rating, setRating] = useState<number>(0)
 	const [review, setReview] = useState<string>('')
 	const formRef = useRef<HTMLFormElement | null>(null)
-	//TODO дублирование - переделать при RTK
-	const { id } = useParams()
+	const state = useAppSelector((st: State) => st)
+	const { id }: Readonly<Params<string>> = useParams()
 	const film = id ? getFilm(state, +id) : undefined
 
-	const handleSubmit = (evt: React.FormEvent) => {
+	const handleSubmit = (evt: FormEvent) => {
 		evt.preventDefault()
 
-		if (film) commentPost(review, rating, film.id)
+		if (film && id) {
+			dispatch(sendCommentAction({ comment: review, rating, id: +id }))
+		}
 
 		formRef.current && formRef.current.reset()
 	}
@@ -144,13 +144,4 @@ const AddReview = ({ state, commentPost }: PropsType) => {
 	) : null
 }
 
-const mapStateToProps = (state: StateType) => ({
-	state: state,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-	commentPost: (comment: string, rating: number, id: number) =>
-		dispatch(commentsPost(comment, rating, id)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddReview)
+export default AddReview

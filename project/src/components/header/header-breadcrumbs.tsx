@@ -1,6 +1,6 @@
 import React from 'react'
 
-const HeaderBreadcrumbs = () => {
+const HeaderBreadcrumbs = (): JSX.Element => {
 	return (
 		<nav className='breadcrumbs'>
 			<ul className='breadcrumbs__list'>

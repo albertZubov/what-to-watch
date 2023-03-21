@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import YouTube from 'react-youtube'
 
 type optsType = {
@@ -35,7 +35,7 @@ const PlayerYoutube = ({ videoId, closeVideo }: propsType) => {
 		},
 	}
 
-	const onReady = ({ target }: any) => {
+	const onReady = ({ target }: ChangeEvent<HTMLInputElement>) => {
 		setPlayer(target)
 	}
 

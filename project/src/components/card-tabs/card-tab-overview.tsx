@@ -2,12 +2,12 @@ import React from 'react'
 import { getRatingTitle } from '../../utils/utils'
 import { FilmType } from '../../types/types'
 
-const CardTabOverview = ({ film }: { film: FilmType }) => {
+const CardTabOverview = ({ film }: { film: FilmType }): JSX.Element => {
 	const { rating, scoresCount, description, director, starring } = film
 	const starringToString = starring.join(', ')
 
 	return (
-		<React.Fragment>
+		<>
 			<div className='film-rating'>
 				<div className='film-rating__score'>{rating}</div>
 				<p className='film-rating__meta'>
@@ -29,7 +29,7 @@ const CardTabOverview = ({ film }: { film: FilmType }) => {
 					<strong>Starring: {starringToString} and other</strong>
 				</p>
 			</div>
-		</React.Fragment>
+		</>
 	)
 }
 

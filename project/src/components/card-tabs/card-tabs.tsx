@@ -3,10 +3,10 @@ import cl from 'classnames'
 import CardTabOverview from './card-tab-overview'
 import CardTabDetails from './card-tab-details'
 import CardTabReviews from './card-tab-reviews'
-import { commentsGet } from '../../store/api-actions'
-import { connect } from 'react-redux'
+import { fetchCommentsAction } from '../../store/api-actions'
 import { getComments } from '../../store/selectors'
-import { CommentType, FilmType, StateType } from '../../types/types'
+import { CommentType, FilmType } from '../../types/types'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 
 const TabNames = {
 	OVERVIEW: 'Overview',
@@ -14,14 +14,10 @@ const TabNames = {
 	REVIEWS: 'Reviews',
 }
 
-type PropsType = {
-	film: FilmType
-	comments: CommentType[]
-	loadComments: (id: number) => Promise<CommentType[]>
-}
-
-const CardTabs = ({ film, loadComments, comments }: PropsType) => {
+const CardTabs = ({ film }: { film: FilmType }): JSX.Element => {
+	const dispatch = useAppDispatch()
 	const [activeTabName, setActiveTabName] = useState<string>(TabNames.OVERVIEW)
+	const comments: CommentType[] = useAppSelector((state) => getComments(state))
 
 	const TabsComponents = {
 		[TabNames.OVERVIEW]: <CardTabOverview film={film} />,
@@ -30,7 +26,7 @@ const CardTabs = ({ film, loadComments, comments }: PropsType) => {
 	}
 
 	useEffect(() => {
-		loadComments(film.id)
+		dispatch(fetchCommentsAction({ id: film.id }))
 	}, [])
 
 	return (
@@ -62,12 +58,4 @@ const CardTabs = ({ film, loadComments, comments }: PropsType) => {
 	)
 }
 
-const mapStateToProps = (state: StateType) => ({
-	comments: getComments(state),
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-	loadComments: (id: number) => dispatch(commentsGet(id)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardTabs)
+export default CardTabs

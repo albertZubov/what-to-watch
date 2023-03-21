@@ -6,7 +6,7 @@ type propsType = {
 	videoRef: React.LegacyRef<HTMLVideoElement>
 }
 
-const PlayerVideoPreview = ({ film, videoRef }: propsType) => {
+const PlayerVideoPreview = ({ film, videoRef }: propsType): JSX.Element => {
 	const { previewVideoLink, posterImage } = film
 
 	return (
